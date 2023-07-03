@@ -37,7 +37,7 @@ cd Build
 4. Configure the project using CMake:
 
 ```
-cmake ..
+cmake .. & cmake --build .
 ```
 
 5. Create a text file named "ManagerCounter" with a value of 0 in the root directory:
