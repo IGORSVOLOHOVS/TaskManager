@@ -2,6 +2,11 @@
 cmake_minimum_required(VERSION 3.20)
 project(test_cmake CXX)
 
+# For MinGW,VCPKG_PATH и CMAKE_TOOLCHAIN_FILE можно убрать
+if (MINGW)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")
+endif()
+
 # Переменная VCPKG_PATH
 set(VCPKG_PATH "C:/Users/User/.clion-vcpkg/vcpkg")
 
