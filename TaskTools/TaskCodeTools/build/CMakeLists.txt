@@ -1,4 +1,4 @@
-# https://github.com/IGORSVOLOHOVS/Easy_CMakefile
+# cmake .. -G "MinGW Makefiles" && cmake --build . && make && ./test_cmake.exe
 cmake_minimum_required(VERSION 3.20)
 project(test_cmake CXX)
 
@@ -22,11 +22,12 @@ file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/include)
 file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/src)
 
-# Указываем директории с заголовочными файлами и библиотеками из vcpkg
+# Указываем директории с заголовочными файлами и библиотеками из vcpkg(C:\msys64\mingw64\include)
 include_directories(
     ${VCPKG_PATH}/installed/x64-windows/include
 )
 
+# C:\msys64\mingw64\lib
 link_directories(
     ${VCPKG_PATH}/installed/x64-windows/lib
 )
@@ -47,7 +48,7 @@ add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
 # Если вам нужно собрать статическую библиотеку вместо исполняемого файла:
 # add_library(${PROJECT_NAME} STATIC ${SOURCES} ${HEADERS})
 
-# Линковка с библиотеками из vcpkg
+# Линковка с библиотеками из vcpkg C:\msys64\mingw64\bin
 target_link_libraries(${PROJECT_NAME} PRIVATE
     # Укажите библиотеки из vcpkg, которые вам нужны
 #    library1
@@ -56,7 +57,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     libcurl
 )
 
-# Если вы собираете статическую библиотеку, линкуйте ее так:
+# Если вы собираете статическую библиотеку, линкуйте ее так: C:\msys64\mingw64\lib
 target_link_libraries(${PROJECT_NAME} PRIVATE
 #     library1
 #     library2
