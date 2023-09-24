@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>WebAssembly with C++</title>
+</head>
+<body>
+  <script src="main.js"></script>
+  <button id="calculate">Calculate</button> <!-- Кнопка для запуска расчета -->
+  <p>Result of add: <span id="result"></span></p> <!-- Элемент для отображения результата -->
+  <script>
+    Module.onRuntimeInitialized = function() {
+      console.log("WebAssembly loaded");
+
+      // Получаем элементы по их ID
+      var calculateButton = document.getElementById("calculate");
+      var resultElement = document.getElementById("result");
+
+      // Добавляем обработчик события для кнопки
+      calculateButton.addEventListener("click", function() {
+        var result = Module._add(10, 20);
+        resultElement.textContent = result; // Обновляем текст элемента
+      });
+    };
+  </script>
+</body>
+</html>
