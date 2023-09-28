@@ -1,6 +1,6 @@
 # make -f WASM.mak
 CXX       := em++
-CXX_FLAGS := -Wall -Wextra -std=c++20 -ggdb -s WASM=1 -s EXPORT_ALL=1
+CXX_FLAGS := -Wall -Wextra -std=c++20 -ggdb --bind -s WASM=1 -s EXPORT_ALL=1 
 
 BIN      := bin
 SRC      := src
