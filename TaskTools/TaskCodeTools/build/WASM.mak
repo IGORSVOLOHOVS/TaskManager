@@ -20,6 +20,7 @@ HEADERS  := $(wildcard $(INCLUDE)/*.hpp)
 # cd build
 # emcmake cmake ..
 # emmake make
+# (после сборки добавь .h в include, а .a в lib)
 LIBRARIES   := 
 EXECUTABLE  := main
 
