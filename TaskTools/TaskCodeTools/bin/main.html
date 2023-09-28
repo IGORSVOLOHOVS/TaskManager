@@ -24,3 +24,42 @@
   </script>
 </body>
 </html>
+
+<!------------------------------------------EMSCRIPTEN класс------------------------------------>
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>SQLite with WebAssembly</title>
+    <script src="main.js"></script>
+    <script type="text/javascript">
+        var SQLite;
+        // Убедитесь, что createModule доступен и возвращает ваш WebAssembly модуль
+        Module().then((instance) => {
+            SQLite = new instance.SQLiteWrapper();
+        });
+
+        function saveData(fieldNumber) {
+            const fieldValue = document.getElementById(`field${fieldNumber}`).value;
+            SQLite.saveData(fieldValue);
+            console.log(`Saved ${fieldValue} to field ${fieldNumber}`);
+        }
+        
+        function getLastData(){
+            const result = SQLite.getLastData();
+            console.log(`Last data: ${result}`);
+        }
+    </script>
+</head>
+<body>
+    <input type="text" id="field1" placeholder="Field 1">
+    <button onclick="saveData(1)">Save to Field 1</button>
+    <br>
+    <input type="text" id="field2" placeholder="Field 2">
+    <button onclick="saveData(2)">Save to Field 2</button>
+    <br>
+    <input type="text" id="field3" placeholder="Field 3">
+    <button onclick="saveData(3)">Save to Field 3</button>
+    <br>
+    <button onclick="getLastData()">Get Last Data</button>
+</body>
+</html> -->

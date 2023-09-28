@@ -13,7 +13,14 @@ MOD_OBJS := $(patsubst $(MODULE)/%.cpp,$(BIN)/%.o,$(MODS))
 
 HEADERS  := $(wildcard $(INCLUDE)/*.hpp)
 
-LIBRARIES   := # WebAssembly не поддерживает нативные библиотеки, такие как pthread, sqlite3 и т.д.
+# WebAssembly не поддерживает нативные библиотеки, такие как pthread, sqlite3 и т.д.
+# Поэтому, если вы хотите использовать их, вам нужно собрать их с помощью Emscripten.
+# Подробнее: https://emscripten.org/docs/porting/pthreads.html
+# mkdir build
+# cd build
+# emcmake cmake ..
+# emmake make
+LIBRARIES   := 
 EXECUTABLE  := main
 
 all: $(BIN)/$(EXECUTABLE).js
