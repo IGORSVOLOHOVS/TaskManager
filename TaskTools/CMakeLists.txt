@@ -13,7 +13,7 @@ file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/include)
 file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/src)
 
 # берем переменные с конфигурационного файла
-include(${CMAKE_BINARY_DIR}/CMakeCofig.cmake)
+include(CMakeConfig.cmake)
 
 # Добавляем путь к собственным исходным файлам
 file(GLOB_RECURSE SOURCES
@@ -38,3 +38,8 @@ add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
 
 # Линковка с библиотеками
 target_link_libraries(${PROJECT_NAME} PRIVATE ${LINK_LIBS})
+
+# устанавливаем
+install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_BINARY_DIR}/bin)
+install(FILES ${HEADERS} DESTINATION ${CMAKE_BINARY_DIR}/include)
+install(FILES ${LINK_LIBS} DESTINATION ${CMAKE_BINARY_DIR}/lib)
