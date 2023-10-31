@@ -53,6 +53,8 @@ file(GLOB_RECURSE HEADERS
 # add_subdirectory(source_dir [binary_dir] [EXCLUDE_FROM_ALL])
 # классная вещь, флаги компиляции без всякой херни
 # target_compile_options(my_app PRIVATE -std=c++20)
+# Команда option в CMake используется для объявления кэш-переменных с типом BOOL для if(USE_MY_LIB) else() endif()
+# option(USE_MY_LIB "Use my own library" ON)
 
 # Создаем исполняемый файл (или библиотеку)
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
