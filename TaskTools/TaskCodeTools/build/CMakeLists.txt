@@ -51,6 +51,8 @@ file(GLOB_RECURSE HEADERS
 # set(Tutorial_VERSION_MAJOR 1) set(Tutorial_VERSION_MINOR 0) configure_file(TutorialConfig.h.in TutorialConfig.h)
 # классная вещь Эта команда включает в себя другой CMakeLists.txt файл из указанной поддиректории
 # add_subdirectory(source_dir [binary_dir] [EXCLUDE_FROM_ALL])
+# классная вещь, флаги компиляции без всякой херни
+# target_compile_options(my_app PRIVATE -std=c++20)
 
 # Создаем исполняемый файл (или библиотеку)
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
