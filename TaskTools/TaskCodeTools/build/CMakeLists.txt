@@ -55,6 +55,8 @@ file(GLOB_RECURSE HEADERS
 # target_compile_options(my_app PRIVATE -std=c++20)
 # Команда option в CMake используется для объявления кэш-переменных с типом BOOL для if(USE_MY_LIB) else() endif()
 # option(USE_MY_LIB "Use my own library" ON)
+# копирует my_app в папку bin
+# add_executable(my_app main.cpp) install(TARGETS my_app RUNTIME DESTINATION bin)
 
 # Создаем исполняемый файл (или библиотеку)
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
