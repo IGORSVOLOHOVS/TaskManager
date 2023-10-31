@@ -47,6 +47,10 @@ file(GLOB_RECURSE HEADERS
     "include/*.h"
 )
 
+# классная вещь CMake заменит @PROJECT_VERSION_MAJOR@ и @PROJECT_VERSION_MINOR@ на соответствующие значения переменных и создаст файл config.h
+# set(Tutorial_VERSION_MAJOR 1) set(Tutorial_VERSION_MINOR 0) configure_file(TutorialConfig.h.in TutorialConfig.h)
+
+
 # Создаем исполняемый файл (или библиотеку)
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
 
