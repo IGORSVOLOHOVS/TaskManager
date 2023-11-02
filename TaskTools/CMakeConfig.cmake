@@ -1,7 +1,7 @@
 # cmake .. -G "MinGW Makefiles" && cmake --build . && make && ./task.exe
 # rm -r .
 # Определение директорий для заголовочных файлов "C:/path/to/includes;C:/another/path/to/includes"
-set(INCLUDE_DIRS "C:/msys64/mingw64/include")
+set(INCLUDE_DIRS "C:/msys64/mingw64/include;${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 # Определение директорий для библиотек "C:/path/to/libs;C:/another/path/to/libs"
 set(LIB_DIRS "C:/msys64/mingw64/lib")
