@@ -37,5 +37,6 @@ target_link_libraries(main modules_lib)
 # conan install . --build=missing --output-folder build -c tools.env.virtualenv:powershell=True
 # cmake --preset conan-release OR cmake --preset conan-default
 # cmake --build --preset conan-release
-
-# .\Release\main.exe
+# .\build\build\generators\conanbuild.ps1
+# .\build\build\generators\conanrun.ps1
+# .\build\build\Release\main.exe
