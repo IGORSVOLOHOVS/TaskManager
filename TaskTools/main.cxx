@@ -1,8 +1,18 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <cstdint>
+#include <vector>
+#include <string>
+#include <gtest/gtest.h>
+#include <gmock/gmock.h>
 
-int main(){
-    std::cout << "Hello world!" << std::endl;
-    return 0;
+import io;
+import config.config;
+import test.test;
+import test.benchmark;
+
+int main(int argc, char **argv){
+    ::testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
 }
 // -----------------------------------------------------BENCHMARK--------------------------------
 

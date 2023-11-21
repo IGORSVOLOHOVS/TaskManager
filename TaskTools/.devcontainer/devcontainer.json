@@ -1,9 +1,0 @@
-{
-    "name": "My Dev Container",
-    "image": "myimage",
-    "extensions": [],
-    "settings": {
-      "terminal.integrated.shell.linux": "/bin/sh"
-    }
-}
-  

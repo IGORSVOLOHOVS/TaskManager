@@ -1,0 +1,24 @@
+[requires]
+yaml-cpp/0.8.0
+benchmark/1.8.3
+
+[test_requires]
+gtest/1.14.0
+
+[layout]
+cmake_layout
+
+[generators]
+CMakeToolchain
+CMakeDeps
+VirtualBuildEnv
+VirtualRunEnv
+
+[options]
+yaml-cpp/*:shared=True
+benchmark/*:shared=True
+
+[imports]
+bin, *.dll -> ./bin # Copies all dll files from packages bin folder to my local "bin" folder
+
+

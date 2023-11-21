@@ -1,17 +1,22 @@
-#pragma once
-#include <iostream>
-#include <string>
+module;
 
+#include <iostream>
+
+export module io;
+
+export
 template <typename... T>
 void read(T &...args) {
     ((std::cin >> args), ...);
 }
 
+export
 template <typename... T>
 void write(std::string delimiter, T &&...args) {
     ((std::cout << args << delimiter), ...);
 }
 
+export
 template <typename T>
 void readContainer(T &t) {
     for (auto &e : t) {
@@ -19,6 +24,7 @@ void readContainer(T &t) {
     }
 }
 
+export
 template <typename T>
 void writeContainer(std::string delimiter, T &t) {
     for (const auto &e : t) {
