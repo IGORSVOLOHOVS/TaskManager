@@ -1,36 +1,45 @@
 // config.ixx
 module;
 
-#include <yaml-cpp/yaml.h>
 #include <iostream>
 #include <fstream>
 #include <string>
+
+#include <yaml-cpp/yaml.h>
 
 export module config.config;
 
 namespace config
 {
-    export int VAL1;
-    export int VAL2;
-    export int VAL3;
+    export int VAL1 = 1;
+    export int VAL2 = 2;
+    export int VAL3 = 3;
 
+    constexpr auto DEFAULT_CONFIG_PATH = "config/config.yaml";
     void create(const std::string& path) {
-        std::ifstream file(path);
-        if (!file) {
-            // Файл не существует, создаем новый
-            YAML::Emitter out;
-            out << YAML::BeginMap;
-            out << YAML::Key << "VAL1" << YAML::Value << VAL1;
-            out << YAML::Key << "VAL2" << YAML::Value << VAL2;
-            out << YAML::Key << "VAL3" << YAML::Value << VAL3;
-            out << YAML::EndMap;
+        YAML::Emitter out;
+        out << YAML::BeginMap;
+        out << YAML::Key << "VAL1" << YAML::Value << VAL1;
+        out << YAML::Key << "VAL2" << YAML::Value << VAL2;
+        out << YAML::Key << "VAL3" << YAML::Value << VAL3;
+        out << YAML::EndMap;
 
-            std::ofstream outFile(path);
-            outFile << out.c_str();
-        }
+        std::ofstream outFile(path);
+        outFile << out.c_str();
+
+        std::cout << "File created at " << path << std::endl;
     }
 
-    export void parser(const std::string& path) {
+    export void parser(const std::string& path = DEFAULT_CONFIG_PATH) {
+        // check if file exist
+        std::ifstream file(path);
+        if (!file.is_open()) {
+            std::cout << "File not found, creating by default..." << std::endl;
+            create(path);
+        }else{
+            std::cout << "File found, parsing..." << std::endl;
+        }
+
         try {
             YAML::Node config = YAML::LoadFile(path);
             if (config["VAL1"]) {
@@ -42,12 +51,11 @@ namespace config
             if (config["VAL3"]) {
                 VAL3 = config["VAL3"].as<int>();
             }
+
+            std::cout << "Parse complete." << std::endl;
         } catch (const YAML::Exception& e) {
-            std::cerr << "Ошибка при чтении YAML файла: " << e.what() << "\nСоздание нового файла...\n";
-            create(path);  // Вызываем функцию create для создания файла
+            std::cerr << "Error: " << e.what() << "\n";
         }
     }
 
 } // namespace config
-
-
