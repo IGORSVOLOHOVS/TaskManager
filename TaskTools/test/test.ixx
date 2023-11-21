@@ -33,3 +33,10 @@ TEST(HelloTest, BasicAssertions4) {
     EXPECT_EQ(7 * 6, 42);
 }
 
+export namespace test
+{
+    inline int run(int argc, char** argv){
+        ::testing::InitGoogleTest(&argc, argv);
+        return RUN_ALL_TESTS();
+    }
+} // namespace test
