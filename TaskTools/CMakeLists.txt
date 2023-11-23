@@ -8,7 +8,6 @@ find_package(benchmark REQUIRED)
 find_package(yaml-cpp REQUIRED)
 find_package(gtest REQUIRED)
 
-
 # Create a static library 'module'
 add_library(modules_lib STATIC)
 target_sources(modules_lib
@@ -26,17 +25,3 @@ target_link_libraries(modules_lib PUBLIC yaml-cpp::yaml-cpp benchmark::benchmark
 # Create the main executable
 add_executable(main main.cxx)
 target_link_libraries(main modules_lib)
-
-
-# conan remove yaml-cpp/0.8.0
-# Remove-Item -Path "*.cmake*", "*.ps1", "*.bat", "*.json" -Recurse -Force
-# rm -r build
-
-# run powershell with admin
-# Set-ExecutionPolicy RemoteSigned
-# conan install . --build=missing --output-folder build -c tools.env.virtualenv:powershell=True
-# cmake --preset conan-release OR cmake --preset conan-default
-# cmake --build --preset conan-release
-# .\build\build\generators\conanbuild.ps1
-# .\build\build\generators\conanrun.ps1
-# .\build\build\Release\main.exe

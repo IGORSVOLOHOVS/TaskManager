@@ -11,14 +11,9 @@ cmake_layout
 [generators]
 CMakeToolchain
 CMakeDeps
-VirtualBuildEnv
-VirtualRunEnv
 
 [options]
-yaml-cpp/*:shared=True
-benchmark/*:shared=True
+*:shared=True
 
-[imports]
-bin, *.dll -> ./bin # Copies all dll files from packages bin folder to my local "bin" folder
 
 
