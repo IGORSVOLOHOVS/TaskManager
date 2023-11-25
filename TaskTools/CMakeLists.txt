@@ -23,3 +23,48 @@ target_link_libraries(modules_lib PUBLIC yaml-cpp::yaml-cpp benchmark::benchmark
 # Create the main executable
 add_executable(main main.cxx)
 target_link_libraries(main modules_lib)
+
+# clang
+
+# [settings]
+# arch=x86_64
+# build_type=Release
+# compiler=clang
+# compiler.cppstd=20
+# compiler.version=17
+# compiler.libcxx=libstdc++11
+# compiler.runtime=dynamic
+# compiler.runtime_type=Release
+# compiler.runtime_version=v143
+# os=Windows
+# [conf]
+# tools.env.virtualenv:powershell=True
+
+# msvc
+
+# [settings]
+# arch=x86_64
+# build_type=Release
+# compiler=msvc
+# compiler.cppstd=20
+# compiler.version=193
+# compiler.runtime=dynamic
+# compiler.runtime_type=Release
+# os=Windows
+# [conf]
+# tools.env.virtualenv:powershell=True
+
+# gcc
+
+# [settings]
+# arch=x86_64
+# build_type=Release
+# compiler=gcc
+# compiler.cppstd=20
+# compiler.version=13.2
+# compiler.libcxx=libstdc++11
+# compiler.threads=win32
+# compiler.exception=seh
+# os=Windows
+# [conf]
+# tools.env.virtualenv:powershell=True
