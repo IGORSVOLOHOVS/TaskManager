@@ -8,15 +8,13 @@ find_package(benchmark REQUIRED)
 find_package(yaml-cpp REQUIRED)
 find_package(gtest REQUIRED)
 
-# Create a static library 'module'
-add_library(modules_lib STATIC)
-target_sources(modules_lib
-PUBLIC
-FILE_SET CXX_MODULES FILES
-    "test/test.ixx"
-    "test/benchmark.ixx"
-    "config/config.ixx"
-    "io.ixx"
+# include modules
+include(modules.cmake)
+add_module_library(modules_lib
+    test/test.ixx
+    test/benchmark.ixx
+    config/config.ixx
+    io.ixx
 )
 
 # link libraries
