@@ -7,7 +7,7 @@ if (Test-Path -Path "build") {
 Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
 
 # Выполняем установку зависимостей через Conan
-conan install . --build=missing --output-folder build -c tools.env.virtualenv:powershell=True 
+conan install . --deployer=full_deploy --build=missing --output-folder build -c tools.env.virtualenv:powershell=True 
 
 # Запускаем CMake с заданным пресетом
 cmake --preset conan-default
