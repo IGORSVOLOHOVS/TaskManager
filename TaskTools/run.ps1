@@ -29,6 +29,6 @@ if ($runMode -eq 1)
     Write-Output "CMake has been successfully executed with preset conan-default!"
     & ".\build\build\generators\conanbuild.ps1"
     & ".\build\build\generators\conanrun.ps1"
-    cmake --build . --preset conan-default
-    .\build\build\Release\generators\task.exe    
+    cmake --build . --preset conan-release
+    .\build\build\Release\task.exe    
 }
