@@ -35,31 +35,24 @@ class TaskConan(ConanFile):
         cmake.configure()
         cmake.build()
 
+    # создай package только добавь папку pkg и туда скопируй .exe и .dll в pkg
     def package(self):
-        # Создание стандартных директорий для пакета
-        include_dir = os.path.join(self.package_folder, "include")
-        lib_dir = os.path.join(self.package_folder, "lib")
-        bin_dir = os.path.join(self.package_folder, "bin")
-        os.makedirs(include_dir, exist_ok=True)
-        os.makedirs(lib_dir, exist_ok=True)
-        os.makedirs(bin_dir, exist_ok=True)
-        
+        os.makedirs(self.build_folder + "/../pkg", exist_ok=True)
+        os.makedirs(self.build_folder + "/../pkg-setup", exist_ok=True)
+        pkg_dir = os.path.join(self.build_folder + "/../pkg")
+        pkg_setup_dir = os.path.join(self.build_folder + "/../pkg-setup")
+        main_dir = os.path.join(self.build_folder + "/../")
+
+        # Копирование исполняемых файлов
         self.output.info("Packaging binary files")
         for root, dirs, files in os.walk(self.build_folder):
             for file in files:
-                full_file_path = os.path.join(root, file)
-                relative_dir = os.path.relpath(root, self.build_folder)
-                if file.endswith((".h", ".hpp")):
-                    # Копирование заголовочных файлов
-                    copy(self, pattern=file, src=root, dst=os.path.join(include_dir, relative_dir))
-                elif file.endswith(".lib"):
-                    # Копирование библиотек
-                    copy(self, pattern=file, src=root, dst=os.path.join(lib_dir, relative_dir))
-                elif file.endswith((".dll", ".exe")):
-                    # Копирование DLL и исполняемых файлов
-                    copy(self, pattern=file, src=root, dst=os.path.join(bin_dir, relative_dir)) 
+                # Копирование DLL и исполняемых файлов(только файлов, не директорий к ним)
+                if file.endswith((".dll", ".exe")):
+                    copy(self, pattern=file, src=root, dst=pkg_dir)
+        
          # Путь к файлу .iss, который будет создан
-        iss_path = os.path.join(self.build_folder, f"{self.name}-{self.version}.iss")
+        iss_path = os.path.join(pkg_setup_dir, f"{self.name}-{self.version}.iss")
 
         # Шаблон файла .iss
         iss_content = f"""
@@ -68,7 +61,7 @@ AppName={self.name}
 AppVersion={self.version}
 DefaultDirName={{pf}}\\{self.name}
 DefaultGroupName={self.name}
-OutputDir=.
+OutputDir={self.build_folder}/../
 OutputBaseFilename={self.name}-{self.version}-setup
 Compression=lzma
 SolidCompression=yes
@@ -77,14 +70,22 @@ UninstallDisplayName={self.name}
 UninstallStyle=modern
 
 [Files]
-Source: "{bin_dir}\\*"; DestDir: "{{app}}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "{lib_dir}\\*"; DestDir: "{{app}}\\lib"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "{include_dir}\\*"; DestDir: "{{app}}\\include"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{pkg_dir}\\*"; DestDir: "{{app}}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{main_dir}\\LICENSE.txt"; DestDir: "{{app}}"; Flags: ignoreversion
+Source: "{main_dir}\\README.md"; DestDir: "{{app}}"; Flags: ignoreversion
+Source: "{main_dir}\\config.yaml"; DestDir: "{{app}}"; Flags: ignoreversion
+
+[Icons]
+Name: "{{group}}\\{self.name}"; Filename: "{{app}}\\task.exe"
             """
 
         # Сохранение файла .iss
         save(self, iss_path, iss_content)
         self.output.info(f"Generated .iss file at {iss_path}")
 
+
+
+
+        
     def package_info(self):
         self.cpp_info.libs = collect_libs(self)
