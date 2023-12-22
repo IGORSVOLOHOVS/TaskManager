@@ -2,7 +2,7 @@
 
 Task: Объекты, функции
 
-# Use case
+# Use-case diagram
 
 ```plantuml
 @startuml
@@ -68,9 +68,12 @@ actor Обучающийся
     deactivate Client
 @enduml
 ```
+# Functions and objects
 
 # Class diagram
 
-# Use case for test
+# Use-case for test
 
 # Component diagram
+
+# Algorithm diagram
