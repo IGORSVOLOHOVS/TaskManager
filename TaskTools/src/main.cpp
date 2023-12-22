@@ -9,5 +9,7 @@ int main(int argc, char** argv) {
 
     // Run Google Benchmark
     benchmark::run(argc, argv);
+
+    getchar();
 }
 
