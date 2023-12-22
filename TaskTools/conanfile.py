@@ -57,34 +57,29 @@ class TaskConan(ConanFile):
                     copy(self, pattern=file, src=root, dst=os.path.join(lib_dir, relative_dir))
                 elif file.endswith((".dll", ".exe")):
                     # Копирование DLL и исполняемых файлов
-                    copy(self, pattern=file, src=root, dst=os.path.join(bin_dir, relative_dir))
-        
+                    copy(self, pattern=file, src=root, dst=os.path.join(bin_dir, relative_dir)) 
          # Путь к файлу .iss, который будет создан
         iss_path = os.path.join(self.build_folder, f"{self.name}-{self.version}.iss")
 
         # Шаблон файла .iss
         iss_content = f"""
-            [Setup]
-            AppName={self.name}
-            AppVersion={self.version}
-            DefaultDirName={{pf}}\\{self.name}
-            DefaultGroupName={self.name}
-            OutputDir=.
-            OutputBaseFilename={self.name}-{self.version}-setup
-            Compression=lzma
-            SolidCompression=yes
-            PrivilegesRequired=admin
-            SetupIconFile=icon.ico
-            UninstallDisplayIcon={{app}}\\icon.ico
-            UninstallDisplayName={self.name}
-            UninstallDisplayVersion={self.version}
-            UninstallQuiet=yes
-            UninstallStyle=modern
+[Setup]
+AppName={self.name}
+AppVersion={self.version}
+DefaultDirName={{pf}}\\{self.name}
+DefaultGroupName={self.name}
+OutputDir=.
+OutputBaseFilename={self.name}-{self.version}-setup
+Compression=lzma
+SolidCompression=yes
+PrivilegesRequired=admin
+UninstallDisplayName={self.name}
+UninstallStyle=modern
 
-            [Files]
-            Source: "bin\\*"; DestDir: "{{app}}"; Flags: ignoreversion recursesubdirs createallsubdirs
-            Source: "lib\\*"; DestDir: "{{app}}\\lib"; Flags: ignoreversion recursesubdirs createallsubdirs
-            Source: "include\\*"; DestDir: "{{app}}\\include"; Flags: ignoreversion recursesubdirs createallsubdirs
+[Files]
+Source: "{bin_dir}\\*"; DestDir: "{{app}}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{lib_dir}\\*"; DestDir: "{{app}}\\lib"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{include_dir}\\*"; DestDir: "{{app}}\\include"; Flags: ignoreversion recursesubdirs createallsubdirs
             """
 
         # Сохранение файла .iss
