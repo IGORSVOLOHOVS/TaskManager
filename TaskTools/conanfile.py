@@ -26,7 +26,7 @@ class TaskConan(ConanFile):
         self.folders.build = "build"
         self.folders.source = "."
         self.folders.generators = "cmake"
-        self.folders.imports = "bin"
+        self.folders.bin = "bin"
         self.folders.test = "test"
 
     def build(self):
@@ -84,8 +84,13 @@ Name: "{{group}}\\{self.name}"; Filename: "{{app}}\\task.exe"
         self.output.info(f"Generated .iss file at {iss_path}")
 
 
-
-
-        
     def package_info(self):
         self.cpp_info.libs = collect_libs(self)
+        self.cpp_info.includedirs = ["include"]
+        self.cpp_info.libdirs = ["lib"]
+        self.cpp_info.bindirs = ["bin"]
+
+    def generate(self):
+        for dep in self.dependencies.values():
+            copy(self, pattern="*.dll", src=dep.cpp_info.bindirs[0], dst=self.folders.bin)
+
