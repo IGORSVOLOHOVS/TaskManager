@@ -14,9 +14,9 @@ if (Test-Path -Path "cmake") {
     Remove-Item -Recurse -Force "cmake"
 }
 
-# Install dependencies through Conan
+# Install dependencies through Conan --deployer=full_deploy
 $ErrorActionPreference = 'Stop'
-conan install . --deployer=full_deploy --build=missing --output-folder build -c tools.env.virtualenv:powershell=True
+conan install . --build=missing --output-folder build -c tools.env.virtualenv:powershell=True
 
 if ($runMode -eq 1) 
 {
@@ -47,11 +47,18 @@ if ($taskExe) {
     exit 1
 }
 
-# Экспорт пакета с помощью Conan
-conan export-pkg . --name=task --version=1.0 --user=user --channel=testing
+# Переход в директорию build для выполнения CPack
+Push-Location -Path .\build\build
 
-# Запуск ISCC.exe с полным путем к файлу .\pkg-setup\task-1.0.iss + перемести task-1.0-setup.exe в директорию pkg-setup
-& "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" .\pkg-setup\task-1.0.iss
-& Move-Item -Path .\task-1.0-setup.exe -Destination .\pkg-setup -Force
-
+# собираем пакет NSIS с помощью cpack
+try {
+    cpack -G "NSIS"
+    Write-Output "CPack has successfully created the NSIS package!"
+} catch {
+    Write-Output "An error occurred during CPack execution: $_"
+    exit 1
+} finally {
+    # Возвращаемся обратно в исходную директорию
+    Pop-Location
+}
 
