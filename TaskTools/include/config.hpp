@@ -10,7 +10,7 @@ namespace config
     int VAL2 = 2;
     int VAL3 = 3;
 
-    constexpr auto DEFAULT_CONFIG_PATH = "config/config.yaml";
+    constexpr auto DEFAULT_CONFIG_PATH = "config.yaml";
     void create(const std::string& path) {
         YAML::Emitter out;
         out << YAML::BeginMap;
@@ -47,6 +47,7 @@ namespace config
                 VAL3 = config["VAL3"].as<int>();
             }
 
+            std::cout << "VAL1: " << VAL1 << " VAL2: " << VAL2 << " VAL3: " << VAL3 << std::endl;
             std::cout << "Parse complete." << std::endl;
         } catch (const YAML::Exception& e) {
             std::cerr << "Error: " << e.what() << "\n";
