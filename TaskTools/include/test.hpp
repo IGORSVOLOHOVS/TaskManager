@@ -1,3 +1,4 @@
+#pragma once
 #include <gtest/gtest.h>
 
 TEST(HelloTest, BasicAssertions) {
@@ -30,8 +31,8 @@ TEST(HelloTest, BasicAssertions4) {
 
 namespace test
 {
-    inline int run(int argc, char** argv){
-        ::testing::InitGoogleTest(&argc, argv);
+    inline int run(int argc = 1, std::vector<char*> argv = {(char*)""}){
+        ::testing::InitGoogleTest(&argc, argv.data());
         return RUN_ALL_TESTS();
     }
 } // namespace test

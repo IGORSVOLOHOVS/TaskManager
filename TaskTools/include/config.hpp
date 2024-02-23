@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -10,7 +11,7 @@ namespace config
     int VAL2 = 2;
     int VAL3 = 3;
 
-    constexpr auto DEFAULT_CONFIG_PATH = "config.yaml";
+    const char* DEFAULT_CONFIG_PATH = "config.yaml";
     void create(const std::string& path) {
         YAML::Emitter out;
         out << YAML::BeginMap;

@@ -4,9 +4,15 @@ project(task CXX)
 # Устанавливаем стандарт C++ на C++20
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
 
-set(FETCH_INSTALL OFF)
+
+set(FETCH_INSTALL ON)
 if(FETCH_INSTALL)
+    option(SWIG_PYTHON "Build python bindings" ON)
+    option(SWIG_JAVA "Build java bindings" OFF)
+    option(SWIG_CSHARP "Build csharp bindings" OFF)
+    
     include(fetch_install.cmake)
 endif()
 

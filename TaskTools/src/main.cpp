@@ -5,11 +5,10 @@ int main(int argc, char** argv) {
     config::parser();
 
     // Run Google Test
-    test::run(argc, argv);
+    test::run();
 
     // Run Google Benchmark
-    benchmark::run(argc, argv);
+    benchmark::run();
 
     getchar();
 }
-

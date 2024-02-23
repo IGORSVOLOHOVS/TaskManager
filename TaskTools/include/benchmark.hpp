@@ -1,3 +1,4 @@
+#pragma once
 #include <benchmark/benchmark.h>
 
 static void BM_StringCreation(benchmark::State& state) {
@@ -15,9 +16,9 @@ BENCHMARK(BM_StringCopy);
 
 namespace benchmark
 {
-  void run(int argc, char** argv)
+  void run(int argc = 1, std::vector<char*> argv = {(char*)""})
   {
-    ::benchmark::Initialize(&argc, argv);
+    ::benchmark::Initialize(&argc, argv.data());
     ::benchmark::RunSpecifiedBenchmarks();
   }
 } // export namespace benchmark
