@@ -1,35 +1,24 @@
 cmake_minimum_required(VERSION 3.5)
 
+set(FetchContent_INCLUDE_DIRS "")
+set(FetchContent_LIBS "")
+set(FetchContent_MAKE_AVAILABLE "")
+
 include (FetchContent)
-set(BENCHMARK_ENABLE_TESTING OFF)
-FetchContent_Declare(
-  gtest
-  GIT_REPOSITORY https://github.com/google/googletest.git
-  GIT_TAG        main
-)
-FetchContent_Declare(
-  benchmark
-  GIT_REPOSITORY https://github.com/google/benchmark.git
-  GIT_TAG        main
-)
-FetchContent_Declare(
-  yaml-cpp
-  GIT_REPOSITORY https://github.com/jbeder/yaml-cpp.git
-  GIT_TAG        master
-)
-FetchContent_MakeAvailable(benchmark gtest yaml-cpp)
+# found_package(benchmark QUIET)
+# if(NOT benchmark_FOUND)
+#     FetchContent_Declare(
+#     benchmark
+#     GIT_REPOSITORY https://github.com/google/benchmark.git
+#     GIT_TAG        main
+#     )
+#     list(APPEND FetchContent_TEST_MAKE_AVAILABLE benchmark)
+#     list(APPEND FetchContent_TEST_INCLUDE_DIRS ${benchmark_SOURCE_DIR}/include)
+#     list(APPEND FetchContent_TEST_LIBS benchmark::benchmark)
+# endif()
 
-set(FetchContent_INCLUDE_DIRS 
-    ${yaml-cpp_SOURCE_DIR}/include 
-    ${gtest_SOURCE_DIR}/googletest/include 
-    ${benchmark_SOURCE_DIR}/include
-)
+# FetchContent_MakeAvailable(${FetchContent_MAKE_AVAILABLE})
 
-set(FetchContent_LIBS
-    yaml-cpp::yaml-cpp 
-    benchmark::benchmark 
-    gtest
-)
 
 # swig python
 if(SWIG_PYTHON)

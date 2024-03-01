@@ -13,7 +13,7 @@ if(FETCH_INSTALL)
     option(SWIG_JAVA "Build java bindings" OFF)
     option(SWIG_CSHARP "Build csharp bindings" OFF)
     
-    include(fetch_install.cmake)
+    include(dependences.cmake)
 endif()
 
 # Добавляем путь к собственным исходным файлам
