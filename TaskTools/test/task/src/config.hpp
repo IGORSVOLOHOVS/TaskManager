@@ -12,7 +12,7 @@ bool RUNTEST2 = false;
 
 namespace config
 {
-    constexpr std::string DEFAULT_CONFIG_PATH = "../config.yaml";
+    const char* DEFAULT_CONFIG_PATH = "./test.yaml";
     void parser()
     {
         try
@@ -20,7 +20,7 @@ namespace config
             std::ifstream file(DEFAULT_CONFIG_PATH);
             if (!file.is_open())
             {
-                throw std::runtime_error("File not found: " + DEFAULT_CONFIG_PATH);
+                throw std::runtime_error("File not found: " + std::string(DEFAULT_CONFIG_PATH));
             }
 
             YAML::Node config = YAML::LoadFile(DEFAULT_CONFIG_PATH);

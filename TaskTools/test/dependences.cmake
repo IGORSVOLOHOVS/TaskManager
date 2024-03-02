@@ -5,8 +5,22 @@ set(FetchContent_TEST_MAKE_AVAILABLE "")
 set(FetchContent_TEST_INCLUDE_DIRS "")
 set(FetchContent_TEST_LIBS "")
 
+# if gtest not found
+find_package(gtest QUIET)
+if(NOT gtest_FOUND)
+    FetchContent_Declare(
+    gtest
+    GIT_REPOSITORY https://github.com/google/googletest.git
+    GIT_TAG        main
+    )
+    list(APPEND FetchContent_TEST_MAKE_AVAILABLE gtest)
+    list(APPEND FetchContent_TEST_INCLUDE_DIRS ${gtest_SOURCE_DIR}/googletest/include)
+    list(APPEND FetchContent_TEST_LIBS gtest)
+endif()
+
 # if benchmark not found
-found_package(benchmark QUIET)
+option(ENABLE_BENCHMARK_TESTS "Enable benchmark tests" OFF)
+find_package(benchmark QUIET)
 if(NOT benchmark_FOUND)
     FetchContent_Declare(
     benchmark
@@ -18,21 +32,9 @@ if(NOT benchmark_FOUND)
     list(APPEND FetchContent_TEST_LIBS benchmark::benchmark)
 endif()
 
-# if gtest not found
-found_package(gtest QUIET)
-if(NOT gtest_FOUND)
-    FetchContent_Declare(
-    gtest
-    GIT_REPOSITORY https://github.com/google/googletest.git
-    GIT_TAG        main
-    )
-    list(APPEND FetchContent_TEST_MAKE_AVAILABLE gtest)
-    list(APPEND FetchContent_TEST_INCLUDE_DIRS ${gtest_SOURCE_DIR}/googletest/include)
-    list(APPEND FetchContent_TEST_LIBS gtest)
-endif()
     
 # if yaml-cpp not found
-found_package(yaml-cpp QUIET)
+find_package(yaml-cpp QUIET)
 if(NOT yaml-cpp_FOUND)
     FetchContent_Declare(
     yaml-cpp

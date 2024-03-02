@@ -1,5 +1,5 @@
-#include <test.hpp>
-#include <benchmark.hpp>
+#include "test.hpp"
+#include "benchmark.hpp"
 
 int main(int argc, char** argv) {
     // Configure program

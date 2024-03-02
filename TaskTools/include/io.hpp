@@ -2,7 +2,7 @@
 
 
 template <typename... T>
-void read(T &...args) {
+void read(T ...args) {
     ((std::cin >> args), ...);
 }
 

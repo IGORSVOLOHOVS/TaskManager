@@ -1,18 +1,26 @@
 #pragma once
+#include "config.hpp"
+
 #include <gtest/gtest.h>
 
 TEST(Test1, TestName) {
-    if(!TEST1)
+    if(!RUNTEST1)
         GTEST_SKIP();
 
-    EXPECT_STRNE(ARG["test1"][0].as<std::string>().c_str(), "test1");
-    EXPECT_EQ(ARG["test1"][1].as<int>(), 1);
+    std::string ARG1 = ARG["test1"][0].as<std::string>();
+    int ARG2 = ARG["test1"][1].as<int>();
+
+    EXPECT_STRNE(ARG1.c_str(), "test");
+    EXPECT_EQ(ARG2, 1);
 }
 TEST(Test2, TestName) {
-    if(!TEST2)
+    if(!RUNTEST2)
         GTEST_SKIP();
 
-    EXPECT_STRNE(ARG["test2"][0].as<std::string>().c_str(), ARG["test2"][1].as<std::string>().c_str());
+    std::string ARG1 = ARG["test2"][0].as<std::string>();
+    std::string ARG2 = ARG["test2"][1].as<std::string>();
+    
+    EXPECT_STRNE(ARG1.c_str(), ARG2.c_str());
 }
 
 namespace test

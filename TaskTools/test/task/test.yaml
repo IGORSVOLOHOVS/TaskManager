@@ -1,6 +1,6 @@
 tests:
   test1: on
-  test2: off
+  test2: on
 arguments:
-  test1: ["arg1", 1, 8, 256, 512]
+  test1: ["arg1", 1]
   test2: ["test", "test2"]

@@ -3,4 +3,6 @@ project(test CXX)
 
 include(dependences.cmake)
 
+enable_testing()
 add_subdirectory(task)
+
