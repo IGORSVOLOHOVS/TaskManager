@@ -2,14 +2,15 @@ cmake_minimum_required(VERSION 3.20)
 project(task CXX)
 
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
 
 
 option(SWIG_PYTHON "Build python bindings" OFF)
 option(SWIG_CSHARP "Build csharp bindings" OFF)
-option(DOCUMENTATION "Build documentation" ON)
+option(DOCUMENTATION "Build documentation" OFF)
+option(TESTS "Build tests" OFF)
 
 include(dependences.cmake)
 
@@ -29,9 +30,10 @@ target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/include $
 target_link_libraries(${PROJECT_NAME} PRIVATE ${FetchContent_LIBS})
 
 # CTest
-enable_testing()
-add_subdirectory(test)
-
+if (TESTS)
+    enable_testing()
+    add_subdirectory(test)
+endif()
 
 # CPack
 install(TARGETS ${PROJECT_NAME} DESTINATION .)
