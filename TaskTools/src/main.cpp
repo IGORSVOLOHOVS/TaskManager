@@ -1,6 +1,9 @@
 #include <iostream>
 
+#include "log.hpp"
+
 int main(int argc, char** argv) {
-    std::cout << "Hello, World!" << std::endl;
+    Log log(argc, argv);
+
     return 0;
 }
