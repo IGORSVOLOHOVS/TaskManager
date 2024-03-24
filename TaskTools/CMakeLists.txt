@@ -33,7 +33,7 @@ target_link_libraries(${PROJECT_NAME}           PUBLIC ${PROJECT_NAME}d)
 if(WEB) # emcmake cmake -B build && cmake --build build && python3 -m http.server --directory web
     set_target_properties(${PROJECT_NAME} PROPERTIES
         SUFFIX      ".js" 
-        LINK_FLAGS  "--bind -s EXTRA_EXPORTED_RUNTIME_METHODS=['ccall','cwrap'] -s MODULARIZE=1 -s ENVIRONMENT=web"
+        LINK_FLAGS  "--bind -s EXPORTED_RUNTIME_METHODS=['ccall','cwrap'] -s MODULARIZE=1 -s ENVIRONMENT=web"
         RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/web
     )
     file(COPY ${CMAKE_SOURCE_DIR}/subsrc/index.html DESTINATION ${CMAKE_SOURCE_DIR}/web)
