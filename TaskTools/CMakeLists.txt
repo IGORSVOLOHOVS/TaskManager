@@ -9,7 +9,7 @@ set(CMAKE_POSITION_INDEPENDENT_CODE     TRUE)
 
 option(SWIG_PYTHON      "Build python bindings" OFF)
 option(SWIG_CSHARP      "Build csharp bindings" OFF)
-option(WEB              "Build web version"     ON)
+option(WEB              "Build web version"     OFF)
 option(DOCUMENTATION    "Build documentation"   OFF)
 option(TESTS            "Build tests"           OFF)
 
