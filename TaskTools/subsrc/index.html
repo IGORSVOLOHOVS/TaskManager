@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Emscripten Project</title>
+</head>
+<body>
+    <script src="./task.js"></script>
+
+    <script>
+        Module().then((moduleInstance) => {
+            let myObject = new moduleInstance.MyClass(10);
+            console.log("Initial Value:", myObject.getValue()); 
+            myObject.setValue(20);
+            console.log("Value after update:", myObject.getValue()); 
+        });
+    </script>
+</body>
+</html>
