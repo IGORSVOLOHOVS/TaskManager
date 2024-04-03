@@ -13,9 +13,9 @@ set(FetchContent_MAKE_AVAILABLE "")
 #     GIT_REPOSITORY https://github.com/google/benchmark.git
 #     GIT_TAG        main
 #     )
-#     list(APPEND FetchContent_TEST_MAKE_AVAILABLE benchmark)
-#     list(APPEND FetchContent_TEST_INCLUDE_DIRS ${benchmark_SOURCE_DIR}/include)
-#     list(APPEND FetchContent_TEST_LIBS benchmark::benchmark)
+#     list(APPEND FetchContent_MAKE_AVAILABLE benchmark)
+#     list(APPEND FetchContent_INCLUDE_DIRS ${benchmark_SOURCE_DIR}/include)
+#     list(APPEND FetchContent_LIBS benchmark::benchmark)
 # endif()
 
 # FetchContent_MakeAvailable(${FetchContent_MAKE_AVAILABLE})
