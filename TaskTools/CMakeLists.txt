@@ -38,7 +38,7 @@ if(WEB) # emcmake cmake -B build && cmake --build build && python3 -m http.serve
     )
     file(COPY ${CMAKE_SOURCE_DIR}/subsrc/index.html DESTINATION ${CMAKE_SOURCE_DIR}/web)
 else()
-    set_target_properties(main PROPERTIES
+    set_target_properties(${PROJECT_NAME} PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
     )
 endif()
