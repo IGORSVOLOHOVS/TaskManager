@@ -1,3 +1,5 @@
+#pragma once
+
 #include <iostream>
 #include <mqueue.h>
 #include <fcntl.h>
