@@ -8,6 +8,7 @@
 #include <thread>
 
 #include "log.hpp"
+#include "parralel.hpp"
 
 constexpr size_t BUFFER_SIZE = 8192;
 
@@ -146,9 +147,22 @@ public:
         strcpy(request + 1, data);
         send(request);
     }
+    void speak()
+    {
+        std::string message;
+        while (true)
+        {
+            message = read("Enter a word: ");
+            if (message == "!q")
+            {
+                break;
+            }
+            speak(Connector::Command::SIMPLE, message.c_str());
+        }
+    }
 
-private:
-    mqd_t sender;
+    AsyncFunction(listen, void)
+        AsyncFunction(speak, void) private : mqd_t sender;
     mqd_t receiver;
 
     ConnectorData data;
