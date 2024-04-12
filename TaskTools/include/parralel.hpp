@@ -1,3 +1,5 @@
+#pragma once
+
 #include <future>
 
 #define AsyncFunction(n, rt)                                std::future<rt> n##_async(){return std::async(std::launch::async, [&]() { return n(); });}
