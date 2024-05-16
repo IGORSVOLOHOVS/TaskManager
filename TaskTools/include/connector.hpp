@@ -1,16 +1,12 @@
 #pragma once
 
 #include <iostream>
-#include <mqueue.h>
+
 #include <fcntl.h>
 #include <cstring>
 #include <unistd.h>
 
-#include <netinet/in.h>
-#include <sys/socket.h>
-#include <sys/types.h>
-#include <arpa/inet.h>
-#include <unistd.h>
+
 
 #include <chrono>
 #include <thread>
@@ -18,6 +14,21 @@
 #include "log.hpp"
 #include "parralel.hpp"
 #include "io.hpp"
+
+#ifdef _WIN64
+    #include <winsock2.h>
+    #include <ws2tcpip.h>
+    #pragma comment(lib, "ws2_32.lib")
+#else
+    #include <mqueue.h>
+    
+    #include <netinet/in.h>
+    #include <sys/socket.h>
+    #include <sys/types.h>
+    #include <arpa/inet.h>
+    #include <unistd.h>
+#endif
+
 
 constexpr size_t BUFFER_SIZE = 8192;
 
@@ -41,140 +52,142 @@ struct ParsedResponse
     char *data;
 };
 
-class Connector
-{
-private:
-    void send(const char *data)
+#ifdef __linux__ 
+    class Connector
     {
-        if (mq_send(sender, data, strlen(data), 0) == -1)
+    private:
+        void send(const char *data)
         {
-            perror("mq_send");
-            throw std::runtime_error("Failed to send message");
+            if (mq_send(sender, data, strlen(data), 0) == -1)
+            {
+                perror("mq_send");
+                throw std::runtime_error("Failed to send message");
+            }
         }
-    }
 
-    char *receive()
-    {
-        static char buffer[BUFFER_SIZE];
-        unsigned int priority;
-        ssize_t bytes_received = mq_receive(receiver, buffer, sizeof(buffer), &priority);
-        if (bytes_received == -1)
+        char *receive()
         {
-            perror("mq_receive");
-            throw std::runtime_error("Failed to receive message");
+            static char buffer[BUFFER_SIZE];
+            unsigned int priority;
+            ssize_t bytes_received = mq_receive(receiver, buffer, sizeof(buffer), &priority);
+            if (bytes_received == -1)
+            {
+                perror("mq_receive");
+                throw std::runtime_error("Failed to receive message");
+            }
+            buffer[bytes_received] = '\0'; // Null-terminate
+            return buffer;
         }
-        buffer[bytes_received] = '\0'; // Null-terminate
-        return buffer;
-    }
 
-    ParsedResponse parse(char *response)
-    {
-        ParsedResponse parsed_response;
-        parsed_response.command = static_cast<Command>(response[0] - '0');
-        parsed_response.data = response + 1;
-        return parsed_response;
-    }
+        ParsedResponse parse(char *response)
+        {
+            ParsedResponse parsed_response;
+            parsed_response.command = static_cast<Command>(response[0] - '0');
+            parsed_response.data = response + 1;
+            return parsed_response;
+        }
 
-    char *execute(ParsedResponse response)
-    {
-        switch (response.command)
+        char *execute(ParsedResponse response)
         {
-        case Command::SIMPLE:
-        {
-            std::cout << response.data << '\n';
-            break;
-        }
-        case Command::VERSION:
-        {
-            std::cout << "Version 1.0.0\n";
-            break;
-        }
-        case Command::HELP:
-        {
-            std::cout << "Usage: ./main [OPTION]...\n";
-            std::cout << "1 Options:\n";
-            std::cout << "2   -h, --help\t\t\tDisplay this information\n";
-            std::cout << "3   -v, --version\t\t\tDisplay the version\n";
-            break;
-        }
-        default:
-            std::cerr << "Unknown command: " << static_cast<unsigned int>(response.command) << '\n';
+            switch (response.command)
+            {
+            case Command::SIMPLE:
+            {
+                std::cout << response.data << '\n';
+                break;
+            }
+            case Command::VERSION:
+            {
+                std::cout << "Version 1.0.0\n";
+                break;
+            }
+            case Command::HELP:
+            {
+                std::cout << "Usage: ./main [OPTION]...\n";
+                std::cout << "1 Options:\n";
+                std::cout << "2   -h, --help\t\t\tDisplay this information\n";
+                std::cout << "3   -v, --version\t\t\tDisplay the version\n";
+                break;
+            }
+            default:
+                std::cerr << "Unknown command: " << static_cast<unsigned int>(response.command) << '\n';
+                return nullptr;
+            }
+
             return nullptr;
         }
 
-        return nullptr;
-    }
-
-public:
-    Connector(const char *this_exe_name, const char *other_exe_name, ConnectorData data = {0, nullptr}) : data(data)
-    {
-        sender = mq_open(this_exe_name, O_CREAT | O_RDWR, 0666, nullptr);
-        if (sender == -1)
+    public:
+        Connector(const char *this_exe_name, const char *other_exe_name, ConnectorData data = {0, nullptr}) : data(data)
         {
-            perror("mq_open_receiver");
-            throw std::runtime_error("Failed to open message queue: mq_open_receiver = " + std::to_string(sender));
-        }
-
-        receiver = mq_open(other_exe_name, O_CREAT | O_RDWR, 0666, nullptr);
-        if (receiver == -1)
-        {
-            perror("mq_open_receiver");
-            throw std::runtime_error("Failed to open message queue: mq_open_receiver = " + std::to_string(receiver));
-        }
-    }
-
-    ~Connector()
-    {
-        mq_close(sender);
-        mq_close(receiver);
-    }
-
-    void listen(size_t period_ms = 1000)
-    {
-        ParsedResponse response;
-        char *result = nullptr;
-        while (true)
-        {
-            response = parse(receive());
-            result = execute(response);
-
-            if (result)
+            sender = mq_open(this_exe_name, O_CREAT | O_RDWR, 0666, nullptr);
+            if (sender == -1)
             {
-                send(result);
-                free(result);
+                perror("mq_open_receiver");
+                throw std::runtime_error("Failed to open message queue: mq_open_receiver = " + std::to_string(sender));
             }
 
-            std::this_thread::sleep_for(std::chrono::milliseconds(period_ms));
-        }
-    }
-
-    void speak(Command command, const char *data = "")
-    {
-        char *request = new char[strlen(data) + 2];
-        request[0] = static_cast<unsigned int>(command) + '0';
-        strcpy(request + 1, data);
-        send(request);
-    }
-    void speak()
-    {
-        std::string message;
-        while (true)
-        {
-            message = read("Enter a word: ");
-            if (message == "!q")
+            receiver = mq_open(other_exe_name, O_CREAT | O_RDWR, 0666, nullptr);
+            if (receiver == -1)
             {
-                break;
+                perror("mq_open_receiver");
+                throw std::runtime_error("Failed to open message queue: mq_open_receiver = " + std::to_string(receiver));
             }
-            speak(Command::SIMPLE, message.c_str());
         }
-    }
 
-    AsyncFunction(listen, void)
-        AsyncFunction(speak, void) private : mqd_t sender;
-    mqd_t receiver;
+        ~Connector()
+        {
+            mq_close(sender);
+            mq_close(receiver);
+        }
 
-    ConnectorData data;
-};
+        void listen(size_t period_ms = 1000)
+        {
+            ParsedResponse response;
+            char *result = nullptr;
+            while (true)
+            {
+                response = parse(receive());
+                result = execute(response);
+
+                if (result)
+                {
+                    send(result);
+                    free(result);
+                }
+
+                std::this_thread::sleep_for(std::chrono::milliseconds(period_ms));
+            }
+        }
+
+        void speak(Command command, const char *data = "")
+        {
+            char *request = new char[strlen(data) + 2];
+            request[0] = static_cast<unsigned int>(command) + '0';
+            strcpy(request + 1, data);
+            send(request);
+        }
+        void speak()
+        {
+            std::string message;
+            while (true)
+            {
+                message = read("Enter a word: ");
+                if (message == "!q")
+                {
+                    break;
+                }
+                speak(Command::SIMPLE, message.c_str());
+            }
+        }
+
+        AsyncFunction(listen, void)
+            AsyncFunction(speak, void) private : mqd_t sender;
+        mqd_t receiver;
+
+        ConnectorData data;
+    };
+#endif
 
 struct Network
 {
@@ -187,6 +200,16 @@ class ServerTCP
 public:
     ServerTCP(Network network, ConnectorData data = {0, nullptr}) : data(data), network(network)
     {
+        #ifdef _WIN64
+            WSADATA wsaData;
+            int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
+            if (iResult != 0)
+            {
+                printf("WSAStartup failed: %d\n", iResult);
+                throw std::runtime_error("Failed to start WSA");
+            }
+        #endif
+
         // Creating socket file descriptor
         if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
         {
@@ -195,13 +218,20 @@ public:
         }
 
         // Forcefully attaching socket to the port 8080
-        if (setsockopt(server_fd, SOL_SOCKET,
-                       SO_REUSEADDR | SO_REUSEPORT, &opt,
-                       sizeof(opt)))
-        {
-            perror("setsockopt");
-            exit(EXIT_FAILURE);
-        }
+        #ifdef _WIN64
+            if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, (char *)&opt, sizeof(opt)) < 0)
+            {
+                perror("setsockopt");
+                exit(EXIT_FAILURE);
+            }
+        #else
+            if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt)))
+            {
+                perror("setsockopt");
+                exit(EXIT_FAILURE);
+            }
+        #endif
+
         address.sin_family = AF_INET;
         address.sin_port = htons(network.port);
         address.sin_addr.s_addr = inet_addr(network.ip.c_str());
@@ -222,21 +252,37 @@ public:
 
     ~ServerTCP()
     {
-        close(server_fd);
+        #ifdef _WIN64
+            closesocket(server_fd);
+            WSACleanup();
+        #else
+            close(server_fd);
+        #endif
     }
 
     void listen(size_t period_ms = 1000)
     {
-        int new_socket;
+        #ifdef _WIN64
+            SOCKET new_socket;
+        #else
+            int new_socket;
+        #endif
+
         if ((new_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t *)&addrlen)) < 0)
         {
             perror("accept");
             exit(EXIT_FAILURE);
         }
         while(true) {
-            if((valread = read(new_socket, buffer, 1024 - 1)) == 0) {
-                throw std::runtime_error("Failed to read message");
-            }
+            #ifdef _WIN64
+                if((valread = recv(new_socket, buffer, 1024 - 1, 0)) == 0) {
+                    throw std::runtime_error("Failed to read message");
+                }
+            #else
+                if((valread = read(new_socket, buffer, 1024 - 1)) == 0) {
+                    throw std::runtime_error("Failed to read message");
+                }
+            #endif
 
             buffer[valread] = '\0';
 
@@ -294,7 +340,12 @@ private:
         return nullptr;
     }
 
+#ifdef _WIN64
+    SOCKET server_fd;
+#else
     int server_fd;
+#endif
+
     long valread;
     struct sockaddr_in address;
     int opt = 1;
@@ -310,6 +361,16 @@ class ClientTCP
 public:
     ClientTCP(Network network, ConnectorData data = {0, nullptr}) : data(data), network(network)
     {
+        #ifdef _WIN64
+            WSADATA wsaData;
+            int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
+            if (iResult != 0)
+            {
+                printf("WSAStartup failed: %d\n", iResult);
+                throw std::runtime_error("Failed to start WSA");
+            }
+        #endif
+
         if ((client_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
             printf("\n Socket creation error \n");
             throw std::runtime_error("Failed to create socket");
@@ -320,10 +381,16 @@ public:
     
         // Convert IPv4 and IPv6 addresses from text to binary
         // form
-        if (inet_pton(AF_INET, network.ip.c_str(), &serv_addr.sin_addr) <= 0) {
-            throw std::runtime_error("Invalid address/ Address not supported");
-        }
-    
+        #ifdef _WIN64
+            if (inet_pton(AF_INET, network.ip.c_str(), &serv_addr.sin_addr) <= 0) {
+                throw std::runtime_error("Invalid address/ Address not supported");
+            }
+        #else
+            if (inet_pton(AF_INET, network.ip.c_str(), &serv_addr.sin_addr) != 0) {
+                throw std::runtime_error("Invalid address/ Address not supported");
+            }
+        #endif
+
         if ((status = connect(client_fd, (struct sockaddr*)&serv_addr, sizeof(serv_addr))) < 0) {
             throw std::runtime_error("Connection Failed");
         }
@@ -331,7 +398,12 @@ public:
 
     ~ClientTCP()
     {
-        close(client_fd);
+        #ifdef _WIN64
+            closesocket(client_fd);
+            WSACleanup();
+        #else
+            close(client_fd);
+        #endif
     }
 
     std::string speak(Command command, const char *data = "")
