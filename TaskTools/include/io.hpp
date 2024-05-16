@@ -31,8 +31,9 @@ template <Argument Argument = std::string> Argument read(std::string&& msg = "En
 }
 template <Argument Argument = std::string> std::vector<Argument> read(const size_t n = 0,std::string&& msg = "{}/{}:", std::function<bool(Argument)> check = nullptr) {
     std::vector<Argument> c;
+    size_t current = 0;
     for (size_t i = 0; i < n; i++) {
-        c.push_back(read<Argument>(std::vformat(msg, std::make_format_args(i + 1, n)), check));
+        c.push_back(read<Argument>(std::vformat(msg, std::make_format_args(++current, n)), check));
     }
     return c;
 }
