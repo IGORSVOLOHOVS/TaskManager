@@ -447,3 +447,78 @@ private:
     Network network;
     ConnectorData data;
 };
+
+class SharedMemory
+{
+public:
+    SharedMemory(const char *name, size_t size)
+    {
+        #ifdef _WIN64
+            handle = CreateFileMappingA(INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE, 0, size, name);
+            if (handle == NULL)
+            {
+                throw std::runtime_error("Failed to create file mapping object");
+            }
+
+            buffer = (char *)MapViewOfFile(handle, FILE_MAP_ALL_ACCESS, 0, 0, size);
+            if (buffer == NULL)
+            {
+                CloseHandle(handle);
+                throw std::runtime_error("Failed to map view of file");
+            }
+        #else
+            fd = shm_open(name, O_CREAT | O_RDWR, 0666);
+            if (fd == -1)
+            {
+                perror("shm_open");
+                throw std::runtime_error("Failed to open shared memory");
+            }
+
+            if (ftruncate(fd, size) == -1)
+            {
+                perror("ftruncate");
+                throw std::runtime_error("Failed to truncate shared memory");
+            }
+
+            buffer = (char *)mmap(0, size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+            if (buffer == MAP_FAILED)
+            {
+                perror("mmap");
+                throw std::runtime_error("Failed to map shared memory");
+            }
+        #endif
+    }
+
+    ~SharedMemory()
+    {
+        #ifdef _WIN64
+            UnmapViewOfFile(buffer);
+            CloseHandle(handle);
+        #else
+            munmap(buffer, sizeof(buffer));
+            close(fd);
+        #endif
+    }
+
+    void write(const char *data)
+    {
+        std::lock_guard<std::mutex> lock(m);
+        strcpy(buffer, data);
+    }
+
+    char *read()
+    {
+        std::lock_guard<std::mutex> lock(m);
+        return buffer;
+    }
+
+private:
+    char *buffer;
+    std::mutex m;
+
+    #ifdef _WIN64
+        HANDLE handle;
+    #else
+        int fd;
+    #endif
+};
