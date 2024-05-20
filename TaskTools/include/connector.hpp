@@ -27,6 +27,9 @@
     #include <sys/types.h>
     #include <arpa/inet.h>
     #include <unistd.h>
+
+    #include <sys/shm.h>
+    #include <sys/mman.h>
 #endif
 
 
@@ -451,6 +454,8 @@ private:
 class SharedMemory
 {
 public:
+    #include <sys/mman.h> // Include the necessary header file
+
     SharedMemory(const char *name, size_t size)
     {
         #ifdef _WIN64
@@ -474,6 +479,7 @@ public:
                 throw std::runtime_error("Failed to open shared memory");
             }
 
+            // Linux implementation
             if (ftruncate(fd, size) == -1)
             {
                 perror("ftruncate");
@@ -500,13 +506,13 @@ public:
         #endif
     }
 
-    void write(const char *data)
+    void write(std::string data)
     {
         std::lock_guard<std::mutex> lock(m);
-        strcpy(buffer, data);
+        strcpy(buffer, data.c_str());
     }
 
-    char *read()
+    std::string read()
     {
         std::lock_guard<std::mutex> lock(m);
         return buffer;
