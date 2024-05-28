@@ -45,8 +45,9 @@ def python(args):
     print("Python project built successfully.")
 
 def web(args):
-    subprocess.run(["cmake", "..", "-DWEB=ON"], check=True)
-    build(args)
+    # set also webassembly target
+    subprocess.run(["emcmake","cmake", "..", "-DWEB=ON"], check=True)
+    subprocess.run(["emmake", "cmake", "--build", "."], check=True)
     print("WEB project built successfully.")
 
 def tests(args):
