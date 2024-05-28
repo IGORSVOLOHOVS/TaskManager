@@ -32,6 +32,10 @@ def package(args):
 def documentation(args):
     subprocess.run(["cmake", "..", "-DDOCUMENTATION=ON"], check=True)
     build(args)
+    try:
+        subprocess.run(["xdg-open", "docs/latex/refman.pdf"], check=True)
+    except:
+        print("Documentation generated successfully. Please open docs/latex/refman.pdf manually.")
     print("Documentation generated successfully.")
 
 def csharp(args):
@@ -48,6 +52,7 @@ def web(args):
     # set also webassembly target
     subprocess.run(["emcmake","cmake", "..", "-DWEB=ON"], check=True)
     subprocess.run(["emmake", "cmake", "--build", "."], check=True)
+    subprocess.run(["emrun", "--browser", "chrome", "../web/index.html"], check=True)
     print("WEB project built successfully.")
 
 def tests(args):
@@ -101,7 +106,13 @@ def save():
     finally:
         os.chdir(original_directory) 
 
-
+def docker(args):
+    clean()
+    os.chdir("..")
+    subprocess.run(["docker", "build", "-t", "task", "."], check=True)
+    subprocess.run(["docker", "run", "-p", "8082:8080", "task"], check=True)
+    os.chdir("build")
+    print("Project run in docker successfully.")
 
 def main():
     parser = argparse.ArgumentParser(description="Task.py - CMake project helper")
@@ -118,6 +129,7 @@ def main():
     tests_parser = parser.add_argument("--tests", "-t", action="store_true", help="Build the tests")
     clean_parser = parser.add_argument("--clean", "-cl", action="store_true", help="Clean the project")
     save_parser = parser.add_argument("--save", "-s", action="store_true", help="Save the project")
+    docker_parser = parser.add_argument("--docker", "-dock", action="store_true", help="Run the project in docker")
 
     args = parser.parse_args()
 
@@ -152,6 +164,8 @@ def main():
         clean()
     elif args.save:
         save()
+    elif args.docker:
+        docker(args)
     else:
         parser.print_help()
 
