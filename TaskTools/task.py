@@ -2,11 +2,10 @@
 import argparse
 import subprocess
 import os
-import datetime
+import datetime 
 
-
-def install(args):
-    build(args)
+def install(args): # use ldd to check if all dependencies are installed
+    build(args) 
     subprocess.run(["cmake", "--install", "."], check=True)
     print("Project installed successfully.")
 
@@ -49,7 +48,6 @@ def python(args):
     print("Python project built successfully.")
 
 def web(args):
-    # set also webassembly target
     subprocess.run(["emcmake","cmake", "..", "-DWEB=ON"], check=True)
     subprocess.run(["emmake", "cmake", "--build", "."], check=True)
     subprocess.run(["emrun", "--browser", "chrome", "../web/index.html"], check=True)
