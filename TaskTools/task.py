@@ -122,6 +122,9 @@ def add(args):
     cloneDir = os.path.join(os.path.expanduser("~"), "temp", name)
     targetDir = os.path.join(os.path.expanduser("~"), "Projects", current_directory, name)
 
+    if os.path.exists(cloneDir):
+        os.rename(cloneDir, f"{cloneDir}_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}")
+
     cloneCmd = f"git clone -n --depth=1 --filter=tree:0 {repo} {cloneDir}"
     subprocess.run(cloneCmd, check=True)
     os.chdir(cloneDir)
@@ -131,9 +134,7 @@ def add(args):
 
     for f in os.listdir("TaskTools"):
         shutil.move(os.path.join("TaskTools", f), targetDir)
-        
-    shutil.rmtree(cloneDir)
-    os.chdir(current_directory)
+
     print("Task added successfully.")
 
 def build_all(args):
