@@ -3,6 +3,7 @@ import argparse
 import subprocess
 import os
 import datetime 
+import shutil
 
 def install(args): # use ldd to check if all dependencies are installed
     build(args) 
@@ -112,6 +113,74 @@ def docker(args):
     os.chdir("build")
     print("Project run in docker successfully.")
 
+add_projects = []
+def add(args):
+    os.chdir("..")
+    name = input("Enter the name of the task: ")
+
+    repo = "https://github.com/IGORSVOLOHOVS/TaskManager.git"
+    current_directory = os.path.basename(os.getcwd())
+    cloneDir = os.path.join(os.path.expanduser("~"), "temp", name)
+    targetDir = os.path.join(os.path.expanduser("~"), "Projects", current_directory, name)
+
+    cloneCmd = f"git clone -n --depth=1 --filter=tree:0 {repo} {cloneDir}"
+    subprocess.run(cloneCmd, check=True)
+    os.chdir(cloneDir)
+    subprocess.run("git sparse-checkout set --no-cone TaskTools", check=True)
+    subprocess.run("git checkout", check=True)
+    os.makedirs(targetDir, exist_ok=True)
+    # move all from TaskTools to targetDir
+    for f in os.listdir("TaskTools"):
+        shutil.move(os.path.join("TaskTools", f), targetDir)
+        
+    shutil.rmtree(cloneDir)
+    os.chdir(current_directory)
+
+def build_add(args):
+    for project in add_projects:
+        os.chdir(project)
+        build(args)
+        os.chdir("..")
+    print("Projects built successfully.")
+
+def run_add(args):
+    for project in add_projects:
+        os.chdir(project)
+        run(args)
+        os.chdir("..")
+    print("Projects run successfully.")
+
+def only():
+    os.chdir("..")
+    dir = os.getcwd()
+    for f in os.listdir(dir):
+        if f == "include" or f == "src" or f == "task.py" or f == ".vscode":
+            continue
+        if os.path.isdir(f):
+            shutil.rmtree(f)
+        else:
+            os.remove(f)
+
+    cmake_content = """
+        cmake_minimum_required(VERSION 3.20)
+        project(task C CXX)
+
+        set(CMAKE_CXX_STANDARD 23)
+
+        set(SOURCE_FILES src/main.cpp)
+        
+        add_library(${PROJECT_NAME}d ${SOURCE_FILES})
+        target_include_directories(${PROJECT_NAME}d PUBLIC include)
+
+        add_executable(${PROJECT_NAME} src/main.cpp)
+        target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}d)
+    """
+
+    with open("CMakeLists.txt", "w") as file:
+        file.write(cmake_content)
+
+    print("Project cleaned successfully.")
+
 def main():
     parser = argparse.ArgumentParser(description="Task.py - CMake project helper")
 
@@ -128,6 +197,8 @@ def main():
     clean_parser = parser.add_argument("--clean", "-cl", action="store_true", help="Clean the project")
     save_parser = parser.add_argument("--save", "-s", action="store_true", help="Save the project")
     docker_parser = parser.add_argument("--docker", "-dock", action="store_true", help="Run the project in docker")
+    add_parser = parser.add_argument("--add", "-a", action="store_true", help="Add a new task")
+    only_parser = parser.add_argument("--only", "-o", action="store_true", help="Delete all without /include /src/ task.py .vscode")
 
     args = parser.parse_args()
 
@@ -164,6 +235,10 @@ def main():
         save()
     elif args.docker:
         docker(args)
+    elif args.add:
+        add(args)
+    elif args.only:
+        only()
     else:
         parser.print_help()
 
