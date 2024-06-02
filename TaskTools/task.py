@@ -129,7 +129,7 @@ def add(args):
     subprocess.run("git sparse-checkout set --no-cone TaskTools", check=True)
     subprocess.run("git checkout", check=True)
     os.makedirs(targetDir, exist_ok=True)
-    # move all from TaskTools to targetDir
+
     for f in os.listdir("TaskTools"):
         shutil.move(os.path.join("TaskTools", f), targetDir)
         
@@ -162,19 +162,21 @@ def only():
             os.remove(f)
 
     cmake_content = """
-        cmake_minimum_required(VERSION 3.20)
-        project(task C CXX)
+cmake_minimum_required(VERSION 3.20)
+get_filename_component(ProjectId ${CMAKE_CURRENT_SOURCE_DIR} NAME)
+string(REPLACE " " "_" ProjectId ${ProjectId})
+project(${ProjectId} C CXX)
 
-        set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD 23)
 
-        set(SOURCE_FILES src/main.cpp)
-        
-        add_library(${PROJECT_NAME}d ${SOURCE_FILES})
-        target_include_directories(${PROJECT_NAME}d PUBLIC include)
+set(SOURCE_FILES src/main.cpp)
 
-        add_executable(${PROJECT_NAME} src/main.cpp)
-        target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}d)
-    """
+add_library(${PROJECT_NAME}d ${SOURCE_FILES})
+target_include_directories(${PROJECT_NAME}d PUBLIC include)
+
+add_executable(${PROJECT_NAME} src/main.cpp)
+target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}d)
+"""
 
     with open("CMakeLists.txt", "w") as file:
         file.write(cmake_content)
