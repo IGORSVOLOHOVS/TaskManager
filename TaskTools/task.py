@@ -21,7 +21,7 @@ def run(args):
     print("Project run successfully.")
 
 def configure(args):
-    subprocess.run(["cmake", ".."], check=True)
+    subprocess.run(["cmake", "..", "-G", "MinGW Makefiles"], check=True)
     print("Project configured successfully.")
 
 def package(args):
@@ -113,7 +113,6 @@ def docker(args):
     os.chdir("build")
     print("Project run in docker successfully.")
 
-add_projects = []
 def add(args):
     os.chdir("..")
     name = input("Enter the name of the task: ")
@@ -135,20 +134,61 @@ def add(args):
         
     shutil.rmtree(cloneDir)
     os.chdir(current_directory)
+    print("Task added successfully.")
 
-def build_add(args):
-    for project in add_projects:
-        os.chdir(project)
-        build(args)
-        os.chdir("..")
-    print("Projects built successfully.")
+def build_all(args):
+    os.chdir("..")
+    dir = os.getcwd()
+    for f in os.listdir(dir):
+        if os.path.isdir(f):
+            if f == "build" or f == "include" or f == "src" or f == "subsrc" or f == "images" or f == "test" or f == ".vscode":
+                continue
+            else:
+                print(f"Building {f} project")
+                if not os.path.exists(os.path.join(f, "build")):
+                    os.makedirs(os.path.join(f, "build"))
 
-def run_add(args):
-    for project in add_projects:
-        os.chdir(project)
-        run(args)
-        os.chdir("..")
-    print("Projects run successfully.")
+                os.chdir(os.path.join(f, "build"))
+                build(args)
+                os.chdir("../..")
+    os.chdir("build")
+    build(args)
+    print("All projects built successfully.")
+
+
+def install_all(args):
+    os.chdir("..")
+    dir = os.getcwd()
+
+    if not os.path.exists("install"):
+        os.makedirs("install")
+
+    for f in os.listdir(dir):
+        if os.path.isdir(f):
+            if f == "build" or f == "include" or f == "src" or f == "subsrc" or f == "images" or f == "test" or f == ".vscode" or f == "install":
+                continue
+            else:
+                print(f"Installing {f} project")
+                if not os.path.exists(os.path.join(f, "build")):
+                    os.makedirs(os.path.join(f, "build"))
+
+                os.chdir(os.path.join(f, "build"))
+                install(args)
+                os.chdir("../..")
+
+    os.chdir("build")
+    install(args)
+    os.chdir("..")
+
+    for f in os.listdir(dir):
+        if os.path.isdir(f):
+            if f == "build" or f == "include" or f == "src" or f == "subsrc" or f == "images" or f == "test" or f == ".vscode" or f == "install":
+                continue
+            else:
+                shutil.copytree(os.path.join(f, "install"), "install", dirs_exist_ok=True)
+
+    print("All projects installed successfully.")
+
 
 def only():
     os.chdir("..")
@@ -161,21 +201,26 @@ def only():
         else:
             os.remove(f)
 
-    cmake_content = """
-cmake_minimum_required(VERSION 3.20)
+    cmake_content = """cmake_minimum_required(VERSION 3.20)
 get_filename_component(ProjectId ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 string(REPLACE " " "_" ProjectId ${ProjectId})
 project(${ProjectId} C CXX)
 
 set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/install)
 
 set(SOURCE_FILES src/main.cpp)
 
-add_library(${PROJECT_NAME}d ${SOURCE_FILES})
+add_library(${PROJECT_NAME}d SHARED ${SOURCE_FILES})
 target_include_directories(${PROJECT_NAME}d PUBLIC include)
 
 add_executable(${PROJECT_NAME} src/main.cpp)
 target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}d)
+
+install(TARGETS ${PROJECT_NAME}d DESTINATION bin)
+install(TARGETS ${PROJECT_NAME} DESTINATION bin)
+install(DIRECTORY include/ DESTINATION include)
+install(CODE "file(CREATE_LINK ${CMAKE_INSTALL_PREFIX}/bin/${PROJECT_NAME}.exe ${CMAKE_INSTALL_PREFIX}/${PROJECT_NAME}.exe)")
 """
 
     with open("CMakeLists.txt", "w") as file:
@@ -201,6 +246,8 @@ def main():
     docker_parser = parser.add_argument("--docker", "-dock", action="store_true", help="Run the project in docker")
     add_parser = parser.add_argument("--add", "-a", action="store_true", help="Add a new task")
     only_parser = parser.add_argument("--only", "-o", action="store_true", help="Delete all without /include /src/ task.py .vscode")
+    build_all_parser = parser.add_argument("--build_all", "-ba", action="store_true", help="Build all projects")
+    install_all_parser = parser.add_argument("--install_all", "-ia", action="store_true", help="Install all projects")
 
     args = parser.parse_args()
 
@@ -241,6 +288,10 @@ def main():
         add(args)
     elif args.only:
         only()
+    elif args.build_all:
+        build_all(args)
+    elif args.install_all:
+        install_all(args)
     else:
         parser.print_help()
 
