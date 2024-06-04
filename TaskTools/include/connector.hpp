@@ -385,11 +385,11 @@ public:
         // Convert IPv4 and IPv6 addresses from text to binary
         // form
         #ifdef _WIN64
-            if (inet_pton(AF_INET, network.ip.c_str(), &serv_addr.sin_addr) <= 0) {
+            if (inet_pton(AF_INET, network.ip.c_str(), &serv_addr.sin_addr) != 1) {
                 throw std::runtime_error("Invalid address/ Address not supported");
             }
         #else
-            if (inet_pton(AF_INET, network.ip.c_str(), &serv_addr.sin_addr) != 0) {
+            if (inet_pton(AF_INET, network.ip.c_str(), &serv_addr.sin_addr) <= 0) {
                 throw std::runtime_error("Invalid address/ Address not supported");
             }
         #endif
@@ -419,9 +419,15 @@ public:
             throw std::runtime_error("Failed to send message");
         }
 
-        if((valread = read(client_fd, buffer, 1024 - 1) == 0)) {
-            throw std::runtime_error("Failed to read message");
-        }  
+        #ifdef _WIN64
+            if((valread = recv(client_fd, buffer, 1024 - 1, 0)) == 0) {
+                throw std::runtime_error("Failed to read message");
+            }
+        #else
+            if((valread = read(client_fd, buffer, 1024 - 1)) == 0) {
+                throw std::runtime_error("Failed to read message");
+            }
+        #endif
 
         return buffer;
     }
