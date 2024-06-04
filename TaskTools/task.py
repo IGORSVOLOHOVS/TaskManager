@@ -21,7 +21,7 @@ def run(args):
     print("Project run successfully.")
 
 def configure(args):
-    subprocess.run(["cmake", "..", "-G", "MinGW Makefiles"], check=True)
+    subprocess.run(["cmake", ".."], check=True)
     print("Project configured successfully.")
 
 def package(args):
@@ -106,10 +106,9 @@ def save():
         os.chdir(original_directory) 
 
 def docker(args):
-    clean()
     os.chdir("..")
     subprocess.run(["docker", "build", "-t", "task", "."], check=True)
-    subprocess.run(["docker", "run", "-p", "8082:8080", "task"], check=True)
+    subprocess.run(["docker", "run", "-t", "-p", "8086:8085", "task"], check=True)
     os.chdir("build")
     print("Project run in docker successfully.")
 
@@ -299,3 +298,29 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# ------------------------------------------------------server------------------------------------------------------
+# #include <iostream>
+# #include "connector.hpp"
+
+# int main(int argc, char** argv) {
+#     std::cout << "Server started" << std::endl;
+#     ServerTCP server({"0.0.0.0", 8085});
+
+#     server.listen();
+
+#     return 0;
+# }
+
+# ------------------------------------------------------client------------------------------------------------------
+# #include <iostream>
+
+# #include "connector.hpp"
+
+# int main(int argc, char** argv) {
+#     ClientTCP client({"0.0.0.0", 8086});
+
+#     client.speak();
+
+#     return 0;
+# }
