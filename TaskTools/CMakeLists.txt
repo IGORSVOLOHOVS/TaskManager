@@ -12,6 +12,7 @@ set(CMAKE_VERBOSE_MAKEFILE              ON)
 set(CMAKE_MODULE_PATH                   ${CMAKE_SOURCE_DIR}/cmake)
 set(CMAKE_PREFIX_PATH                   ${CMAKE_SOURCE_DIR}/cmake)
 set(CMAKE_INSTALL_PREFIX                ${CMAKE_SOURCE_DIR}/install)
+set(CMAKE_CXX_COMPILER_LAUNCHER         ccache)
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Ofast -march=native")
