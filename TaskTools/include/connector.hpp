@@ -12,8 +12,6 @@
 #include <thread>
 
 #include "log.hpp"
-#include "parralel.hpp"
-#include "io.hpp"
 
 #ifdef _WIN64
     #include <winsock2.h>
