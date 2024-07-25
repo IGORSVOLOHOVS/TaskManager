@@ -226,6 +226,8 @@ endif()
 
 set(SOURCE_FILES src/main.cpp)
 
+#---[ Add subdirectories ]--- (do not delete this comment)
+
 add_library(${PROJECT_NAME}d SHARED ${SOURCE_FILES})
 target_include_directories(${PROJECT_NAME}d PUBLIC include)
 
