@@ -45,11 +45,14 @@ option(DOCUMENTATION    "Build documentation"   OFF)
 option(TESTS            "Build tests"           OFF)
 
 # Main
+include(dependences.cmake)
+
 set(SOURCES
     src/main.cpp
 )
 
-include(dependences.cmake)
+#---[ Add subdirectories ]--- (do not delete this comment)
+
 add_library(${PROJECT_NAME}d                    SHARED ${SOURCES})
 target_include_directories(${PROJECT_NAME}d     PUBLIC ${CMAKE_SOURCE_DIR}/include ${FetchContent_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME}d          PUBLIC ${FetchContent_LIBS})
