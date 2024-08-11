@@ -204,7 +204,7 @@ def only():
     cmake_content = """cmake_minimum_required(VERSION 3.20)
 get_filename_component(ProjectId ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 string(REPLACE " " "_" ProjectId ${ProjectId})
-project(${ProjectId} C CXX)
+project(${ProjectId} LANGUAGES C CXX VERSION 1.0.0)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/install)
@@ -234,10 +234,40 @@ target_include_directories(${PROJECT_NAME}d PUBLIC include)
 add_executable(${PROJECT_NAME} src/main.cpp)
 target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}d)
 
-install(TARGETS ${PROJECT_NAME}d DESTINATION bin)
-install(TARGETS ${PROJECT_NAME} DESTINATION bin)
+include(InstallRequiredSystemLibraries)
+include(CMakePackageConfigHelpers)
+include(CPack)
+
 install(DIRECTORY include/ DESTINATION include)
-install(CODE "file(CREATE_LINK ${CMAKE_INSTALL_PREFIX}/bin/${PROJECT_NAME}.exe ${CMAKE_INSTALL_PREFIX}/${PROJECT_NAME}.exe)")
+install(TARGETS ${PROJECT_NAME} ${PROJECT_NAME}d
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib
+    RUNTIME DESTINATION bin
+)
+install(FILES 
+    "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
+    "${PROJECT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+    DESTINATION lib/cmake/${PROJECT_NAME}
+)
+
+file(WRITE ${PROJECT_NAME}Config.cmake.in "@PACKAGE_INIT@
+include(CMakeFindDependencyMacro)
+# Поиск зависимостей
+#find_dependency(имя_зависимости)
+set(${PROJECT_NAME}_FOUND TRUE)
+set(${PROJECT_NAME}_INCLUDE_DIRS include)
+set(${PROJECT_NAME}_LIBRARIES ${PROJECT_NAME}d) # Используйте имя вашего проекта для библиотеки
+")
+configure_package_config_file(
+    "${PROJECT_SOURCE_DIR}/${PROJECT_NAME}Config.cmake.in" # Шаблон конфигурационного файла
+    "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
+    INSTALL_DESTINATION lib/cmake/${PROJECT_NAME}
+)
+write_basic_package_version_file(
+    "${PROJECT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY SameMajorVersion
+)
 """
 
     with open("CMakeLists.txt", "w") as file:
