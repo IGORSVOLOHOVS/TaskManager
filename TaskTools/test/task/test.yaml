@@ -1,6 +1,0 @@
-tests:
-  test1: on
-  test2: on
-arguments:
-  test1: ["arg1", 1]
-  test2: ["test", "test2"]
