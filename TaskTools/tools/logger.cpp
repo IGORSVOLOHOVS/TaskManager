@@ -1,6 +1,7 @@
 #include "logger.hpp"
 
 namespace tools {
+
     Logger::Logger(): data_()
     {
         // create log directory
@@ -38,6 +39,23 @@ namespace tools {
         WSACleanup();
     }
 
+    /**
+     * @brief    Log messages    
+     * 
+     * @details  This function is used to log messages. It writes messages to a 
+     *           file and sends them to the syslog server.  
+     *
+     * @param[in]  level - Level of the message: INF, WARN, ERR
+     * @param[in]  message - Message to log
+     *
+     * @return
+     * 
+     * @warning  This function is not thread-safe.
+     *  
+     * @todo     use console output
+     * 
+     * @see      LoggerData
+    */
     void Logger::Log(Level level, const std::string& message)
     {
         std::string level_str = "ID (" + std::to_string(data_.big_count * 100000 + data_.count) + ") [ " + Time().GetTime() + " ]: ";
