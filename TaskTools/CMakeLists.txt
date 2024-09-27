@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.20)
 project(task LANGUAGES C CXX VERSION 1.0.0)
 
+# ---------------------------- [ Initialization ] -------------------------------
+
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}-${CMAKE_BUILD_TYPE}-${CMAKE_SYSTEM_NAME}-${VERSION})
 
@@ -15,6 +17,7 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 endif()
 
+# ---------------------------- [ .exe ] -------------------------------
 
 set(source task.cpp)
 
@@ -24,37 +27,22 @@ add_subdirectory(tools)
 add_executable(task ${source})
 target_link_libraries(${PROJECT_NAME} PUBLIC tools)
 
-# include(InstallRequiredSystemLibraries)
-# include(CMakePackageConfigHelpers)
-# include(CPack)
+# ---------------------------- [ Doxygen ] ----------------------------
+find_package(Doxygen)
+set(DOXYFILE_PROJECT_NAME "Task")
+set(DOXYFILE_PROJECT_BRIEF "The templates for tasks")
+set(DOXYFILE_PROJECT_VERSION "1.0.0")
+set(DOXYFILE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/documentation")
+set(DOXYFILE_SOURCE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}")
+set(DOXYFILE_GENERATE_LATEX NO) # Disable LaTeX generation
+set(DOXYFILE_HTML_STYLESHEET "${CMAKE_CURRENT_SOURCE_DIR}/tools/other/Doxyfile.css")
+configure_file(tools/other/Doxyfile.in ${CMAKE_BINARY_DIR}/Doxyfile @ONLY)
 
-# install(DIRECTORY include/ DESTINATION include)
-# install(TARGETS ${PROJECT_NAME} ${PROJECT_NAME}d
-#     LIBRARY DESTINATION lib
-#     ARCHIVE DESTINATION lib
-#     RUNTIME DESTINATION bin
-# )
-# install(FILES 
-#     "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
-#     "${PROJECT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
-#     DESTINATION lib/cmake/${PROJECT_NAME}
-# )
+add_custom_target(documentation
+  COMMAND doxygen ${CMAKE_BINARY_DIR}/Doxyfile
+  WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+  COMMENT "Generating API documentation with Doxygen"
 
-# file(WRITE ${PROJECT_NAME}Config.cmake.in "@PACKAGE_INIT@
-# include(CMakeFindDependencyMacro)
-# # ����� ������������
-# #find_dependency(���_�����������)
-# set(${PROJECT_NAME}_FOUND TRUE)
-# set(${PROJECT_NAME}_INCLUDE_DIRS include)
-# set(${PROJECT_NAME}_LIBRARIES ${PROJECT_NAME}d) # ����������� ��� ������ ������� ��� ����������
-# ")
-# configure_package_config_file(
-#     "${PROJECT_SOURCE_DIR}/${PROJECT_NAME}Config.cmake.in" # ������ ����������������� �����
-#     "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
-#     INSTALL_DESTINATION lib/cmake/${PROJECT_NAME}
-# )
-# write_basic_package_version_file(
-#     "${PROJECT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
-#     VERSION ${PROJECT_VERSION}
-#     COMPATIBILITY SameMajorVersion
-# )
+  COMMAND ${CMAKE_COMMAND} -E echo "Opening the browser..."
+  COMMAND chrome ${CMAKE_BINARY_DIR}/documentation/html/index.html
+)
