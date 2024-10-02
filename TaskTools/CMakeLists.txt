@@ -17,17 +17,31 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 endif()
 
-# ---------------------------- [ .exe ] -------------------------------
+# ---------------------------- [ libs ] -------------------------------
 
-set(source task.cpp)
+# vcpkg integrate install
+# choco install
+# sudo apt install
+# conan install
+# FetchContent
 
 #---[ Add subdirectories ]--- (do not delete this comment)
 add_subdirectory(tools)
 
-add_executable(task ${source})
+# ---------------------------- [ .exe ] -------------------------------
+
+set(source 
+    task.cpp
+)
+set(header
+    task/task.hpp
+)
+
+add_executable(task ${source} ${header})
 target_link_libraries(${PROJECT_NAME} PUBLIC tools)
 
 # ---------------------------- [ Doxygen ] ----------------------------
+
 find_package(Doxygen)
 set(DOXYFILE_PROJECT_NAME "Task")
 set(DOXYFILE_PROJECT_BRIEF "The templates for tasks")
