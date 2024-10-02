@@ -281,185 +281,63 @@ def lib():
     if os.path.exists(library_name):
         print("Library already exists.")
         return
+    else:
+        os.makedirs(library_name, exist_ok=True)
 
     library_namespace = library_name.lower()
     class_name = library_name.title().replace("_", "")
     struct_name = class_name + "Data"
 
-    cmakelists_content = f"""cmake_minimum_required(VERSION 3.20)
-project({library_name} C CXX)
+    # open tools/other/my/CmakeLists.txt and replace my on library_name
+    with open("tools/other/my/CMakeLists.txt", "r") as file:
+        lines = file.readlines()
+        for i, line in enumerate(lines):
+            if "my" in line:
+                lines[i] = line.replace("my", library_name)
+    # save the file
+    with open(library_name + "/CMakeLists.txt", "w") as file:
+        file.writelines(lines)
 
-set(sources {library_name}.cpp)
-set(headers {library_name}.hpp utils.hpp)
+    # open tools/other/my/my.cpp and replace my on library_name, My on ClassName, MY on NAMESPACE
+    with open("tools/other/my/my.cpp", "r") as file:
+        lines = file.readlines()
+        for i, line in enumerate(lines):
+            if "my" in line:
+                lines[i] = line.replace("my", library_name)
+            if "My" in line:
+                lines[i] = line.replace("My", class_name)
+            if "MY" in line:
+                lines[i] = line.replace("MY", library_namespace)
 
-add_library({library_name} SHARED ${{sources}} ${{headers}})
+        # replace my on library_name, My on ClassName, MY on NAMESPACE
+        new_lines = lines
+        for i, line in enumerate(new_lines):
+            lines[i] = line.replace("my", library_name).replace("My", class_name).replace("MY", library_namespace).replace("my_d_", library_name + "_d_")
+            
 
-add_executable({library_name}_test tests.cpp)
-target_link_libraries({library_name}_test {library_name})
+    # save the file
+    with open(library_name + "/" + library_name + ".cpp", "w") as file:
+        file.writelines(lines)
 
-install(TARGETS {library_name} DESTINATION bin)
-install(FILES ${{headers}} DESTINATION include/{library_name})
-"""
+    # open tools/other/my/my.hpp and replace my on library_name, My on ClassName, MY on NAMESPACE
+    with open("tools/other/my/my.hpp", "r") as file:
+        lines = file.readlines()
+        for i, line in enumerate(lines):
+            if "my" in line:
+                lines[i] = line.replace("my", library_name)
+            if "My" in line:
+                lines[i] = line.replace("My", class_name)
+            if "MY" in line:
+                lines[i] = line.replace("MY", library_namespace)
 
-    lib_cpp_content = f"""#include "{library_name}.hpp"
-#include <utility> // For std::move
+                    # replace my on library_name, My on ClassName, MY on NAMESPACE
+        new_lines = lines
+        for i, line in enumerate(new_lines):
+            lines[i] = line.replace("my", library_name).replace("My", class_name).replace("MY", library_namespace).replace("my_d_", library_name + "_d_")
+    # save the file
+    with open(library_name + "/" + library_name + ".hpp", "w") as file:
+        file.writelines(lines)
 
-namespace {library_namespace} {{
-    {class_name}::{class_name}() noexcept : data() {{}}
-
-    {class_name}::{class_name}(const {struct_name} &data) noexcept : data(data) {{}}
-    {class_name}::{class_name}({struct_name} &&data) noexcept : data(std::move(data)) {{}}
-
-    {class_name}::{class_name}(const {class_name} &other) noexcept : data(other.data) {{}}
-    {class_name}::{class_name}({class_name} &&other) noexcept : data(std::move(other.data)) {{}}
-
-    {class_name} &{class_name}::operator=(const {class_name} &other) noexcept 
-    {{
-        if (this != &other) 
-        {{
-            this->data = other.data;
-        }}
-        return *this;
-    }}
-
-    {class_name} &{class_name}::operator=({class_name} &&other) noexcept 
-    {{
-        if (this != &other) 
-        {{
-            this->data = std::move(other.data);
-        }}
-        return *this;
-    }}
-   
-    {class_name}::~{class_name}() {{}}
-
-    const {struct_name} &{class_name}::GetData() const noexcept 
-    {{
-        return this->data;
-    }}
-   
-    {struct_name} &{class_name}::GetData() noexcept 
-    {{
-        return this->data;
-    }}
-    
-    {class_name} &{class_name}::SetData(const {struct_name} &data) noexcept 
-    {{
-        this->data = data;
-        return *this;
-    }}
-
-    {class_name} &{class_name}::SetData({struct_name} &&data) noexcept 
-    {{
-        this->data = std::move(data);
-        return *this;
-    }}
-
-    bool {class_name}::operator==(const {class_name} &other) const noexcept 
-    {{
-        return this->data == other.data;
-    }}
-
-    bool {class_name}::operator<(const {class_name} &other) const noexcept 
-    {{
-        return this->data < other.data;
-    }}
-
-    bool {struct_name}::operator==(const {struct_name} &other) const noexcept
-    {{
-        return true; // Define the operator== for MyLibData here
-    }}
-
-    bool {struct_name}::operator<(const {struct_name} &other) const noexcept
-    {{
-        return true; // Define the operator< for MyLibData here
-    }}
-
-    // Note: The operator overloads for MyLibData are now in utils.hpp
-}} 
-"""
-
-    lib_hpp_content = f"""#pragma once
-#include "utils.hpp"
-
-namespace {library_namespace}
-{{
-    class {class_name}
-    {{
-    public:
-        explicit {class_name}() noexcept;
-        explicit {class_name}(const {struct_name} &data) noexcept;
-        explicit {class_name}({struct_name} &&data) noexcept;
-
-        {class_name}(const {class_name} &other) noexcept;
-        {class_name}({class_name} &&other) noexcept;
-        {class_name} &operator=(const {class_name} &other) noexcept;
-        {class_name} &operator=( {class_name} &&other) noexcept;
-        ~{class_name}();
-
-        const {struct_name} &GetData() const noexcept;
-        {struct_name} &GetData() noexcept;
-        {class_name} &SetData(const {struct_name} &data) noexcept;
-        {class_name} &SetData({struct_name} &&data) noexcept;
-
-        bool operator==(const {class_name} &other) const noexcept;
-        bool operator<(const {class_name} &other) const noexcept;
-
-    private:
-        {struct_name} data;
-    }};
-}}
-"""
-
-
-    utils_hpp_content = f"""#pragma once
-
-namespace {library_namespace}
-{{
-    struct alignas(8) {struct_name}
-    {{
-        // Define the members of your data structure here
-
-        bool operator==(const {struct_name} &other) const noexcept;
-        bool operator<(const {struct_name} &other) const noexcept;
-    }};
-}}
-"""
-    
-    tests_cpp_content = f"""#include "{library_name}.hpp" // Updated header file name
-
-#include <cassert>
-#include <utility>
-
-using namespace {library_namespace}; // Use the correct namespace
-
-void test_constructor() {{
-    {class_name} obj;
-    {struct_name} data;
-    {class_name} obj2(data);
-    {class_name} obj3(std::move(data));
-}}
-
-void test_get_data() {{
-    {class_name} obj;
-    const auto& data = obj.GetData(); 
-    assert(data == obj.GetData()); 
-}}
-
-void test_set_data() {{
-    {class_name} obj;
-    {struct_name} data;
-    obj.SetData(data);
-    obj.SetData(std::move(data)); 
-}}
-
-int main() {{
-    test_constructor();
-    test_get_data();
-    test_set_data();
-    return 0;
-}}
-"""
 
     # add add_subdirectory({library_name}) to the main CMakeLists.txt after #---[ Add subdirectories ]--- (do not delete this comment)
     # add target_link_libraries(${PROJECT_NAME} + remove ( + ${library_name}) to the main CMakeLists.txt after target_link_libraries(${PROJECT_NAME} (do not delete this comment)
@@ -475,21 +353,6 @@ int main() {{
 
     os.makedirs(library_name, exist_ok=True)
     os.chdir(library_name)
-
-    with open("CMakeLists.txt", "w") as file:
-        file.write(cmakelists_content)
-
-    with open(f"{library_name}.cpp", "w") as file:
-        file.write(lib_cpp_content)
-
-    with open(f"{library_name}.hpp", "w") as file:
-        file.write(lib_hpp_content)
-
-    with open("utils.hpp", "w") as file:
-        file.write(utils_hpp_content)
-
-    with open("tests.cpp", "w") as file:
-        file.write(tests_cpp_content)
 
     print("Library created successfully in the", library_name, "directory.")
 
