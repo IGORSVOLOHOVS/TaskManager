@@ -1,0 +1,18 @@
+[package]
+name = "my_project"
+version = "1.0.0"
+authors = ["Igors Volohovs <igorsvolohovs@gmail.com>"]
+edition = "2024"
+
+[dependencies]
+
+[dev-dependencies]
+criterion = "0.5.1"
+
+[[bench]]
+name = "benches-module1"
+harness = false
+
+[[bench]]
+name = "benches-module2"
+harness = false
