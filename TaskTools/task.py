@@ -54,6 +54,21 @@ def web(args):
     subprocess.run(["emrun", "--browser", "chrome", "../web/index.html"], check=True)
     print("WEB project built successfully.")
 
+def web_new(args):
+    os.chdir("..")
+    
+    shutil.copytree("tools/other/web/backend", "backend", dirs_exist_ok=True)
+    shutil.copytree("tools/other/web/frontend", "frontend", dirs_exist_ok=True)
+    shutil.copyfile("tools/other/web/CMakeLists.txt", "CMakeLists.txt")
+
+    dir = os.getcwd()
+    for f in os.listdir(dir):
+        if os.path.isdir(f):
+            if f == "backend" or f == "frontend" or f == ".vscode":
+                continue
+            else:
+                shutil.rmtree(f)
+
 def tests(args):
     subprocess.run(["cmmake", "..", "-DTESTS=ON"], check=True)
     build(args)
@@ -375,6 +390,7 @@ def main():
     csharp_parser = parser.add_argument("--csharp", "-c", action="store_true", help="Build the C# project")
     python_parser = parser.add_argument("--python", "-py", action="store_true", help="Build the Python project")
     web_parser = parser.add_argument("--web", "-w", action="store_true", help="Build the WEB project")
+    web_new_parser = parser.add_argument("--web_new", "-wn", action="store_true", help="Create a new WEB project")
     tests_parser = parser.add_argument("--tests", "-t", action="store_true", help="Build the tests")
     clean_parser = parser.add_argument("--clean", "-cl", action="store_true", help="Clean the project")
     save_parser = parser.add_argument("--save", "-s", action="store_true", help="Save the project")
@@ -412,6 +428,8 @@ def main():
         python(args)
     elif args.web:
         web(args)
+    elif args.web_new:
+        web_new(args)
     elif args.tests:
         tests(args)
     elif args.clean:
