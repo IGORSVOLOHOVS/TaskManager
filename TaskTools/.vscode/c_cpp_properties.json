@@ -1,10 +1,58 @@
 {
     "configurations": [
         {
-            "name": "Win32",
+            "name": "windows-msvc",
             "includePath": [
                 "${default}",
-                "C:\\\\Users\\\\User\\\\.conan2\\\\p\\\\**",
+                "${workspaceFolder}/**"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ]
+        },
+        // clang
+        {
+            "name": "windows-clang",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "C:/Program Files/LLVM/include/**"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "compilerPath": "C:/Program Files/LLVM/bin/clang.exe",
+            "cStandard": "c23",
+            "cppStandard": "c++23",
+            "intelliSenseMode": "clang-x64"
+        },
+        // mingw
+        {
+            "name": "windows-mingw",
+            "includePath": [
+                "${default}",
+                "${workspaceFolder}/**",
+                "C:/MinGW/include/**"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "compilerPath": "C:MinGW/bin/gcc.exe",
+            "cStandard": "c23",
+            "cppStandard": "c++23",
+            "intelliSenseMode": "gcc-x64"
+        },
+
+        // emscripten
+        {
+            "name": "windows-emscripten",
+            "includePath": [
+                "${EMSDK}/upstream/emscripten/system/include/**",
                 "${workspaceFolder}/**"
             ],
             "defines": [
@@ -12,11 +60,9 @@
                 "UNICODE",
                 "_UNICODE"
             ],
-            "windowsSdkVersion": "10.0.22621.0",
-            "intelliSenseMode": "windows-msvc-x64",
             "cppStandard": "c++23",
             "cStandard": "c23",
-            "compilerPath": "C:/Program Files (x86)/Microsoft Visual Studio/2019/BuildTools/VC/Tools/MSVC/14.29.30133/bin/Hostx64/x64/cl.exe"
+            "compilerPath": "${EMSDK}/upstream/emscripten/emcc"
         }
     ],
     "version": 4
