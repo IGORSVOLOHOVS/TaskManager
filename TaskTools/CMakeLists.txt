@@ -19,11 +19,12 @@ endif()
 
 # ---------------------------- [ libs ] -------------------------------
 
-# vcpkg integrate install
+# Everything looking for libraries(to add PATH)
+# vcpkg integrate install + triplet
 # choco install
 # sudo apt install
 # conan install
-# FetchContent
+# FetchContent CPM
 
 #---[ Add subdirectories ]--- (do not delete this comment)
 add_subdirectory(tools)
