@@ -20,7 +20,7 @@ endif()
 # ---------------------------- [ libs ] -------------------------------
 
 # Everything looking for libraries(to add PATH)
-# vcpkg integrate install + triplet
+# vcpkg integrate install + triplet(x64-mingw-static x64-windows-clang x64-windows)
 # choco install
 # sudo apt install
 # conan install
