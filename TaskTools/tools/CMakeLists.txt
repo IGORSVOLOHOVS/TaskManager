@@ -13,6 +13,7 @@ set(headers
     time.hpp 
     logger.hpp 
     parser.hpp
+    thread_pool.h
 
     tools.hpp
 )
