@@ -18,13 +18,26 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 endif()
 
 # ---------------------------- [ libs ] -------------------------------
+set(VCPKG_ROOT C:/Users/igors/Projects/vcpkg)
+set(VCPKG_SYSTEM x64-windows)
+set(VCPKG_PACKAGE_DIR ${VCPKG_ROOT}/installed/${VCPKG_SYSTEM})
 
-# Everything looking for libraries(to add PATH)
-# vcpkg integrate install + triplet(x64-mingw-static x64-windows-clang x64-windows)
-# choco install
-# sudo apt install
-# conan install
-# FetchContent CPM
+set(CONAN_ROOT "")
+set(CONAN_SYSTEM "")
+set(CONAN_PACKAGE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+
+function(import_add lib_name folder)
+  add_library(${lib_name} STATIC IMPORTED)
+  set_target_properties(${lib_name} PROPERTIES
+    IMPORTED_LOCATION "${folder}/lib/${lib_name}.lib"
+  )
+  target_include_directories(${lib_name} INTERFACE "${folder}/include")
+endfunction()
+
+# import_add(OpenGL32 ${VCPKG_PACKAGE_DIR})
+# import_add(freeglut ${VCPKG_PACKAGE_DIR})
+
+# import_add(PocoFoundation ${CONAN_PACKAGE_DIR}/poco)
 
 #---[ Add subdirectories ]--- (do not delete this comment)
 add_subdirectory(tools)
