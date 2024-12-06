@@ -16,12 +16,11 @@ endfunction()
 
 #---[ Add subdirectories ]--- (do not delete this comment)
 add_subdirectory(tools)
-add_subdirectory(test2)
 
 # ---------------------------- [ .exe ] -----------------------------------------
 add_executable(${PROJECT_NAME} main.cpp task.hpp)
 target_precompile_headers(${PROJECT_NAME} PRIVATE pch.hpp)
-target_link_libraries(${PROJECT_NAME} PUBLIC ${PROJECT_NAME}_tools ${PROJECT_NAME}_test2)
+target_link_libraries(${PROJECT_NAME} PUBLIC ${PROJECT_NAME}_tools)
 
 # ---------------------------- [ Install ] --------------------------------------
 install(TARGETS ${PROJECT_NAME} DESTINATION bin)
