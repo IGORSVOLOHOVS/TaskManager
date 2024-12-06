@@ -1,61 +1,39 @@
 #pragma once
 
-#include <expected>
-#include <string>
-
-#include "../task/task.hpp"
+#include "interfaces.hpp"
 
 namespace my{
-    extern std::string MY_GLOBAL_CONST;
-
-    struct MyData{
-        friend bool operator<=>(const MyData& lhs, const MyData& rhs) noexcept;
-    };
-
     class MyInit{
     public:
-        MyInit() noexcept;
-        ~MyInit() noexcept;
+        MyInit();
+        ~MyInit();
 
-        MyData  my_d_       =  {};
+        MyData  data_       =  {};
     };
 
-    class My: private MyInit
+
+    class My: private MyInit, public IMy
     {
     public:
         // ------------------------------------ [ Type Definitions ] --------------------------------
-        using MyExp = std::expected<void, std::string>;
-
-
+        using Void = std::expected<void, std::string>;
 
         // ------------------------------------ [ Constructors ] ------------------------------------
-        My() noexcept;
-        ~My() noexcept;
-
-        My(const My& obj) noexcept;
-        My(My&& obj) noexcept;
-        My& operator=(const My& obj) noexcept;
-        My& operator=(My&& obj) noexcept;
-
-        My(const MyData& data) noexcept;
-        My(MyData&& data) noexcept;
-        My& operator=(const MyData& data) noexcept;
-        My& operator=(MyData&& data) noexcept;
-
-
+        My();
+        ~My();
 
         // ------------------------------------ [ Getters/Setters ] -----------------------------------
-        MyData          GetData() const noexcept;
-        MyData&         GetDataRef() noexcept;
-        const MyData&   GetDataRef() const noexcept;
+        MyData          GetData() const override;
+        MyData&         GetDataRef() override;
+        const MyData&   GetDataRef() const override;
 
-        My&             SetData(const MyData& data) noexcept;
-        My&             SetData(MyData&& data) noexcept;
+        My&             SetData(const MyData& data) override;
+        My&             SetData(MyData&& data) override;
 
 
 
         // ------------------------------------ [ Methods ] ------------------------------------
-        MyExp           DoSomething() noexcept;
+        Void           DoSomething(DoSomethingParametrs settings) override;
     };
 }
 

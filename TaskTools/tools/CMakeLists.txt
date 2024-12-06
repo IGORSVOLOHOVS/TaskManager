@@ -1,9 +1,3 @@
-cmake_minimum_required(VERSION 3.20)
-project(tools C CXX)
-
-set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 set(sources 
     time.cpp 
     logger.cpp 
@@ -18,6 +12,6 @@ set(headers
     tools.hpp
 )
 
-add_library(tools STATIC ${sources} ${headers})
-target_link_libraries(tools PUBLIC ws2_32)
+add_library(${PROJECT_NAME}_tools STATIC ${sources} ${headers})
+target_link_libraries(${PROJECT_NAME}_tools PUBLIC ws2_32)
 
