@@ -124,7 +124,7 @@ def lib():
         lines = file.readlines()
         for i, line in enumerate(lines):
             if "my" in line:
-                lines[i] = line.replace("my", name)
+                lines[i] = line.replace("task", name)
             if "My" in line:
                 lines[i] = line.replace("My", class_name)
             if "MY" in line:
@@ -145,7 +145,7 @@ def lib():
         lines = file.readlines()
         for i, line in enumerate(lines):
             if "my" in line:
-                lines[i] = line.replace("my", name)
+                lines[i] = line.replace("task", name)
             if "My" in line:
                 lines[i] = line.replace("My", class_name)
             if "MY" in line:
@@ -157,44 +157,6 @@ def lib():
             lines[i] = line.replace("my", name).replace("My", class_name).replace("MY", namespace).replace("my_d_", name + "_d_")
     # save the file
     with open(name + "/" + name + ".hpp", "w") as file:
-        file.writelines(lines)
-    
-    # open tools/other/my/interface.hpp and replace my on name, My on ClassName, MY on NAMESPACE
-    with open("tools/other/my/interfaces.hpp", "r") as file:
-        lines = file.readlines()
-        for i, line in enumerate(lines):
-            if "my" in line:
-                lines[i] = line.replace("my", name)
-            if "My" in line:
-                lines[i] = line.replace("My", class_name)
-            if "MY" in line:
-                lines[i] = line.replace("MY", namespace)
-
-        # replace my on name, My on ClassName, MY on NAMESPACE
-        new_lines = lines
-        for i, line in enumerate(new_lines):
-            lines[i] = line.replace("my", name).replace("My", class_name).replace("MY", namespace).replace("my_d_", name + "_d_")
-    # save the file
-    with open(name + "/interfaces.hpp", "w") as file:
-        file.writelines(lines)
-        
-    # open tools/other/my/structures.hpp and replace my on name, My on ClassName, MY on NAMESPACE
-    with open("tools/other/my/structures.hpp", "r") as file:
-        lines = file.readlines()
-        for i, line in enumerate(lines):
-            if "my" in line:
-                lines[i] = line.replace("my", name)
-            if "My" in line:
-                lines[i] = line.replace("My", class_name)
-            if "MY" in line:
-                lines[i] = line.replace("MY", namespace)
-
-        # replace my on name, My on ClassName, MY on NAMESPACE
-        new_lines = lines
-        for i, line in enumerate(new_lines):
-            lines[i] = line.replace("my", name).replace("My", class_name).replace("MY", namespace).replace("my_d_", name + "_d_")
-    # save the file
-    with open(name + "/structures.hpp", "w") as file:
         file.writelines(lines)
 
 def web():

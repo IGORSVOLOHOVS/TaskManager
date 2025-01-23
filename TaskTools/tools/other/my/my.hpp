@@ -1,39 +1,23 @@
 #pragma once
 
-#include "interfaces.hpp"
+#include "../interfaces.hpp"
 
-namespace my{
-    class MyInit{
-    public:
-        MyInit();
-        ~MyInit();
-
-        MyData  data_       =  {};
-    };
-
-
-    class My: private MyInit, public IMy
+namespace task{
+    class My
     {
+        // ------------------------------------ [ Private Methods ] --------------------------------
     public:
         // ------------------------------------ [ Type Definitions ] --------------------------------
-        using Void = std::expected<void, std::string>;
+
 
         // ------------------------------------ [ Constructors ] ------------------------------------
-        My();
-        ~My();
+
 
         // ------------------------------------ [ Getters/Setters ] -----------------------------------
-        MyData          GetData() const override;
-        MyData&         GetDataRef() override;
-        const MyData&   GetDataRef() const override;
-
-        My&             SetData(const MyData& data) override;
-        My&             SetData(MyData&& data) override;
-
 
 
         // ------------------------------------ [ Methods ] ------------------------------------
-        Void           DoSomething(DoSomethingParametrs settings) override;
+        static My& GetInstance();
     };
 }
 
