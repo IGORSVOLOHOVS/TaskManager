@@ -72,3 +72,123 @@ function(add_libs_dependency target_name)
   install(DIRECTORY "${libs_dir}/lib/" DESTINATION lib)
   install(DIRECTORY "${libs_dir}/include/" DESTINATION include)
 endfunction()
+
+find_package(Doxygen)
+set(DOXYFILE_PROJECT_NAME "Task")
+set(DOXYFILE_PROJECT_BRIEF "The templates for tasks")
+set(DOXYFILE_PROJECT_VERSION "1.0.0")
+set(DOXYFILE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/documentation")
+set(DOXYFILE_SOURCE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}")
+set(DOXYFILE_GENERATE_LATEX NO) # Disable LaTeX generation
+set(DOXYFILE_HTML_STYLESHEET "${CMAKE_CURRENT_SOURCE_DIR}/../tools/other/Doxyfile.css")
+configure_file(../tools/other/Doxyfile.in ${CMAKE_BINARY_DIR}/Doxyfile @ONLY)
+
+add_custom_target(documentation
+  COMMAND doxygen ${CMAKE_BINARY_DIR}/Doxyfile
+  WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+  COMMAND chrome ${CMAKE_BINARY_DIR}/documentation/html/index.html
+)
+
+# if windows
+if (WIN64 OR WIN32)
+  add_custom_target(vcpkg
+    COMMAND powershell -Command "if (-Not (Test-Path 'vcpkg')) { git clone https://github.com/microsoft/vcpkg.git; cd vcpkg; .\\bootstrap-vcpkg.bat }"
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  )
+
+  add_custom_target(doxygen
+    COMMAND powershell -Command "if (-Not (Test-Path 'doxygen')) { choco install doxygen.install -y }"
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  )
+
+  add_custom_target(conan
+    COMMAND powershell -Command "if (-Not (Test-Path 'conan')) { pip install conan }"
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  )
+
+  add_custom_target(mingw
+    COMMAND powershell -Command "if (-Not (Test-Path 'mingw')) { choco install mingw -y }"
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  )
+
+  add_custom_target(chocolatey
+    COMMAND powershell -Command "if (-Not (Test-Path 'chocolatey')) { Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1')) }"
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  )
+
+  add_custom_target(msvc
+    COMMAND powershell -Command "if (-Not (Test-Path 'msvc')) { choco install visualstudio2019buildtools visualstudio2019-workload-vctools -y }"
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  )
+
+  add_custom_target(clang
+    COMMAND powershell -Command "if (-Not (Test-Path 'clang')) { choco install llvm -y }"
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  )
+
+  add_custom_target(emscripten
+    COMMAND powershell -Command "if (-Not (Test-Path 'emscripten')) { choco install emscripten -y }"
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  )
+
+  add_custom_target(nsis
+    COMMAND powershell -Command "if (-Not (Test-Path 'nsis')) { choco install nsis -y }"
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  )
+
+  add_custom_target(ccache
+    COMMAND powershell -Command "if (-Not (Test-Path 'ccache')) { choco install ccache -y }"
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  )
+
+  add_custom_target(ninja
+    COMMAND powershell -Command "if (-Not (Test-Path 'ninja')) { choco install ninja -y }"
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  )
+elseif(UNIX)
+  add_custom_target(conan
+    COMMAND bash -c "if [ ! -d 'conan' ]; then pip install conan; fi"
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  )
+
+  add_custom_target(ccache
+    COMMAND bash -c "if [ ! -d 'ccache' ]; then sudo apt-get install ccache -y; fi"
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  )
+
+  add_custom_target(doxygen
+    COMMAND bash -c "if [ ! -d 'doxygen' ]; then sudo apt-get install doxygen -y; fi"
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  )
+
+  add_custom_target(build-essential
+    COMMAND bash -c "if [ ! -d 'build-essential' ]; then sudo apt-get install build-essential -y; fi"
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  )
+
+  add_custom_target(emscripten
+    COMMAND bash -c "if [ ! -d 'emscripten' ]; then sudo apt-get install emscripten -y; fi"
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  )
+
+  add_custom_target(ninja
+    COMMAND bash -c "if [ ! -d 'ninja' ]; then sudo apt-get install ninja-build -y; fi"
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  )
+endif()
+
+
+
+
+# ---------------------------- [ CPack ] -----------------------------------------
+include(InstallRequiredSystemLibraries)
+include(GNUInstallDirs)
+
+
+set(CPACK_PACKAGE_VERSION ${VERSION})
+set(CPACK_PACKAGE_NAME ${PROJECT_NAME})
+set(CPACK_RESOURCE_FILE_README "${CMAKE_CURRENT_SOURCE_DIR}/../tools/other/README.md")
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/../tools/other/LICENSE.txt")
+set(CPACK_NSIS_MUI_ICON "${CMAKE_CURRENT_SOURCE_DIR}/../tools/other/icon.ico")
+
+include(CPack)
