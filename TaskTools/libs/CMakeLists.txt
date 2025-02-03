@@ -186,6 +186,7 @@ add_custom_target(qt
   COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../tools/other/qt/backend.hpp ${CMAKE_SOURCE_DIR}
   COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../tools/other/qt/backend.cpp ${CMAKE_SOURCE_DIR}
   COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../tools/other/qt/Main.qml ${CMAKE_SOURCE_DIR}
+  COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/../tools/other/qt/fonts ${CMAKE_SOURCE_DIR}/fonts
   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 )
 
