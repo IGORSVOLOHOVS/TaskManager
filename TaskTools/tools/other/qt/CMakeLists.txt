@@ -15,12 +15,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}-${CMAKE_BUILD_TYPE}-${CMAKE_SYSTEM_NAME}-${CMAKE_CXX_COMPILER_ID}-${CMAKE_CXX_COMPILER_VERSION})
 
 #----------------------------- [ external dependencies ] -------------------------
-find_package(Qt6 REQUIRED COMPONENTS Widgets)
+find_package(Qt6 REQUIRED COMPONENTS Quick)
 
 add_subdirectory(libs)
 add_libs_dependency(libs_dependencies)
 target_link_libraries(libs_dependencies PUBLIC
-    Qt6::Widgets
+    Qt6::Quick
 )
 target_precompile_headers(libs_dependencies PRIVATE 
   ${CMAKE_SOURCE_DIR}/pch.hpp
@@ -31,12 +31,21 @@ target_precompile_headers(libs_dependencies PRIVATE
 # ---------------------------- [ Add subdirectories ] -----------------------------------------
 
 # ---------------------------- [ .exe ] -----------------------------------------
-qt6_add_executable(main main.cpp task.hpp main.ui)
+qt_add_executable(main main.cpp task.hpp)
 target_link_libraries(main PUBLIC
     libs_dependencies
 )
+qt_add_qml_module(main
+    URI untitled1
+    VERSION 1.0
+    QML_FILES
+        Main.qml
+        SOURCES backend.hpp backend.cpp
+)
+
 
 # ---------------------------- [ Install ] --------------------------------------
 install(TARGETS main RUNTIME DESTINATION bin LIBRARY DESTINATION lib ARCHIVE DESTINATION lib)
-install(FILES task.hpp interfaces.hpp structures.hpp pch.hpp DESTINATION include)
+install(FILES task.hpp interfaces.hpp structures.hpp pch.hpp backend.hpp Main.qml DESTINATION include)
+install(FILES fonts/Roboto-Regular.ttf DESTINATION fonts)
 

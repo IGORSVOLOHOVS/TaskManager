@@ -183,9 +183,12 @@ add_custom_target(qt
   COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../tools/other/qt/pch.hpp ${CMAKE_SOURCE_DIR}
   COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../tools/other/qt/main.cpp ${CMAKE_SOURCE_DIR}
   COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../tools/other/qt/task.hpp ${CMAKE_SOURCE_DIR}
-  COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../tools/other/qt/main.ui ${CMAKE_SOURCE_DIR}
+  COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../tools/other/qt/backend.hpp ${CMAKE_SOURCE_DIR}
+  COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../tools/other/qt/backend.cpp ${CMAKE_SOURCE_DIR}
+  COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../tools/other/qt/Main.qml ${CMAKE_SOURCE_DIR}
   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 )
+
 
 
 # ---------------------------- [ CPack ] -----------------------------------------
