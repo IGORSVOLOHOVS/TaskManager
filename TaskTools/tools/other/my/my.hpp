@@ -18,6 +18,6 @@ namespace task{
 
 
         // ------------------------------------ [ Methods ] ------------------------------------
-        static Abc& GetInstance(std::shared_ptr<SharedData> sharedData = nullptr);
+        static My& GetInstance(std::shared_ptr<SharedData> sharedData = nullptr);
     };
 }
