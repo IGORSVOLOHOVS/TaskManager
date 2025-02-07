@@ -5,6 +5,8 @@
 namespace task{
     class My
     {
+        struct Impl;
+        std::unique_ptr<Impl> pImpl;
         // ------------------------------------ [ Private Methods ] --------------------------------
     public:
         // ------------------------------------ [ Type Definitions ] --------------------------------
@@ -20,4 +22,3 @@ namespace task{
         static My& GetInstance();
     };
 }
-
