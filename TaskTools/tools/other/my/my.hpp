@@ -5,8 +5,7 @@
 namespace task{
     class My
     {
-        struct Impl;
-        std::unique_ptr<Impl> pImpl;
+        struct Impl; std::unique_ptr<Impl> pImpl;
         // ------------------------------------ [ Private Methods ] --------------------------------
     public:
         // ------------------------------------ [ Type Definitions ] --------------------------------
@@ -19,6 +18,6 @@ namespace task{
 
 
         // ------------------------------------ [ Methods ] ------------------------------------
-        static My& GetInstance();
+        static Abc& GetInstance(std::shared_ptr<SharedData> sharedData = nullptr);
     };
 }
