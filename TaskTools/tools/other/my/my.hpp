@@ -3,7 +3,7 @@
 #include "../interfaces.hpp"
 
 namespace task{
-    class My
+    class My: public IMy
     {
         struct Impl; std::unique_ptr<Impl> pImpl;
         // ------------------------------------ [ Private Methods ] --------------------------------
@@ -18,6 +18,6 @@ namespace task{
 
 
         // ------------------------------------ [ Methods ] ------------------------------------
-        static My& GetInstance(std::shared_ptr<SharedData> sharedData = nullptr);
+        static My& GetInstance(std::shared_ptr<SharedData> sharedData = nullptr, std::shared_ptr<Interfaces> interfaces = nullptr);
     };
 }
