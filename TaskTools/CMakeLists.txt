@@ -18,13 +18,13 @@ target_precompile_headers(libs_dependencies PRIVATE
   ${CMAKE_SOURCE_DIR}/interfaces.hpp
 )
 
-# ---------------------------- [ Add subdirectories ] -----------------------------------------
-
 # ---------------------------- [ .lib ] ----------------------------------------
 add_library(${PROJECT_NAME} STATIC main.cpp task.hpp)
 target_link_libraries(${PROJECT_NAME} PUBLIC 
   libs_dependencies
 )
+
+# ---------------------------- [ Add subdirectories ] -----------------------------------------
 
 # ---------------------------- [ .exe ] -----------------------------------------
 add_executable(main main.cpp)
