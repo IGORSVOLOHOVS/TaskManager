@@ -1,7 +1,7 @@
 #include "my.hpp"
 namespace task{
     // ------------------------------------ [ Type Definitions ] --------------------------------
-    struct My::Impl{ std::shared_ptr<SharedData> sharedData; };
+    struct My::Impl{ std::shared_ptr<SharedData> sharedData; std::shared_ptr<Interfaces> interfaces; };
 
 
     // ------------------------------------ [ Constructors ] ------------------------------------
@@ -11,5 +11,5 @@ namespace task{
 
 
     // ------------------------------------ [ Methods ] ------------------------------------
-    My& My::GetInstance(std::shared_ptr<SharedData> sharedData){ static My instance; instance.pImpl->sharedData = sharedData; return instance; }
+    My& My::GetInstance(std::shared_ptr<SharedData> sharedData, std::shared_ptr<Interfaces> interfaces) { static My instance; instance.pImpl->sharedData = sharedData; instance.pImpl->interfaces = interfaces; return instance; }
 }
