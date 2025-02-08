@@ -159,6 +159,32 @@ def lib():
     with open(name + "/" + name + ".hpp", "w") as file:
         file.writelines(lines)
 
+    # add in the end of task.hpp line #include "name/name.hpp"
+    with open("task.hpp", "a") as file:
+        file.write(f"#include \"{name}/{name}.hpp\"\n")
+    
+    # add add_subdirectory(name) in CMakeLists.txt after # ---------------------------- [ Add subdirectories ] -----------------------------------------
+    with open("CMakeLists.txt", "r") as file:
+        lines = file.readlines()
+        for i, line in enumerate(lines):
+            if "# ---------------------------- [ Add subdirectories ] -----------------------------------------" in line:
+                lines.insert(i + 1, f"add_subdirectory({name})\n")
+                lines.insert(i + 2, f"target_link_libraries(${{PROJECT_NAME}} PUBLIC ${{PROJECT_NAME}}_{name})\n")
+    # save the file
+    with open("CMakeLists.txt", "w") as file:
+        file.writelines(lines)
+    
+    # add in interfaces.hpp after // ------------------------------------ [ Your interfaces ] --------------------------------
+    with open("interfaces.hpp", "r") as file:
+        lines = file.readlines()
+        for i, line in enumerate(lines):
+            if "// ------------------------------------ [ Your interfaces ] --------------------------------" in line:
+                lines.insert(i + 1, f"    class I{class_name} {{}};\n")
+    # save the file
+    with open("interfaces.hpp", "w") as file:
+        file.writelines(lines)
+
+
 def web():
     shutil.copytree("tools/other/web/backend", "backend", dirs_exist_ok=True)
     shutil.copytree("tools/other/web/frontend", "frontend", dirs_exist_ok=True)
