@@ -184,6 +184,16 @@ def lib():
     with open("interfaces.hpp", "w") as file:
         file.writelines(lines)
 
+    # add in interfaces.hpp after     struct Interfaces{
+    with open("interfaces.hpp", "r") as file:
+        lines = file.readlines()
+        for i, line in enumerate(lines):
+            if "    struct Interfaces{" in line:
+                lines.insert(i + 1, f"        std::shared_ptr<I{class_name}> {namespace};\n")
+    # save the file
+    with open("interfaces.hpp", "w") as file:
+        file.writelines(lines)
+
 
 def web():
     shutil.copytree("tools/other/web/backend", "backend", dirs_exist_ok=True)
