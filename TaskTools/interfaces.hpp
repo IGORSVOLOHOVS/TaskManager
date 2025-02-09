@@ -5,5 +5,6 @@
 namespace task
 {
     // ------------------------------------ [ Your interfaces ] --------------------------------
-    struct Interfaces{};
+    struct Interfaces{
+    };
 }
