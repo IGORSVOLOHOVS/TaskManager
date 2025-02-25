@@ -1,4 +1,4 @@
-function(add_libs_dependency target_name)
+function(add_libs target_name)
   # Определяем libs_dir в зависимости от конфигурации сборки
   if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(libs_dir "libs/debug")
@@ -59,6 +59,7 @@ function(add_libs_dependency target_name)
 
   # Добавляем папку libs_dir/include в пути поиска заголовочных файлов
   target_include_directories(${target_name} PUBLIC "${libs_dir}/include")
+  target_include_directories(${target_name} PUBLIC .)
 
   # Копируем .dll файлы в выходной каталог при сборке
   foreach(DLL_FILE ${LIBS_DLLS})
@@ -80,8 +81,8 @@ set(DOXYFILE_PROJECT_VERSION "1.0.0")
 set(DOXYFILE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/documentation")
 set(DOXYFILE_SOURCE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}")
 set(DOXYFILE_GENERATE_LATEX NO) # Disable LaTeX generation
-set(DOXYFILE_HTML_STYLESHEET "${CMAKE_CURRENT_SOURCE_DIR}/../tools/other/Doxyfile.css")
-configure_file(../tools/other/Doxyfile.in ${CMAKE_BINARY_DIR}/Doxyfile @ONLY)
+set(DOXYFILE_HTML_STYLESHEET "${CMAKE_CURRENT_SOURCE_DIR}/../.vscode/tools/other/Doxyfile.css")
+configure_file(../.vscode/tools/other/Doxyfile.in ${CMAKE_BINARY_DIR}/Doxyfile @ONLY)
 
 add_custom_target(documentation
   COMMAND doxygen ${CMAKE_BINARY_DIR}/Doxyfile
@@ -179,14 +180,14 @@ endif()
 
 add_custom_target(qt
 # copy files from tools/other/qt to the project
-  COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../tools/other/qt/CMakeLists.txt ${CMAKE_SOURCE_DIR}
-  COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../tools/other/qt/pch.hpp ${CMAKE_SOURCE_DIR}
-  COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../tools/other/qt/main.cpp ${CMAKE_SOURCE_DIR}
-  COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../tools/other/qt/task.hpp ${CMAKE_SOURCE_DIR}
-  COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../tools/other/qt/backend.hpp ${CMAKE_SOURCE_DIR}
-  COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../tools/other/qt/backend.cpp ${CMAKE_SOURCE_DIR}
-  COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../tools/other/qt/Main.qml ${CMAKE_SOURCE_DIR}
-  COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/../tools/other/qt/fonts ${CMAKE_SOURCE_DIR}/fonts
+  COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../.vscode/tools/other/qt/CMakeLists.txt ${CMAKE_SOURCE_DIR}
+  COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../.vscode/tools/other/qt/pch.hpp ${CMAKE_SOURCE_DIR}
+  COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../.vscode/tools/other/qt/main.cpp ${CMAKE_SOURCE_DIR}
+  COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../.vscode/tools/other/qt/task.hpp ${CMAKE_SOURCE_DIR}
+  COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../.vscode/tools/other/qt/backend.hpp ${CMAKE_SOURCE_DIR}
+  COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../.vscode/tools/other/qt/backend.cpp ${CMAKE_SOURCE_DIR}
+  COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../.vscode/tools/other/qt/Main.qml ${CMAKE_SOURCE_DIR}
+  COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/../.vscode/tools/other/qt/fonts ${CMAKE_SOURCE_DIR}/fonts
   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 )
 
@@ -199,8 +200,8 @@ include(GNUInstallDirs)
 
 set(CPACK_PACKAGE_VERSION ${VERSION})
 set(CPACK_PACKAGE_NAME ${PROJECT_NAME})
-set(CPACK_RESOURCE_FILE_README "${CMAKE_CURRENT_SOURCE_DIR}/../tools/other/README.md")
-set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/../tools/other/LICENSE.txt")
-set(CPACK_NSIS_MUI_ICON "${CMAKE_CURRENT_SOURCE_DIR}/../tools/other/icon.ico")
+set(CPACK_RESOURCE_FILE_README "${CMAKE_CURRENT_SOURCE_DIR}/../.vscode/tools/other/README.md")
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/../.vscode/tools/other/LICENSE.txt")
+set(CPACK_NSIS_MUI_ICON "${CMAKE_CURRENT_SOURCE_DIR}/../.vscode/tools/other/icon.ico")
 
 include(CPack)
