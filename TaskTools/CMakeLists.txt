@@ -7,7 +7,7 @@ endif()
 
 # ---------------------------- [ Initialization ] -------------------------------
 set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}-${CMAKE_BUILD_TYPE}-${CMAKE_SYSTEM_NAME}-${CMAKE_CXX_COMPILER_ID}-${CMAKE_CXX_COMPILER_VERSION})
+include(libs/init.cmake)
 
 #----------------------------- [ external dependencies ] -------------------------
 add_subdirectory(libs)
