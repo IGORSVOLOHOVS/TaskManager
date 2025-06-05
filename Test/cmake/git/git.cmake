@@ -22,6 +22,17 @@ if(GIT_EXECUTABLE AND CLANG_FORMAT_EXECUTABLE)
                 message(STATUS "No changes to commit after formatting.")
         endif()
     else()
+        execute_process(
+            COMMAND ${GIT_EXECUTABLE} init .
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+            RESULT_VARIABLE GIT_INIT_RESULT
+            OUTPUT_QUIET ERROR_QUIET
+        )
+        if(GIT_INIT_RESULT EQUAL 0)
+            message(STATUS "Initialized Git repository.")
+        else()
+            message(WARNING "Git init failed. Result: ${GIT_INIT_RESULT}")
+        endif()
         
         message(WARNING "Git add failed. Skipping auto-commit. Result: ${GIT_ADD_RESULT}")
     endif()
