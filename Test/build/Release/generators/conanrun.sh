@@ -1,1 +1,0 @@
-. "/home/igors/Projects/taskmanager1/Test/build/Release/generators/conanrunenv-release-x86_64.sh"
