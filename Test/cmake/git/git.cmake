@@ -14,6 +14,7 @@ if(GIT_EXECUTABLE AND CLANG_FORMAT_EXECUTABLE)
             OUTPUT_QUIET ERROR_QUIET
         )
         if(GIT_COMMIT_RESULT EQUAL 0)
+        
             message(STATUS "Auto-committed formatted files.")
         elseif(NOT GIT_COMMIT_RESULT MATCHES "nothing to commit")
                 message(WARNING "Git commit failed. Result: ${GIT_COMMIT_RESULT}")

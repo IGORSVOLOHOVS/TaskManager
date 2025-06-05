@@ -1,0 +1,21 @@
+# Doxyfile.in
+
+PROJECT_NAME           = "@DOXYFILE_PROJECT_NAME@"
+PROJECT_BRIEF          = "@DOXYFILE_PROJECT_BRIEF@"
+PROJECT_NUMBER         = "@DOXYFILE_PROJECT_VERSION@"
+OUTPUT_DIRECTORY       = "@DOXYFILE_OUTPUT_DIRECTORY@"
+INPUT                  = "@DOXYFILE_SOURCE_DIRS@"
+GENERATE_LATEX        = @DOXYFILE_GENERATE_LATEX@
+HTML_STYLESHEET        = "@DOXYFILE_HTML_STYLESHEET@"
+RECURSIVE = YES
+
+# Enable UML class diagrams for C++
+HAVE_DOT               = YES
+UML_LOOK               = YES
+TEMPLATE_RELATIONS     = YES 
+
+EXTRACT_ALL            = YES  # Extract all entities, even undocumented ones
+EXTRACT_PRIVATE        = YES  # Show private members
+EXTRACT_PACKAGE        = YES  # Show package contents
+EXTRACT_STATIC         = YES  # Show static members
+HIDE_UNDOC_RELATIONS   = NO   # Show relations even if undocumented
