@@ -110,6 +110,12 @@
 			"path" : "cmake/flags/flags.cmake"
 		},
 		{
+			"path" : "cmake/format/format.cmake"
+		},
+		{
+			"path" : "cmake/git/git.cmake"
+		},
+		{
 			"isGenerated" : true,
 			"path" : "build/Debug/generators/spdlog-config-version.cmake"
 		},
