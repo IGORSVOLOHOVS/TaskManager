@@ -1,0 +1,1 @@
+. "/home/igors/Projects/taskmanager1/Test/build/Debug/generators/conanbuildenv-debug-x86_64.sh"

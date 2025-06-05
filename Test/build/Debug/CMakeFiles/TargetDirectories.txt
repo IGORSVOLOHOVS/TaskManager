@@ -1,0 +1,5 @@
+/home/igors/Projects/taskmanager1/Test/build/Debug/CMakeFiles/Task.dir
+/home/igors/Projects/taskmanager1/Test/build/Debug/CMakeFiles/TaskMain.dir
+/home/igors/Projects/taskmanager1/Test/build/Debug/CMakeFiles/test.dir
+/home/igors/Projects/taskmanager1/Test/build/Debug/CMakeFiles/edit_cache.dir
+/home/igors/Projects/taskmanager1/Test/build/Debug/CMakeFiles/rebuild_cache.dir

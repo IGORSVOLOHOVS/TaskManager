@@ -1,0 +1,1 @@
+. "/home/igors/Projects/taskmanager1/Test/build/Debug/generators/deactivate_conanrunenv-debug-x86_64.sh"

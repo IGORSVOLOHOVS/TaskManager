@@ -1,0 +1,31 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "conan install release",
+            "type": "shell",
+            "command": "conan install . --profile:host=cmake/profiles/clang-release --profile:build=cmake/profiles/clang-release -s build_type=Release --build=missing",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "conan install debug",
+            "type": "shell",
+            "command": "conan install . --profile:host=cmake/profiles/clang-debug --profile:build=cmake/profiles/clang-debug -s build_type=Debug --build=missing",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always"
+            },
+            "problemMatcher": []
+        }
+    ]
+}

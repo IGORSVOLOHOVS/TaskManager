@@ -1,0 +1,1 @@
+. "/home/igors/Projects/taskmanager1/Test/build/Release/generators/deactivate_conanbuildenv-release-x86_64.sh"
