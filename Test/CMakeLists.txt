@@ -10,6 +10,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 include(cmake/flags/flags.cmake)
 include(cmake/format/format.cmake)
 include(cmake/git/git.cmake)
+include(cmake/targets.cmake)
 
 file(GLOB LIB_SOURCES "src/*.cpp")
 list(FILTER LIB_SOURCES EXCLUDE REGEX ".*/main\.cpp$")
@@ -23,9 +24,11 @@ find_package(spdlog REQUIRED)
 target_link_libraries(${PROJECT_NAME} PUBLIC spdlog::spdlog)
 
 
-option("${PROJECT_NAME}Tests" "Build tests" ON)
+option("${PROJECT_NAME}TestsFlag" "Build tests" ON)
+option("${PROJECT_NAME}ExampleFlag" "Build examples" ON)
+option("${PROJECT_NAME}DataFlag" "Build tests" ON)
 
-if(${PROJECT_NAME}Tests)
+if(${PROJECT_NAME}TestsFlag)
   enable_testing()
   find_package(GTest REQUIRED CONFIG) # Используем CONFIG для поиска gtest-config.cmake от Conan
 
@@ -39,8 +42,12 @@ if(${PROJECT_NAME}Tests)
   add_test(NAME ${PROJECT_NAME}Main COMMAND ${PROJECT_NAME}Main)
 endif()
 
-if(${PROJECT_NAME}Example)
+if(${PROJECT_NAME}ExampleFlag)
   add_subdirectory(example)
+endif()
+
+if(${PROJECT_NAME}DataFlag)
+  include(cmake/structs/structs.cmake)
 endif()
 
 if(CMAKE_BUILD_TYPE STREQUAL "Release")

@@ -3,13 +3,9 @@ if(CLANG_FORMAT_EXECUTABLE)
     file(GLOB_RECURSE
         ALL_CXX_FILES
         RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
-        "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp"
-        "${CMAKE_CURRENT_SOURCE_DIR}/*.hpp"
-        "${CMAKE_CURRENT_SOURCE_DIR}/*.h"
-        "${CMAKE_CURRENT_SOURCE_DIR}/*.cxx"
-        "${CMAKE_CURRENT_SOURCE_DIR}/*.hxx"
-        "${CMAKE_CURRENT_SOURCE_DIR}/*.cc"
-        "${CMAKE_CURRENT_SOURCE_DIR}/*.hh"
+        "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/src/*.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/extern/*.hpp"
     )
     foreach(SOURCE_FILE ${ALL_CXX_FILES})
         execute_process(

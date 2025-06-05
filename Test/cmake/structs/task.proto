@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package app.tasks;
+
+import "google/protobuf/timestamp.proto";
+
+message TaskData {
+  string id = 1;
+
+  string title = 2;
+
+  string description = 3;
+
+  int32 version = 4;
+
+  enum Status {
+    STATUS_UNSPECIFIED = 0;
+    PENDING = 1;            
+    IN_PROGRESS = 2;        
+    COMPLETED = 3;          
+    FAILED = 4;             
+  }
+  Status status = 5;
+
+  google.protobuf.Timestamp created_at = 6;
+
+  google.protobuf.Timestamp updated_at = 7;
+
+  int32 priority = 8;
+
+  repeated string tags = 9;
+
+  string assignee_id = 10;
+
+  google.protobuf.Timestamp due_date = 11;
+}

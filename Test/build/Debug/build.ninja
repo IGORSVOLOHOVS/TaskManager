@@ -154,9 +154,100 @@ build CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
 build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 
 # =============================================================================
+# Write statements declared in CMakeLists.txt:
+# /home/igors/Projects/taskmanager1/Test/CMakeLists.txt
+# =============================================================================
+
+# =============================================================================
+# Object build statements for EXECUTABLE target empty_example
+
+
+#############################################
+# Order-only phony target for empty_example
+
+build cmake_object_order_depends_target_empty_example: phony || .
+
+build example/CMakeFiles/empty_example.dir/empty_example.cpp.o: CXX_COMPILER__empty_example_unscanned_Debug /home/igors/Projects/taskmanager1/Test/example/empty_example.cpp || cmake_object_order_depends_target_empty_example
+  DEP_FILE = example/CMakeFiles/empty_example.dir/empty_example.cpp.o.d
+  FLAGS = -m64 -g -fsanitize=address,undefined -fno-omit-frame-pointer -std=c++23 -Wall -Wextra -Wpedantic -Wmacro-redefined
+  OBJECT_DIR = example/CMakeFiles/empty_example.dir
+  OBJECT_FILE_DIR = example/CMakeFiles/empty_example.dir
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target empty_example
+
+
+#############################################
+# Link the executable example/empty_example
+
+build example/empty_example: CXX_EXECUTABLE_LINKER__empty_example_Debug example/CMakeFiles/empty_example.dir/empty_example.cpp.o
+  FLAGS = -m64 -g -fsanitize=address,undefined -fno-omit-frame-pointer
+  LINK_FLAGS = -flto
+  LINK_LIBRARIES = -lWaamAPI
+  OBJECT_DIR = example/CMakeFiles/empty_example.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = example/empty_example
+  TARGET_PDB = empty_example.dbg
+
+
+#############################################
+# Utility command for run_empty_example
+
+build example/run_empty_example: phony example/CMakeFiles/run_empty_example example/empty_example
+
+
+#############################################
+# Utility command for test
+
+build example/CMakeFiles/test.util: CUSTOM_COMMAND
+  COMMAND = cd /home/igors/Projects/taskmanager1/Test/build/Debug/example && /usr/bin/ctest --force-new-ctest-process
+  DESC = Running tests...
+  pool = console
+  restat = 1
+
+build example/test: phony example/CMakeFiles/test.util
+
+
+#############################################
+# Utility command for edit_cache
+
+build example/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /home/igors/Projects/taskmanager1/Test/build/Debug/example && /usr/bin/ccmake -S/home/igors/Projects/taskmanager1/Test -B/home/igors/Projects/taskmanager1/Test/build/Debug
+  DESC = Running CMake cache editor...
+  pool = console
+  restat = 1
+
+build example/edit_cache: phony example/CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build example/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /home/igors/Projects/taskmanager1/Test/build/Debug/example && /usr/bin/cmake --regenerate-during-build -S/home/igors/Projects/taskmanager1/Test -B/home/igors/Projects/taskmanager1/Test/build/Debug
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build example/rebuild_cache: phony example/CMakeFiles/rebuild_cache.util
+
+
+#############################################
+# Custom command for example/CMakeFiles/run_empty_example
+
+build example/CMakeFiles/run_empty_example | ${cmake_ninja_workdir}example/CMakeFiles/run_empty_example: CUSTOM_COMMAND || example/empty_example
+  COMMAND = cd /home/igors/Projects/taskmanager1/Test/build/Debug/example && /home/igors/Projects/taskmanager1/Test/build/Debug/example/empty_example
+
+# =============================================================================
 # Target aliases.
 
 build Task: phony libTask.a
+
+build empty_example: phony example/empty_example
+
+build run_empty_example: phony example/run_empty_example
 
 # =============================================================================
 # Folder targets.
@@ -166,7 +257,14 @@ build Task: phony libTask.a
 #############################################
 # Folder: /home/igors/Projects/taskmanager1/Test/build/Debug
 
-build all: phony libTask.a TaskMain
+build all: phony libTask.a TaskMain example/all
+
+# =============================================================================
+
+#############################################
+# Folder: /home/igors/Projects/taskmanager1/Test/build/Debug/example
+
+build example/all: phony example/empty_example
 
 # =============================================================================
 # Built-in targets
@@ -175,14 +273,14 @@ build all: phony libTask.a TaskMain
 #############################################
 # Re-run CMake if any of its inputs changed.
 
-build build.ninja: RERUN_CMAKE | /home/igors/Projects/taskmanager1/Test/CMakeLists.txt /home/igors/Projects/taskmanager1/Test/cmake/flags/flags.cmake /home/igors/Projects/taskmanager1/Test/cmake/format/format.cmake /home/igors/Projects/taskmanager1/Test/cmake/git/git.cmake /usr/share/cmake/Modules/CMakeCXXInformation.cmake /usr/share/cmake/Modules/CMakeCommonLanguageInclude.cmake /usr/share/cmake/Modules/CMakeFindDependencyMacro.cmake /usr/share/cmake/Modules/CMakeGenericSystem.cmake /usr/share/cmake/Modules/CMakeInitializeConfigs.cmake /usr/share/cmake/Modules/CMakeLanguageInformation.cmake /usr/share/cmake/Modules/CMakeSystemSpecificInformation.cmake /usr/share/cmake/Modules/CMakeSystemSpecificInitialize.cmake /usr/share/cmake/Modules/Compiler/CMakeCommonCompilerMacros.cmake /usr/share/cmake/Modules/Compiler/Clang-CXX.cmake /usr/share/cmake/Modules/Compiler/Clang.cmake /usr/share/cmake/Modules/Compiler/GNU.cmake /usr/share/cmake/Modules/Platform/Linux-Clang-CXX.cmake /usr/share/cmake/Modules/Platform/Linux-GNU-CXX.cmake /usr/share/cmake/Modules/Platform/Linux-GNU.cmake /usr/share/cmake/Modules/Platform/Linux-Initialize.cmake /usr/share/cmake/Modules/Platform/Linux.cmake /usr/share/cmake/Modules/Platform/UnixPaths.cmake CMakeCache.txt CMakeFiles/3.30.8/CMakeCXXCompiler.cmake CMakeFiles/3.30.8/CMakeSystem.cmake generators/GTest-Target-debug.cmake generators/GTest-debug-x86_64-data.cmake generators/GTestConfig.cmake generators/GTestConfigVersion.cmake generators/GTestTargets.cmake generators/cmakedeps_macros.cmake generators/conan_toolchain.cmake generators/fmt-Target-debug.cmake generators/fmt-config-version.cmake generators/fmt-config.cmake generators/fmt-debug-x86_64-data.cmake generators/fmtTargets.cmake generators/spdlog-Target-debug.cmake generators/spdlog-config-version.cmake generators/spdlog-config.cmake generators/spdlog-debug-x86_64-data.cmake generators/spdlogTargets.cmake
+build build.ninja: RERUN_CMAKE | /home/igors/Projects/taskmanager1/Test/CMakeLists.txt /home/igors/Projects/taskmanager1/Test/cmake/flags/flags.cmake /home/igors/Projects/taskmanager1/Test/cmake/format/format.cmake /home/igors/Projects/taskmanager1/Test/cmake/git/git.cmake /home/igors/Projects/taskmanager1/Test/example/CMakeLists.txt /usr/share/cmake/Modules/CMakeCXXInformation.cmake /usr/share/cmake/Modules/CMakeCommonLanguageInclude.cmake /usr/share/cmake/Modules/CMakeFindDependencyMacro.cmake /usr/share/cmake/Modules/CMakeGenericSystem.cmake /usr/share/cmake/Modules/CMakeInitializeConfigs.cmake /usr/share/cmake/Modules/CMakeLanguageInformation.cmake /usr/share/cmake/Modules/CMakeSystemSpecificInformation.cmake /usr/share/cmake/Modules/CMakeSystemSpecificInitialize.cmake /usr/share/cmake/Modules/Compiler/CMakeCommonCompilerMacros.cmake /usr/share/cmake/Modules/Compiler/Clang-CXX.cmake /usr/share/cmake/Modules/Compiler/Clang.cmake /usr/share/cmake/Modules/Compiler/GNU.cmake /usr/share/cmake/Modules/Platform/Linux-Clang-CXX.cmake /usr/share/cmake/Modules/Platform/Linux-GNU-CXX.cmake /usr/share/cmake/Modules/Platform/Linux-GNU.cmake /usr/share/cmake/Modules/Platform/Linux-Initialize.cmake /usr/share/cmake/Modules/Platform/Linux.cmake /usr/share/cmake/Modules/Platform/UnixPaths.cmake CMakeCache.txt CMakeFiles/3.30.8/CMakeCXXCompiler.cmake CMakeFiles/3.30.8/CMakeSystem.cmake generators/GTest-Target-debug.cmake generators/GTest-debug-x86_64-data.cmake generators/GTestConfig.cmake generators/GTestConfigVersion.cmake generators/GTestTargets.cmake generators/cmakedeps_macros.cmake generators/conan_toolchain.cmake generators/fmt-Target-debug.cmake generators/fmt-config-version.cmake generators/fmt-config.cmake generators/fmt-debug-x86_64-data.cmake generators/fmtTargets.cmake generators/spdlog-Target-debug.cmake generators/spdlog-config-version.cmake generators/spdlog-config.cmake generators/spdlog-debug-x86_64-data.cmake generators/spdlogTargets.cmake
   pool = console
 
 
 #############################################
 # A missing CMake input file is not an error.
 
-build /home/igors/Projects/taskmanager1/Test/CMakeLists.txt /home/igors/Projects/taskmanager1/Test/cmake/flags/flags.cmake /home/igors/Projects/taskmanager1/Test/cmake/format/format.cmake /home/igors/Projects/taskmanager1/Test/cmake/git/git.cmake /usr/share/cmake/Modules/CMakeCXXInformation.cmake /usr/share/cmake/Modules/CMakeCommonLanguageInclude.cmake /usr/share/cmake/Modules/CMakeFindDependencyMacro.cmake /usr/share/cmake/Modules/CMakeGenericSystem.cmake /usr/share/cmake/Modules/CMakeInitializeConfigs.cmake /usr/share/cmake/Modules/CMakeLanguageInformation.cmake /usr/share/cmake/Modules/CMakeSystemSpecificInformation.cmake /usr/share/cmake/Modules/CMakeSystemSpecificInitialize.cmake /usr/share/cmake/Modules/Compiler/CMakeCommonCompilerMacros.cmake /usr/share/cmake/Modules/Compiler/Clang-CXX.cmake /usr/share/cmake/Modules/Compiler/Clang.cmake /usr/share/cmake/Modules/Compiler/GNU.cmake /usr/share/cmake/Modules/Platform/Linux-Clang-CXX.cmake /usr/share/cmake/Modules/Platform/Linux-GNU-CXX.cmake /usr/share/cmake/Modules/Platform/Linux-GNU.cmake /usr/share/cmake/Modules/Platform/Linux-Initialize.cmake /usr/share/cmake/Modules/Platform/Linux.cmake /usr/share/cmake/Modules/Platform/UnixPaths.cmake CMakeCache.txt CMakeFiles/3.30.8/CMakeCXXCompiler.cmake CMakeFiles/3.30.8/CMakeSystem.cmake generators/GTest-Target-debug.cmake generators/GTest-debug-x86_64-data.cmake generators/GTestConfig.cmake generators/GTestConfigVersion.cmake generators/GTestTargets.cmake generators/cmakedeps_macros.cmake generators/conan_toolchain.cmake generators/fmt-Target-debug.cmake generators/fmt-config-version.cmake generators/fmt-config.cmake generators/fmt-debug-x86_64-data.cmake generators/fmtTargets.cmake generators/spdlog-Target-debug.cmake generators/spdlog-config-version.cmake generators/spdlog-config.cmake generators/spdlog-debug-x86_64-data.cmake generators/spdlogTargets.cmake: phony
+build /home/igors/Projects/taskmanager1/Test/CMakeLists.txt /home/igors/Projects/taskmanager1/Test/cmake/flags/flags.cmake /home/igors/Projects/taskmanager1/Test/cmake/format/format.cmake /home/igors/Projects/taskmanager1/Test/cmake/git/git.cmake /home/igors/Projects/taskmanager1/Test/example/CMakeLists.txt /usr/share/cmake/Modules/CMakeCXXInformation.cmake /usr/share/cmake/Modules/CMakeCommonLanguageInclude.cmake /usr/share/cmake/Modules/CMakeFindDependencyMacro.cmake /usr/share/cmake/Modules/CMakeGenericSystem.cmake /usr/share/cmake/Modules/CMakeInitializeConfigs.cmake /usr/share/cmake/Modules/CMakeLanguageInformation.cmake /usr/share/cmake/Modules/CMakeSystemSpecificInformation.cmake /usr/share/cmake/Modules/CMakeSystemSpecificInitialize.cmake /usr/share/cmake/Modules/Compiler/CMakeCommonCompilerMacros.cmake /usr/share/cmake/Modules/Compiler/Clang-CXX.cmake /usr/share/cmake/Modules/Compiler/Clang.cmake /usr/share/cmake/Modules/Compiler/GNU.cmake /usr/share/cmake/Modules/Platform/Linux-Clang-CXX.cmake /usr/share/cmake/Modules/Platform/Linux-GNU-CXX.cmake /usr/share/cmake/Modules/Platform/Linux-GNU.cmake /usr/share/cmake/Modules/Platform/Linux-Initialize.cmake /usr/share/cmake/Modules/Platform/Linux.cmake /usr/share/cmake/Modules/Platform/UnixPaths.cmake CMakeCache.txt CMakeFiles/3.30.8/CMakeCXXCompiler.cmake CMakeFiles/3.30.8/CMakeSystem.cmake generators/GTest-Target-debug.cmake generators/GTest-debug-x86_64-data.cmake generators/GTestConfig.cmake generators/GTestConfigVersion.cmake generators/GTestTargets.cmake generators/cmakedeps_macros.cmake generators/conan_toolchain.cmake generators/fmt-Target-debug.cmake generators/fmt-config-version.cmake generators/fmt-config.cmake generators/fmt-debug-x86_64-data.cmake generators/fmtTargets.cmake generators/spdlog-Target-debug.cmake generators/spdlog-config-version.cmake generators/spdlog-config.cmake generators/spdlog-debug-x86_64-data.cmake generators/spdlogTargets.cmake: phony
 
 
 #############################################
