@@ -4,9 +4,9 @@
         "type": "lldb",
         "request": "launch",
         "name": "Launch",
-        "program": "${workspaceFolder}/build/Debug/Task",
+        "program": "${workspaceFolder}/build/Debug/TaskMain",
         "args": [],
-        "cwd": "${workspaceFolder}"
-    }
+        "cwd": "${workspaceFolder}/build/Debug/"
+    },
     ]
 }

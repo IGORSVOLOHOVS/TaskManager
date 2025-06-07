@@ -26,7 +26,7 @@ target_link_libraries(${PROJECT_NAME} PUBLIC spdlog::spdlog)
 
 option("${PROJECT_NAME}TestsFlag" "Build tests" ON)
 option("${PROJECT_NAME}ExampleFlag" "Build examples" ON)
-option("${PROJECT_NAME}DataFlag" "Build tests" ON)
+option("${PROJECT_NAME}DataFlag" "Build tests" OFF)
 
 if(${PROJECT_NAME}TestsFlag)
   enable_testing()
@@ -51,6 +51,6 @@ if(${PROJECT_NAME}DataFlag)
 endif()
 
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
-  include("cmake/swig.cmake")
+  include(cmake/python/swig.cmake)
 endif()
 

@@ -67,3 +67,25 @@ add_custom_target(clean_it
     WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
     VERBATIM
 )
+
+add_custom_target(coverage
+    # Команда выполняет все шаги из вашего JSON в одной оболочке
+    COMMAND sh -c "LLVM_PROFILE_FILE='TaskMain.profraw' ./TaskMain && \
+                   llvm-profdata merge -sparse TaskMain.profraw -o TaskMain.profdata && \
+                   llvm-cov show ./TaskMain -instr-profile=TaskMain.profdata -format=html -show-instantiation-summary --output-dir=./coverage && \
+                   google-chrome ./coverage/index.html"
+    # Указываем рабочую директорию, где находится исполняемый файл
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    # Указываем, что таргет coverage зависит от TaskMain
+    DEPENDS TaskMain
+    COMMENT "Generate and view code coverage report"
+)
+
+# 2. Таргет для профилирования (Profile)
+add_custom_target(profile
+    # Команда запускает perf и hotspot
+    COMMAND sh -c "perf record -g --call-graph dwarf ./TaskMain && hotspot perf.data"
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    DEPENDS TaskMain
+    COMMENT "Run performance profiling"
+)

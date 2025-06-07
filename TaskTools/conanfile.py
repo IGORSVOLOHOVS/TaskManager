@@ -11,8 +11,6 @@ class TaskConan(ConanFile):
     def requirements(self):
         self.requires("gtest/1.14.0")
         self.requires("spdlog/1.15.1")
-        self.requires("protobuf/5.27.0")
-        self.requires("grpc/1.72.0")
 
     def layout(self):
         cmake_layout(self)

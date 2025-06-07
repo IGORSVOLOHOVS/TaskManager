@@ -26,6 +26,34 @@
                 "reveal": "always"
             },
             "problemMatcher": []
+        },
+        {
+            "label": "Run Coverage",
+            "type": "shell",
+            "command": "LLVM_PROFILE_FILE='TaskMain.profraw' ./TaskMain && llvm-profdata merge -sparse TaskMain.profraw -o TaskMain.profdata && llvm-cov show ./TaskMain -instr-profile=TaskMain.profdata -format=html -show-instantiation-summary --output-dir=./coverage && google-chrome ./coverage/index.html",
+            "options": {
+                "cwd": "${workspaceFolder}/build/Debug/"
+            },
+            "group": "test",
+            "presentation": {
+                "reveal": "never",
+                "panel": "new"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Run Profile",
+            "type": "shell",
+            "command": "perf record -g --call-graph dwarf ./TaskMain && hotspot perf.data",
+            "options": {
+                "cwd": "${workspaceFolder}/build/Debug/"
+            },
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "problemMatcher": []
         }
     ]
 }

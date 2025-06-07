@@ -8,12 +8,12 @@ find_package(PythonInterp 3.13 REQUIRED)
 find_package(PythonLibs 3.13 REQUIRED)
 include_directories(${PYTHON_INCLUDE_PATH})
 
-set_property(SOURCE task.i PROPERTY CPLUSPLUS ON)
+set_property(SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/cmake/python/task.i PROPERTY CPLUSPLUS ON)
 swig_add_library(TaskAPI
     TYPE SHARED
     LANGUAGE python
     OUTPUT_DIR ${CMAKE_CURRENT_BINARY_DIR}
-    SOURCES task.i
+    SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/cmake/python/task.i
 )
 swig_link_libraries(TaskAPI PUBLIC 
     Task
