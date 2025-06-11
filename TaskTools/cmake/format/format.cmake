@@ -5,7 +5,8 @@ if(CLANG_FORMAT_EXECUTABLE)
         RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
         "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/src/*.hpp"
-        "${CMAKE_CURRENT_SOURCE_DIR}/extern/*.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/include/*.hpp"
     )
     foreach(SOURCE_FILE ${ALL_CXX_FILES})
         execute_process(

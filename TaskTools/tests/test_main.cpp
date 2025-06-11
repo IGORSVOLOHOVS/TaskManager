@@ -1,5 +1,6 @@
-
-#include "gtest/gtest.h"
+// tests/test_main.cpp
+// Точка входа для Google Test
+#include <gtest/gtest.h>
 
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);

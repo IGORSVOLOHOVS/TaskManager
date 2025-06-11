@@ -1,5 +1,7 @@
 #pragma once
 
+#define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE
+
 #include "spdlog/sinks/basic_file_sink.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/spdlog.h"
@@ -20,6 +22,5 @@
 #include <string>           // для std::string
 #include <thread>           // для std::thread
 #include <utility>          // для std::pair
+#include <utility>          // для std::move
 #include <vector>           // для std::vector
-
-#define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE

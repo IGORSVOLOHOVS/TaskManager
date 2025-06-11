@@ -12,39 +12,41 @@ include(cmake/format/format.cmake)
 include(cmake/git/git.cmake)
 include(cmake/targets.cmake)
 
-file(GLOB LIB_SOURCES "src/*.cpp")
-list(FILTER LIB_SOURCES EXCLUDE REGEX ".*/main\.cpp$")
+file(GLOB_RECURSE LIB_SOURCES "src/*.cpp")
+list(FILTER LIB_SOURCES EXCLUDE REGEX ".*/main/main\\.cpp$")
 
 add_library(${PROJECT_NAME} STATIC ${LIB_SOURCES})
-target_include_directories(${PROJECT_NAME} PUBLIC src extern) # Делаем src и extern доступными для тех, кто линкует lib_imp
+target_include_directories(${PROJECT_NAME}
+    PUBLIC
+        "${PROJECT_SOURCE_DIR}/src" # Для доступа к внутренним заголовкам в пределах библиотеки
+)
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_23)
-target_precompile_headers(${PROJECT_NAME} PRIVATE "${PROJECT_SOURCE_DIR}/extern/pch.hpp") 
+target_precompile_headers(${PROJECT_NAME}
+    PRIVATE
+        "${PROJECT_SOURCE_DIR}/src/pch.hpp"
+)
 
 find_package(spdlog REQUIRED)
 target_link_libraries(${PROJECT_NAME} PUBLIC spdlog::spdlog)
 
 
 option("${PROJECT_NAME}TestsFlag" "Build tests" ON)
-option("${PROJECT_NAME}ExampleFlag" "Build examples" ON)
 option("${PROJECT_NAME}DataFlag" "Build tests" OFF)
 
 if(${PROJECT_NAME}TestsFlag)
   enable_testing()
   find_package(GTest REQUIRED CONFIG) # Используем CONFIG для поиска gtest-config.cmake от Conan
 
-  file(GLOB TEST1_SOURCES "tests/*.cpp")
-  list(FILTER TEST1_SOURCES EXCLUDE REGEX ".*/main_test\.cpp$")
-  add_executable(${PROJECT_NAME}Main ${GTEST_RUNNER_SOURCES} ${TEST1_SOURCES})
-  target_link_libraries(${PROJECT_NAME}Main PRIVATE ${PROJECT_NAME} GTest::gtest GTest::gtest_main)
-  target_include_directories(${PROJECT_NAME}Main PRIVATE src tests) # Добавляем tests в пути для тестов
-  target_compile_features(${PROJECT_NAME}Main PRIVATE cxx_std_23)
+  file(GLOB_RECURSE TEST_SOURCES "tests/*.cpp")
+  add_executable(${PROJECT_NAME}Tests ${GTEST_RUNNER_SOURCES} ${TEST_SOURCES})
+  target_link_libraries(${PROJECT_NAME}Tests PRIVATE ${PROJECT_NAME} GTest::gtest GTest::gtest_main GTest::gmock GTest::gmock_main)
+  target_include_directories(${PROJECT_NAME}Tests PRIVATE src tests) # Добавляем tests в пути для тестов
+  target_compile_features(${PROJECT_NAME}Tests PRIVATE cxx_std_23)
 
-  add_test(NAME ${PROJECT_NAME}Main COMMAND ${PROJECT_NAME}Main)
+  add_test(NAME ${PROJECT_NAME}Tests COMMAND ${PROJECT_NAME}Tests)
 endif()
 
-if(${PROJECT_NAME}ExampleFlag)
-  add_subdirectory(example)
-endif()
+
 
 if(${PROJECT_NAME}DataFlag)
   include(cmake/structs/structs.cmake)
@@ -53,4 +55,3 @@ endif()
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
   include(cmake/python/swig.cmake)
 endif()
-

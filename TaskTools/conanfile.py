@@ -6,7 +6,7 @@ class TaskConan(ConanFile):
     name = "Task"
     version = "0.1.0"
     settings = "os", "compiler", "build_type", "arch"
-    exports_sources = "CMakeLists.txt", "src/*", "tests/*", "extern/*", "cmake/*"
+    exports_sources = "CMakeLists.txt", "src/*", "tests/*", "cmake/*"
 
     def requirements(self):
         self.requires("gtest/1.14.0")
