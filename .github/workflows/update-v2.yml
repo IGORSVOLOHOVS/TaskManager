@@ -3,7 +3,7 @@ name: Update v2.0.0 Release
 on:
   push:
     branches:
-      - main  # Срабатывает при обновлении ветки main
+      - task_manager_v2
 
 permissions:
   contents: write # Разрешаем менять релизы и теги
