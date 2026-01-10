@@ -1,1 +1,0 @@
-# https://matplotlib.org/stable/gallery/index.html
