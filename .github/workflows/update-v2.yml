@@ -1,0 +1,44 @@
+name: Update v2.0.0 Release
+
+on:
+  push:
+    branches:
+      - main  # Срабатывает при обновлении ветки main
+
+permissions:
+  contents: write # Разрешаем менять релизы и теги
+
+jobs:
+  update-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 1. Если файл нужно собрать/сгенерировать, сделай это тут.
+      # Если файл просто лежит в репозитории, этот шаг можно пропустить.
+      # - name: Build builder.ipynb
+      #   run: python generate_notebook.py
+
+      # 2. Передвигаем тег v2.0.0 на текущий коммит
+      - name: Update Tag 'v2.0.0'
+        run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
+          # Удаляем старый тег локально и удаленно
+          git tag -d v2.0.0 || true
+          git push origin :refs/tags/v2.0.0 || true
+          # Создаем новый тег на текущем коммите и пушим
+          git tag v2.0.0
+          git push origin v2.0.0
+
+      # 3. Обновляем релиз и перезаписываем файл
+      - name: Overwrite Release Asset
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Если релиза вдруг нет, создаем его. Если есть — просто продолжаем.
+          gh release create v2.0.0 --title "v2.0.0 (Auto-updated)" --notes "Last update: $(date)" || true
+          
+          # Загружаем файл с флагом --clobber (ПЕРЕЗАПИСАТЬ)
+          gh release upload v2.0.0 builder.ipynb --clobber
