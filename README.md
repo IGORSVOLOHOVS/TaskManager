@@ -2,7 +2,7 @@
 
 > **A modern, Python-driven environment for building, testing, benchmarking, and analyzing C++23 projects.**
 
-Note: Этот репозиторий теперь использует автономных агентов (agents) для автоматизации задач внутри ноутбука и CI-пайплайна — см. раздел "Agents" ниже.
+Note: Этот репозиторий теперь использует автономных агентов (agents) для автоматизации задач внутри ноутбука и CI-пайплайна — см. раздел "Agents" ниже. Ok
 
 [![C++ Standard](https://img.shields.io/badge/C%2B%2B-23-blue.svg?logo=c%2B%2B)](https://isocpp.org/)
 [![Build System](https://img.shields.io/badge/Build-Jupyter%20%2B%20SCons-orange)](https://jupyter.org/)
