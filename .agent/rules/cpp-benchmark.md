@@ -25,6 +25,7 @@ description: Создание бенчмарков производительн�
 #define ANKERL_NANOBENCH_IMPLEMENT
 #include <nanobench.h>
 #include <fstream>
+#include <filesystem>
 #include "..."
 
 int main() {
