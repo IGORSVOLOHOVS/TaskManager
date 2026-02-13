@@ -79,3 +79,4 @@ CROW_ROUTE(app, "/hello")([](const crow::request& req){
 2. Напиши `main.cpp` который запускает сервер на порту.
 3. Создай базовый HTML шаблон `templates/base.html` и страницу `templates/index.html`.
 4. Покажи, как обрабатывать POST запрос формы и возвращать обновленный HTML.
+
