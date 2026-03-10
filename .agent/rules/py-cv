@@ -1,0 +1,44 @@
+# Computer Vision Pipeline Rules (Python 3.10)
+
+## 1. Архитектура и Окружение
+- **Стек:** Python 3.10, PyTorch, TorchVision, Ultralytics (YOLO), OpenCV (`cv2`), MMDetection, Optuna.
+- **Структура проекта:**
+  - Разработка, анализ и визуализация ведутся в `.ipynb` ноутбуках.
+  - Переиспользуемая логика (функции, классы) строго выносится в директорию `utils/` (например, `utils/data_loader.py`, `utils/optimizer.py`).
+  - Исполняемые файлы для автоматизации процессов (запуск обучения, загрузка данных, экспорт) выносятся в директорию `scripts/` (например, `scripts/train_model.py`, `scripts/export_pdf.sh`).
+
+## 2. Этапы Jupyter Notebook
+Ноутбук обязан содержать следующие Markdown-разделы:
+1. **Загрузка:** Чтение данных из хранилища.
+2. **Обработка & Подготовка:** Аугментации, формирование DataLoaders.
+3. **Оптимизация (Optuna):** Определение функции `objective` для поиска гиперпараметров.
+4. **Обучение:** Запуск train loops.
+5. **Самообучение:** Псевдо-лейблинг (Pseudo-labeling).
+6. **Тестирование:** Расчет метрик (mAP, Confusion Matrix).
+7. **Экспорт:** В конце обязательна ячейка `!jupyter nbconvert --to pdf report_name.ipynb` или вызов bash-скрипта из папки `scripts/`.
+
+## 3. Инженерия и Стиль Кода
+- Логика внутри функций должна быть сжата.
+- **Абсолютно запрещены** комментарии внутри тела функции.
+- Вся документация пишется исключительно снаружи функций с использованием стандарта Doxygen.
+
+### Пример скрипта-точки входа (scripts/run_optuna.py):
+
+import optuna
+from utils.optimizer import cv_objective
+
+"""
+@brief Точка входа для запуска автоматического поиска гиперпараметров через Optuna.
+@param[in] n_trials Количество итераций поиска.
+@param[in] study_name Имя эксперимента для сохранения в истории.
+@return None
+@note
+python scripts/run_optuna.py
+@see https://en.wikipedia.org/wiki/Entry_point
+"""
+def main(n_trials: int = 50, study_name: str = "yolo_optimization"):
+    study = optuna.create_study(study_name=study_name, direction="minimize")
+    study.optimize(cv_objective, n_trials=n_trials)
+
+if __name__ == "__main__":
+    main()
