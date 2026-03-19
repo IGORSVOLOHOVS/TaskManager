@@ -5,7 +5,7 @@ on:
     branches:
       - main # Твоя основная ветка
     paths:
-      - '.agent/rules/**'
+      - '.agent/**'
       - 'README.md'
       - '.github/workflows/publish-rules.yml'
 
