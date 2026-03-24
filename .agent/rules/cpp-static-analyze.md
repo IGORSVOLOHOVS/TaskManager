@@ -1,10 +1,12 @@
 ---
 trigger: model_decision
-description: Create .clangd file
+description: Create .clangd and .clang-format file
 ---
-
+Create .clangd file (without .yaml extention, only .clangd)
 Example:
+
 CompileFlags:
+  CompilationDatabase: build/Release
   Add:
     - -std=c++23
     - -Wall
@@ -63,3 +65,48 @@ InlayHints:
 
 Hover:
   ShowAKA: true
+
+
+Create .clang-format file (without .yaml extention, only .clang-format)
+.clang-format example:
+
+BasedOnStyle: LLVM
+Language: Cpp
+Standard: Latest 
+
+IndentWidth: 4
+UseTab: Never
+ColumnLimit: 100
+BreakBeforeBraces: Attach
+
+AllowShortFunctionsOnASingleLine: None
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: false
+AllowShortBlocksOnASingleLine: Never
+AllowShortLambdasOnASingleLine: All 
+
+PointerAlignment: Right
+SpaceBeforeParens: ControlStatements
+SpacesInParentheses: false
+SpacesInSquareBrackets: false
+SpaceBeforeSquareBrackets: false 
+
+AlignAfterOpenBracket: Align
+BinPackArguments: false
+BinPackParameters: false
+
+AlwaysBreakTemplateDeclarations: Yes 
+SpaceBeforeInheritanceColon: true
+
+IndentCaseLabels: false
+SortIncludes: true
+IncludeBlocks: Regroup
+ReflowComments: true
+
+AccessModifierOffset: -4
+FixNamespaceComments: true
+Cpp11BracedListStyle: true
+BreakConstructorInitializers: BeforeComma
+ConstructorInitializerIndentWidth: 4
+
+IndentRequiresClause: true
