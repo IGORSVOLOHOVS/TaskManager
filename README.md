@@ -12,13 +12,22 @@
 
 ## 🚀 Quick Setup
 
-This kit resides in your `.agent` folder, providing all the necessary instructions, rules, and workflows for your AI assistant.
+The fastest way to bootstrap a new project is using the global CLI tool:
 
+### 1. Install the CLI (One-time)
 ```bash
-# Clone the repository
-git clone https://github.com/IGORSVOLOHOVS/AntigravityCppKit.git
+# From this repository
+python3 scripts/install.py
+```
 
-# Copy the .agent folder to your target C++ project
+### 2. Initialize a Project
+In any C++ project directory, run:
+```bash
+cpp-ai-init
+```
+
+Alternatively, you can manually copy the `.agent` folder:
+```bash
 cp -r AntigravityCppKit/.agent /path/to/your/project/
 ```
 
