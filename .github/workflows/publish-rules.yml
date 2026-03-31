@@ -19,14 +19,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: 📦 Pack Rules with Full Path
-        run: |
-          # Архивируем папку .agent/rules целиком, сохраняя структуру путей.
-          # При распаковке архива в корень другого проекта, папки .agent/rules создадутся сами.
-          zip -r agent_rules.zip .agent/rules
-          
-          echo "✅ Rules packed into agent_rules.zip (structure preserved)"
-          unzip -l agent_rules.zip # Проверка содержимого для логов
 
       - name: 🔄 Update 'latest' Tag
         run: |
@@ -51,4 +43,4 @@ jobs:
             --latest=true \
             || true
 
-          gh release upload latest agent_rules.zip --clobber
+          gh release upload latest scripts/install_github.py --clobber

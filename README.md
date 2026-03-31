@@ -12,12 +12,12 @@
 
 ## 🚀 Quick Setup
 
-The fastest way to bootstrap a new project is using the global CLI tool:
+The fastest way to bootstrap a new project is using the consolidated installer:
 
 ### 1. Install the CLI (One-time)
+Download and run the installer from the [latest release](https://github.com/IGORSVOLOHOVS/AntigravityCppKit/releases/latest/download/install_github.py):
 ```bash
-# From this repository
-python3 scripts/install.py
+python3 install_github.py --install
 ```
 
 ### 2. Initialize a Project
@@ -26,9 +26,9 @@ In any C++ project directory, run:
 cpp-ai-init
 ```
 
-Alternatively, you can manually copy the `.agent` folder:
+Alternatively, you can run the installer without flags to initialize the current directory:
 ```bash
-cp -r AntigravityCppKit/.agent /path/to/your/project/
+python3 install_github.py
 ```
 
 ### ⚠️ Important Note on `.gitignore`
