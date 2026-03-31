@@ -1,107 +1,114 @@
-# 🧠 C++ Agent Rules (TaskManager)
+# Antigravity C++ Kit
 
-> **Централизованное хранилище контекстных правил (.cursorrules) для AI-агентов.**
+> Professional AI Agent templates for Modern C++23 Development
 
-Этот репозиторий содержит эталонные инструкции для LLM (Cursor, Windsurf, Copilot), которые превращают AI в Senior C++ инженера. Правила охватывают архитектуру, тестирование, сборку и документацию в соответствии со стандартами ISO/IEC 25010 и C++23.
-
----
-
-## 📥 Скачать Правила
-
-Всегда актуальная версия правил (ZIP-архив). Ссылка не меняется при обновлениях.
-
-[![Download Rules](https://img.shields.io/badge/Download-Latest_Rules.zip-blue?style=for-the-badge&logo=archive)](https://github.com/IGORSVOLOHOVS/TaskManager/releases/download/latest/agent_rules.zip)
-
-**Прямая ссылка:**
-`https://github.com/IGORSVOLOHOVS/TaskManager/releases/download/latest/agent_rules.zip`
+<div align="center">
+    <img src="https://img.shields.io/badge/C%2B%2B-23-blue?style=for-the-badge&logo=c%2B%2B" alt="C++23" />
+    <img src="https://img.shields.io/badge/Architecture-Functional%20Core-green?style=for-the-badge" alt="Functional Core" />
+    <img src="https://img.shields.io/badge/AI-Agentic%20Coding-orange?style=for-the-badge" alt="Agentic Coding" />
+</div>
 
 ---
 
-## 🚀 Как использовать
+## 🚀 Quick Setup
 
-1. **Скачайте архив** по ссылке выше.
-2. Распакуйте содержимое в папку `.agent/rules/` (или `.cursor/rules/`) в корне вашего проекта.
-3. Добавьте ссылки на эти файлы в ваш `.cursorrules` или системный промпт.
+This kit resides in your `.agent` folder, providing all the necessary instructions, rules, and workflows for your AI assistant.
 
-### Пример `.cursorrules`
-```markdown
-# Project Context
-@.agent/rules/architecture.md
-@.agent/rules/cpp-style.md
-@.agent/rules/cpp-test.md
+```bash
+# Clone the repository
+git clone https://github.com/IGORSVOLOHOVS/AntigravityCppKit.git
 
+# Copy the .agent folder to your target C++ project
+cp -r AntigravityCppKit/.agent /path/to/your/project/
+```
+
+### ⚠️ Important Note on `.gitignore`
+If you are using AI-powered editors like **Cursor** or **Windsurf**, do **NOT** add the `.agent/` folder to your `.gitignore`. This ensures the IDE can index the workflows and rules, making slash commands (like `/build`, `/refactor`) visible in the chat suggestions.
+
+---
+
+## 📚 What's Included
+
+| Component     | Count | Description                                                         |
+| ------------- | ----- | ------------------------------------------------------------------- |
+| **Agents**    | 10    | Specialist AI personas (Architect, C++ Specialist, Security, etc.)  |
+| **Skills**    | 15    | Domain-specific knowledge (CMake, Memory Management, TDD, etc.)      |
+| **Workflows** | 11    | Slash command procedures for dev automation                         |
+| **Modern C++**| 23    | **C++23 Standalone** (std::expected, Ranges, Concepts, Monads)      |
+
+---
+
+## 🤖 Usage: Using Agents
+
+**No need to mention agents explicitly!** The system automatically detects and applies the right specialist(s) based on your request:
+
+```
+You: "Implement a thread-safe message queue using std::variant"
+AI: 🤖 Applying @cpp-specialist + @systems-architect...
+
+You: "Benchmark this sorting algorithm"
+AI: 🤖 Using @performance-optimizer with nanobench...
+
+You: "Where is the memory leak in this loop?"
+AI: 🤖 Using @debugger for systematic ASan analysis...
+```
+
+**Benefits:**
+- ✅ **Zero learning curve** - just describe the technical problem.
+- ✅ **Always expert responses** - grounded in `CPP_FUNCTIONAL_CORE.md` standards.
+- ✅ **Transparent** - the system shows which specialized knowledge is active.
+
+---
+
+## ⚡ Usage: Using Workflows
+
+Invoke automated procedures with slash commands:
+
+| Command             | Description                                           |
+| ------------------- | ----------------------------------------------------- |
+| `/build`            | Compile the project using CMake and Presets           |
+| `/test-coverage`    | Run doctest and generate LCOV coverage reports        |
+| `/benchmark`        | Run nanobench performance micro-benchmarks            |
+| `/refactor`         | Convert legacy code to Functional Core C++23          |
+| `/plan-architecture`| Generate ISO 25010 compliant C4 architecture          |
+| `/static-analyze`   | Run Clang-Tidy and CppCheck static analysis           |
+| `/pack`             | Build release artifacts (DEB, ZIP, NSIS) via CPack    |
+| `/docs`             | Generate Doxygen and Mermaid.js documentation         |
+| `/debug`            | Systematic debugging of crashes and UB                |
+| `/init-project`     | Bootstrap a new C++ project from template             |
+| `/optimize`         | Profile CPU and Memory bottlenecks (perf/valgrind)    |
+
+Example:
+```
+/refactor this class to use std::expected instead of exceptions
+/benchmark the performance of the matrix multiplication function
+/test-coverage for the core math library
 ```
 
 ---
 
-## 📚 Состав пакета (Catalog)
+## 🛠️ Internal Scripts (Automation)
 
-Архив включает следующие модули знаний:
+The kit includes a suite of Python automation wrappers located in `.agent/scripts/`:
 
-### 🏗️ Architecture & Design
-
-* **`architecture.md`** — Принятие технических решений (ADR), ISO 25010 аттрибуты качества, C4 Model.
-* **`requirements.md`** — Формализация требований (StRS, SyRS, SRS) по ISO 29148.
-* **`func-core-inter-shell.md`** — Архитектурный стиль "Functional Core, Imperative Shell".
-
-### 🛠️ C++ Engineering (C++23)
-
-* **`cpp-project.md`** — Инициализация проекта с нуля (Full Setup).
-* **`cpp-cmake.md`** — Современный CMake 3.25+ (Presets, Targets).
-* **`cpp-package.md`** — Управление зависимостями через Conan 2.0.
-* **`cpp-refactor.md`** — Идиомы C++20/23 (Concepts, Ranges, Monads).
-* **`cpp-comments.md`** — Документирование кода (Doxygen) и чистота реализации.
-
-### 🧪 QA & Testing
-
-* **`cpp-test.md`** — Unit-тестирование (doctest).
-* **`cpp-test-coverage.md`** — Анализ покрытия кода (lcov, OpenCppCoverage).
-* **`cpp-benchmark.md`** — Микробенчмарки (ankerl::nanobench).
-* **`cpp-static-analyze.md`** — Конфигурация Clang-Tidy и Clangd.
-
-### 🚢 DevOps & Delivery
-
-* **`cpp-ci-cd.md`** — Локальные Git Hooks и пайплайны.
-* **`cpp-docker.md`** — Оптимизированные Dockerfile (Multi-stage).
-* **`cpp-pack.md`** — Создание инсталлеров (CPack: DEB, ZIP, NSIS).
-* **`update-v2.yml`** — Пример GitHub Actions для релизов.
-
-### 🌐 Special Domains
-
-* **`cpp-qt.md`** — Разработка Desktop GUI на Qt 6.
-* **`cpp-web.md`** — Микросервисы на Crow + HTMX.
-* **`random.md`** — Генератор идей для Pet-проектов.
+- `verify_all.py` — The ultimate verification tool (Format -> Lint -> Build -> Test).
+- `run_test_coverage.py` — Automated LCOV/OpenCppCoverage generator.
+- `run_benchmarks.py` — Locates and executes all `bench_` targets.
+- `run_static_analysis.py` — Parallelized Clang-Tidy runner.
 
 ---
 
-## 🔄 Автоматизация (Pipeline)
+## 🗺️ Standards & Rules
 
-Обновление правил происходит автоматически через GitHub Actions.
-При каждом пуше в ветку `task_manager_v2`:
-
-1. Собирается ZIP-архив из папки `.agent/rules`.
-2. Тег `latest` переносится на текущий коммит.
-3. Архив `agent_rules.zip` перезаливается в релиз `latest`.
-
----
-
-### 🚀 Настройка Google Antigravity (Workflow)
-
-#### 🧠 Модели (Выбор вычислительной мощности)
-* **Gemini 3.1 Pro (High):** Фаза 2 (Анализ). Применяется для проектирования сложной архитектуры, реверс-инжиниринга и задач с высокой ценой ошибки. Выделяет максимум ресурсов на глубокие рассуждения.
-* **Gemini 3.1 Pro (Low):** Фаза 3 (Созидание). Оптимальный баланс для написания основной бизнес-логики, рефакторинга и создания тестов.
-* **Gemini 3 Flash:** Рутина. Делегирование скучной механики: форматирование, boilerplate-код, быстрые точечные правки.
-
-#### ⚙️ Режимы работы (Уровень автономности)
-* **Planning:** Фазы 1 и 2 (Исследование и Анализ). Агент изучает проект, генерирует план и согласовывает архитектуру до изменения кода. Идеально для разработки фич с нуля.
-* **Fast:** Фаза 3 (Созидание). Прямое выполнение без циклов планирования. Подходит для изолированных задач, запуска скриптов и фикса локализованных багов.
-
-#### 🎯 Контекст (Управление вниманием агента)
-* **Files & Directories:** Строго ограниченный доступ только к файлам текущего скоупа.
-* **Rules & Code Context:** Глобальные правила проекта (например, стандарты Doxygen-комментирования).
-* **Terminal:** Анализ логов сборки и падающих тестов напрямую.
-* **MCP Servers:** Интеграция с внешней инфраструктурой и БД для выполнения реальных запросов из IDE.
+The AI strictly follows the **Atomic / Functional Core, Imperative Shell** architectural style.
+Every code change is verified against:
+- `CPP_FUNCTIONAL_CORE.md`
+- `CPP_ARCHITECTURE.md`
+- `CPP_MEMORY_MANAGEMENT.md`
+- `CPP_TDD.md`
 
 ---
 
-License: MIT
+## License
+
+MIT © IGORSVOLOHOVS
