@@ -15,7 +15,7 @@
 The fastest way to bootstrap a new project is using the consolidated installer:
 
 ### 1. Install the CLI (One-time)
-Download and run the installer from the [latest release](https://github.com/IGORSVOLOHOVS/TaskManager/releases/latest/download/install_github.py):
+Download and run the installer from the [latest release](https://github.com/IGORSVOLOHOVS/antigravity-kit-cpp/releases/latest/download/install_github.py):
 ```bash
 python3 install_github.py --install
 ```
