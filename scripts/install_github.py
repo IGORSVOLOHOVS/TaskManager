@@ -8,7 +8,7 @@ import platform
 import stat
 import argparse
 
-SOURCE_REPO = "https://github.com/IGORSVOLOHOVS/TaskManager"
+SOURCE_REPO = "https://github.com/IGORSVOLOHOVS/antigravity-kit-cpp"
 
 def run_cmd(cmd, cwd=None):
     try:
@@ -26,7 +26,7 @@ def initialize_project():
     print("🚀 Initializing C++ Agent Infrastructure...")
     
     with tempfile.TemporaryDirectory() as tmpdir:
-        repo_path = os.path.join(tmpdir, "TaskManager")
+        repo_path = os.path.join(tmpdir, "antigravity-kit-cpp")
         
         print(f"📦 Cloning {SOURCE_REPO}...")
         run_cmd(["git", "clone", "--depth", "1", "--quiet", SOURCE_REPO, repo_path])
