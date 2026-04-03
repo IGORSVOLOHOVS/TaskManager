@@ -1,0 +1,83 @@
+{
+    "editor.formatOnSave": true,
+    "editor.semanticHighlighting.enabled": true,
+    "editor.inlayHints.enabled": "on",
+    "editor.inlayHints.fontFamily": "'Fira Code', 'JetBrains Mono', monospace",
+    "editor.inlayHints.fontSize": 12,
+    "editor.stickyScroll.enabled": true,
+    "editor.minimap.enabled": false,
+
+    "workbench.sideBar.location": "right",
+    "workbench.secondarySideBar.defaultVisibility": "visible",
+    "workbench.panel.defaultLocation": "bottom",
+    "workbench.editor.revealIfOpen": true,
+    "workbench.editor.enablePreview": false,
+
+    "explorer.fileNesting.enabled": true,
+    "explorer.fileNesting.expand": false,
+    "explorer.fileNesting.patterns": {
+        "*.cpp": "${capture}.hpp, ${capture}.h, ${capture}.ixx",
+        "*.hpp": "${capture}.cpp",
+        "*.h": "${capture}.c, ${capture}.cpp",
+        "CMakeLists.txt": "CMakePresets.json, .cmake-format.json, .clang-tidy, .clang-format",
+        "package.json": "package-lock.json, .eslintrc.js, .prettierrc"
+    },
+
+    "C_Cpp.intelliSenseEngine": "disabled",
+    "C_Cpp.formatting": "clangFormat",
+    "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd",
+
+    "clangd.path": "/usr/bin/clangd",
+    "clangd.arguments": [
+        "--background-index",
+        "--clang-tidy",
+        "--header-insertion=iwyu",
+        "--completion-style=detailed",
+        "--function-arg-placeholders",
+        "--fallback-style=llvm",
+        "--log=verbose",
+        "--header-insertion-decorators",
+        "--pretty"
+    ],
+    "clangd.checkSymbols": true,
+    "clangd.fallbackFlags": [
+        "-std=c++23",
+        "-Wall",
+        "-Wextra"
+    ],
+
+    "cmake.useCMakePresets": "always",
+    "cmake.buildDirectory": "${workspaceFolder}/build/${presetName}",
+    "cmake.configureOnOpen": true,
+    "cmake.copyCompileCommands": "${workspaceFolder}/compile_commands.json",
+
+    "doxdocgen.generic.authorName": "Developer",
+    "doxdocgen.generic.order": [
+        "brief",
+        "tparam",
+        "param",
+        "return",
+        "author"
+    ],
+    "doxdocgen.generic.paramTemplate": "@param {param} {description}",
+    "doxdocgen.generic.returnTemplate": "@return {type} {description}",
+    "doxdocgen.cpp.tparamTemplate": "@tparam {param} {description}",
+    "doxdocgen.file.fileTemplate": "@file {name}",
+
+    "files.watcherExclude": {
+        "**/build/**": true,
+        "**/.cache/**": true,
+        "**/.git/**": true
+    },
+
+    "header-source-switcher.mappings": [
+        {
+            "header": "${dirname}/${basename}.hpp",
+            "source": "${dirname}/${basename}.cpp"
+        },
+        {
+            "header": "${dirname}/${basename}.h",
+            "source": "${dirname}/${basename}.c"
+        }
+    ]
+}

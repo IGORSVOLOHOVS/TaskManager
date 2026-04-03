@@ -1,0 +1,35 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug (LLDB)",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${command:cmake.launchTargetPath}",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "CMake: Build",
+            "terminal": "integrated",
+            "sourceLanguages": [
+                "cpp"
+            ]
+        },
+        {
+            "name": "Debug with Arguments",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${command:cmake.launchTargetPath}",
+            "args": "${command:extension.commandvariable.promptString}",
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "CMake: Build",
+            "terminal": "integrated"
+        },
+        {
+            "name": "Attach to Process",
+            "type": "lldb",
+            "request": "attach",
+            "program": "${command:cmake.launchTargetPath}",
+            "processId": "${command:pickProcess}"
+        }
+    ]
+}

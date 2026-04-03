@@ -1,0 +1,76 @@
+{
+    "Modern Main": {
+        "prefix": "maincpp",
+        "body": [
+            "#include <print>",
+            "",
+            "int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[]) {",
+            "    std::print(\"Hello, World!\\\\n\");",
+            "    return 0;",
+            "}"
+        ],
+        "description": "Standard C++23 main function with std::print"
+    },
+    "Professional Class": {
+        "prefix": "classcpp",
+        "body": [
+            "class ${1:ClassName} {",
+            "public:",
+            "    explicit ${1:ClassName}() = default;",
+            "    ~${1:ClassName}() = default;",
+            "",
+            "    ${1:ClassName}(const ${1:ClassName}&) = delete;",
+            "    ${1:ClassName}& operator=(const ${1:ClassName}&) = delete;",
+            "",
+            "    ${1:ClassName}(${1:ClassName}&&) noexcept = default;",
+            "    ${1:ClassName}& operator=(${1:ClassName}&&) noexcept = default;",
+            "",
+            "private:",
+            "    $0",
+            "};"
+        ],
+        "description": "RAII-compliant class with deleted copy and enabled move"
+    },
+    "Header Guard": {
+        "prefix": "guardcpp",
+        "body": [
+            "#ifndef ${1:PROJECT}_${2:FILE}_HPP",
+            "#define ${1:PROJECT}_${2:FILE}_HPP",
+            "",
+            "$0",
+            "",
+            "#endif // ${1:PROJECT}_${2:FILE}_HPP"
+        ],
+        "description": "Standard header guard"
+    },
+    "Doxygen Block": {
+        "prefix": "doccpp",
+        "body": [
+            "/**",
+            " * @brief ${1:Description}",
+            " * ",
+            " * @param ${2:param} ${3:description}",
+            " * @return ${4:return_type} ${5:description}",
+            " */"
+        ],
+        "description": "Doxygen documentation block"
+    },
+    "Namespace": {
+        "prefix": "nscpp",
+        "body": [
+            "namespace ${1:ns} {",
+            "",
+            "$0",
+            "",
+            "} // namespace ${1:ns}"
+        ],
+        "description": "Namespace block"
+    },
+    "Std Print": {
+        "prefix": "printcpp",
+        "body": [
+            "std::print(\"${1:message}\\\\n\"$0);"
+        ],
+        "description": "C++23 std::print"
+    }
+}

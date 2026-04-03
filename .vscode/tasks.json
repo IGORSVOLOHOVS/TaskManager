@@ -1,0 +1,122 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "CMake: Configure",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "-S",
+                ".",
+                "-B",
+                "build",
+                "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
+                "-DCMAKE_BUILD_TYPE=Debug"
+            ],
+            "group": "none",
+            "problemMatcher": [],
+            "detail": "Configure project with CMake."
+        },
+        {
+            "label": "CMake: Build",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "build",
+                "-j",
+                "$(nproc)"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "detail": "Build the project using all available cores."
+        },
+        {
+            "label": "CMake: Clean",
+            "type": "shell",
+            "command": "rm",
+            "args": [
+                "-rf",
+                "build/*"
+            ],
+            "group": "none",
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "detail": "Remove everything in the build directory."
+        },
+        {
+            "label": "CMake: Test",
+            "type": "shell",
+            "command": "ctest",
+            "args": [
+                "--test-dir",
+                "build",
+                "--output-on-failure",
+                "-j",
+                "$(nproc)"
+            ],
+            "group": "test",
+            "problemMatcher": [],
+            "detail": "Run all tests using CTest."
+        },
+        {
+            "label": "Conan: Install",
+            "type": "shell",
+            "command": "conan",
+            "args": [
+                "install",
+                ".",
+                "--output-folder=build",
+                "--build=missing"
+            ],
+            "group": "none",
+            "problemMatcher": [],
+            "detail": "Install project dependencies using Conan 2.0."
+        },
+        {
+            "label": "CMake: Coverage",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "build",
+                "--target",
+                "all",
+                "&&",
+                "ctest",
+                "--test-dir",
+                "build",
+                "&&",
+                "gcovr",
+                "-r",
+                ".",
+                "--html",
+                "--html-details",
+                "-o",
+                "build/coverage.html"
+            ],
+            "group": "none",
+            "problemMatcher": [],
+            "detail": "Run tests and generate coverage report (requires gcovr)."
+        },
+        {
+            "label": "Doxygen: Generate",
+            "type": "shell",
+            "command": "doxygen",
+            "args": [
+                "Doxyfile"
+            ],
+            "group": "none",
+            "problemMatcher": [],
+            "detail": "Generate documentation using Doxygen."
+        }
+    ]
+}
