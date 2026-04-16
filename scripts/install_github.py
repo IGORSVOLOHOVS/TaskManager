@@ -61,6 +61,40 @@ def initialize_project():
     
     print("✨ Successfully initialized Polyglot Agent infrastructure!")
 
+def is_admin():
+    if platform.system() == "Windows":
+        import ctypes
+        try:
+            return ctypes.windll.shell32.IsUserAnAdmin()
+        except:
+            return False
+    else:
+        return os.geteuid() == 0
+
+def elevate():
+    if platform.system() == "Windows":
+        import ctypes
+        script = os.path.abspath(__file__)
+        args = " ".join(sys.argv[1:])
+        params = f'"{script}" {args}'
+        print("Requesting administrative privileges...")
+        ret = ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, params, None, 1)
+        if ret <= 32:
+            print("❌ Failed to elevate privileges.")
+            sys.exit(1)
+        sys.exit(0)
+    else:
+        print("Requesting sudo privileges...")
+        os.execvp("sudo", ["sudo", sys.executable] + sys.argv)
+
+def update_repo():
+    print("🔄 Updating local repository...")
+    repo_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    print(f"📂 Repository path: {repo_path}")
+    run_cmd(["git", "fetch"], cwd=repo_path)
+    run_cmd(["git", "pull"], cwd=repo_path)
+    print("✨ Successfully updated from remote!")
+
 def install_unix():
     script_src = os.path.abspath(__file__)
     global_bin = "/usr/local/bin/ai-init"
@@ -91,32 +125,50 @@ def install_unix():
 
 def install_windows():
     script_src = os.path.abspath(__file__)
-    bin_dir = os.path.join(os.environ.get("USERPROFILE", os.getcwd()), "bin")
-    os.makedirs(bin_dir, exist_ok=True)
     
+    if is_admin():
+        bin_dir = os.environ.get("SystemRoot", "C:\\Windows")
+    else:
+        bin_dir = os.path.join(os.environ.get("USERPROFILE", os.getcwd()), "bin")
+        os.makedirs(bin_dir, exist_ok=True)
+        
     cmd_file = os.path.join(bin_dir, "ai-init.cmd")
     
-    with open(cmd_file, "w") as f:
-        f.write(f'@echo off\npython "{script_src}" %*\n')
-    
-    print(f"✅ Created Windows wrapper at {cmd_file}")
-    print(f"📢 Please ensure {bin_dir} is in your PATH environment variable.")
+    try:
+        with open(cmd_file, "w") as f:
+            f.write(f'@echo off\npython "{script_src}" %*\n')
+        
+        print(f"✅ Created Windows wrapper at {cmd_file}")
+        if not is_admin():
+            print(f"📢 Please ensure {bin_dir} is in your PATH environment variable.")
+        else:
+            print(f"📢 Installed system-wide. You can now use 'ai-init' command anywhere.")
+    except Exception as e:
+        print(f"❌ Failed to install: {e}")
 
 def main():
     parser = argparse.ArgumentParser(description="Bootstrap Polyglot Agent Infrastructure")
-    parser.add_argument("--install", action="store_true", help="Install the utility globally")
+    parser.add_argument("--install", action="store_true", help="Install the utility globally (requires admin)")
+    parser.add_argument("--update", action="store_true", help="Update the local repository (git fetch & pull)")
     args = parser.parse_args()
 
     if args.install:
+        if not is_admin():
+            elevate()
+
         system = platform.system()
         print(f"🛠️  Installing for OS: {system}")
         if system == "Windows":
             install_windows()
+            import time
+            time.sleep(2)
         elif system in ["Linux", "Darwin"]:
             install_unix()
         else:
             print(f"❌ Unsupported OS for global install: {system}")
             sys.exit(1)
+    elif args.update:
+        update_repo()
     else:
         initialize_project()
 
