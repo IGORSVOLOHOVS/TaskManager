@@ -1,0 +1,38 @@
+{
+    "Dataclass Boilerplate": {
+        "prefix": "dataclass",
+        "body": [
+            "from dataclasses import dataclass",
+            "",
+            "@dataclass",
+            "class ${1:ClassName}:",
+            "    ${2:attribute}: ${3:type}"
+        ],
+        "description": "Create a new dataclass"
+    },
+    "Pytest Fixture": {
+        "prefix": "fixture",
+        "body": [
+            "import pytest",
+            "from typing import Generator",
+            "",
+            "@pytest.fixture",
+            "def ${1:fixture_name}() -> Generator[${2:Type}, None, None]:",
+            "    # setup",
+            "    yield ${3:instance}",
+            "    # teardown"
+        ],
+        "description": "Create a Pytest fixture with yield"
+    },
+    "Main Block": {
+        "prefix": "main",
+        "body": [
+            "def main() -> None:",
+            "    ${1:pass}",
+            "",
+            "if __name__ == \"__main__\":",
+            "    main()"
+        ],
+        "description": "Create a standard main block"
+    }
+}

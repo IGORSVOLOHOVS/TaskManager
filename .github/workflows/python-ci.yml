@@ -1,0 +1,36 @@
+name: Python CI
+
+on:
+  push:
+    branches: [ "main", "dev" ]
+  pull_request:
+    branches: [ "main", "dev" ]
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.10"
+        
+    - name: Install uv
+      run: curl -LsSf https://astral.sh/uv/install.sh | sh
+      
+    - name: Install Dependencies
+      run: uv sync --dev
+      
+    - name: Format Check (Ruff)
+      run: uv run ruff format --check .
+      
+    - name: Lint Check (Ruff)
+      run: uv run ruff check .
+      
+    - name: Type Check (Mypy)
+      run: uv run mypy --strict .
+      
+    - name: Test (Pytest)
+      run: uv run pytest --cov=src --cov-report=xml

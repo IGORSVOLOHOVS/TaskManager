@@ -79,5 +79,13 @@
             "header": "${dirname}/${basename}.h",
             "source": "${dirname}/${basename}.c"
         }
-    ]
+    ],
+
+    "[python]": {
+        "editor.defaultFormatter": "charliermarsh.ruff",
+        "editor.formatOnSave": true
+    },
+    "python.testing.pytestEnabled": true,
+    "python.testing.unittestEnabled": false,
+    "python.analysis.typeCheckingMode": "strict"
 }

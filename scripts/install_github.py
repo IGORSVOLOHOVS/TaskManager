@@ -23,7 +23,7 @@ def make_executable(path):
     os.chmod(path, st.st_mode | stat.S_IEXEC)
 
 def initialize_project():
-    print("🚀 Initializing C++ Agent Infrastructure...")
+    print("🚀 Initializing Polyglot Agent Infrastructure...")
     
     with tempfile.TemporaryDirectory() as tmpdir:
         repo_path = os.path.join(tmpdir, "antigravity-kit-cpp")
@@ -49,9 +49,9 @@ def initialize_project():
 
 def install_unix():
     script_src = os.path.abspath(__file__)
-    global_bin = "/usr/local/bin/cpp-ai-init"
+    global_bin = "/usr/local/bin/ai-init"
     user_bin_dir = os.path.expanduser("~/.local/bin")
-    user_bin = os.path.join(user_bin_dir, "cpp-ai-init")
+    user_bin = os.path.join(user_bin_dir, "ai-init")
 
     make_executable(script_src)
 
@@ -80,7 +80,7 @@ def install_windows():
     bin_dir = os.path.join(os.environ.get("USERPROFILE", os.getcwd()), "bin")
     os.makedirs(bin_dir, exist_ok=True)
     
-    cmd_file = os.path.join(bin_dir, "cpp-ai-init.cmd")
+    cmd_file = os.path.join(bin_dir, "ai-init.cmd")
     
     with open(cmd_file, "w") as f:
         f.write(f'@echo off\npython "{script_src}" %*\n')
@@ -89,7 +89,7 @@ def install_windows():
     print(f"📢 Please ensure {bin_dir} is in your PATH environment variable.")
 
 def main():
-    parser = argparse.ArgumentParser(description="Bootstrap C++ Agent Infrastructure")
+    parser = argparse.ArgumentParser(description="Bootstrap Polyglot Agent Infrastructure")
     parser.add_argument("--install", action="store_true", help="Install the utility globally")
     args = parser.parse_args()
 

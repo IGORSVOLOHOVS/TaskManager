@@ -2,6 +2,15 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "Python: Pytest",
+            "type": "shell",
+            "command": "uv",
+            "args": ["run", "pytest"],
+            "group": "test",
+            "problemMatcher": [],
+            "detail": "Run tests using Pytest."
+        },
+        {
             "label": "CMake: Configure",
             "type": "shell",
             "command": "cmake",

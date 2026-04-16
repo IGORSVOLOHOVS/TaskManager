@@ -2,9 +2,9 @@
 trigger: always_on
 ---
 
-# GEMINI.md - Antigravity C++ Kit
+# GEMINI.md - Antigravity Polyglot Kit (C++ & Python)
 
-> This file defines how the AI behaves in this C++ workspace.
+> This file defines how the AI behaves in this workspace.
 
 ---
 
@@ -36,18 +36,18 @@ Agent activated → Check frontmatter "skills:" or context → Read Agent Rules 
 | **SIMPLE CODE**  | "fix", "add", "change" (single file)       | Inline Edit                 |
 | **COMPLEX CODE** | "build", "create", "implement", "refactor" | **{task-slug}.md Required** |
 | **SYSTEM ARCH**  | "design", "architecture", "c4"             | **{task-slug}.md Required** |
-| **SLASH CMD**    | /create, /build, /debug                    | Command-specific flow       |
+| **SLASH CMD**    | /create, /build, /debug, /lint-python      | Command-specific flow       |
 
 ---
 
 ## 🤖 INTELLIGENT AGENT ROUTING (STEP 2 - AUTO)
 
-**ALWAYS ACTIVE: Before responding to ANY request, automatically analyze and select the best C++ agent(s).**
+**ALWAYS ACTIVE: Before responding to ANY request, automatically analyze and select the best agent(s) (C++ or Python).**
 
 ### Auto-Selection Protocol
 
-1. **Analyze (Silent)**: Detect domains (C++ Core, Architecture, DevOps, Debugging) from user request.
-2. **Select Agent(s)**: Choose the most appropriate specialist(s) from `.agent/agents/`.
+1. **Analyze (Silent)**: Detect context (C++, Python, Architecture, DevOps, Debugging) from user request and file extensions being edited.
+2. **Select Agent(s)**: Choose the most appropriate specialist(s) from `.agent/agents/` (e.g. `@cpp-specialist` or `@python-specialist`).
 3. **Inform User**: Concisely state which expertise is being applied.
 4. **Apply**: Generate response using the selected agent's persona.
 
@@ -63,18 +63,24 @@ When auto-applying an agent, inform the user:
 
 ---
 
-## TIER 0: UNIVERSAL C++ RULES (Always Active)
+## TIER 0: UNIVERSAL RULES (Always Active)
 
-### 🧹 Clean C++23 Code (Global Mandatory)
-
+### 🧹 Clean C++23 Code (When editing .cpp / .hpp)
 **ALL code MUST follow `CPP_FUNCTIONAL_CORE.md`. No exceptions.**
+- **Code**: Functional Core, Imperative Shell. `std::expected` for monads.
+- **Testing**: Mandatory `doctest` tests for all logic.
 
-- **Code**: Functional Core, Imperative Shell. `std::expected` for monads. Constexpr where possible.
-- **Testing**: Mandatory `doctest` tests for all logic. Follow `cpp-test.md` logic.
-- **Performance**: Move semantics (`std::move`, `T&&`), smart pointers (`std::unique_ptr`). No raw pointers unless observer.
+### 🐍 Clean Python 3.10+ Code (When editing .py)
+**ALL code MUST follow `PYTHON_CLEAN_CODE.md`. No exceptions.**
+- **Code**: Strict type hints (`mypy --strict`), Ruff defaults.
+- **Testing**: Pytest, fixtures, parametrization.
+
+### 🌳 Git Workflow (Commits & Branches)
+**ALL version control MUST follow `GIT_WORKFLOW.md`. No exceptions.**
+- **Commits**: `action(scope): English desc.` (period at the end is mandatory).
+- **Branches**: `main`, `test`, `dev`, `feat/*`, `bugfix/*`.
 
 ### 🗺️ System Map Read
-
 > 🔴 **MANDATORY:** Understand the structure of `.agent/`
 - Agents: `.agent/agents/`
 - Rules: `.agent/rules/`
@@ -96,21 +102,9 @@ When auto-applying an agent, inform the user:
 
 ### 🏁 Final Checklist Protocol
 
-**Trigger:** When the user says "final checks", "çalıştır tüm testleri", "verify", or similar phrases.
+**Trigger:** When the user says "final checks", "verify", or similar phrases.
 
-Run: `python3 .agent/scripts/verify_all.py`
-
-**Priority Execution Order in CI:**
-1. **Format** (`format.py`) → 2. **Lint** (`lint.py`) → 3. **Build** (`build.py`) → 4. **Test & Coverage** (`run_test_coverage.py`)
-
-**Available Scripts:**
-
-| Script                     | When to Use         |
-| -------------------------- | ------------------- |
-| `format.py`                | Fix code style      |
-| `lint.py`                  | Static analysis     |
-| `build.py`                 | Compiling via CMake |
-| `run_test_coverage.py`     | Running doctest + lcov / OpenCppCoverage |
-| `verify_all.py`            | Ultimate verification |
+If the project is largely Python: Run: `python3 .agent/scripts/verify_all_python.py`
+If the project is C++: Run: `python3 .agent/scripts/verify_all.py`
 
 > 🔴 **Agents can invoke ANY script** via `python3 .agent/scripts/<script>.py`

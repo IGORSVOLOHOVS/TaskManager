@@ -10,7 +10,11 @@
         "ms-vscode.test-adapter-converter",
         "akira.vscode-header-source-switcher",
         "ryanluker.vscode-coverage-gutters",
-        "cschlosser.doxdocgen"
+        "cschlosser.doxdocgen",
+        "ms-python.python",
+        "charliermarsh.ruff",
+        "ms-python.vscode-pylance",
+        "ms-python.mypy-type-checker"
     ],
     "unwantedRecommendations": [
         "ms-vscode.cpptools"
