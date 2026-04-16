@@ -44,8 +44,22 @@ def initialize_project():
             shutil.rmtree(target_agent)
             
         shutil.copytree(source_agent, target_agent)
+
+        target_templates = os.path.join(target_agent, "templates")
+        if os.path.exists(target_templates):
+            print("🗂️ Deploying templates (.vscode, .github, pre-commit)...")
+            for item in os.listdir(target_templates):
+                s = os.path.join(target_templates, item)
+                d = os.path.join(os.getcwd(), item)
+                if not os.path.exists(d):
+                    if os.path.isdir(s):
+                        shutil.copytree(s, d)
+                    else:
+                        shutil.copy2(s, d)
+                else:
+                    print(f"⚠️ Skipping '{item}', already exists in root.")
     
-    print("✨ Successfully initialized .agent infrastructure!")
+    print("✨ Successfully initialized Polyglot Agent infrastructure!")
 
 def install_unix():
     script_src = os.path.abspath(__file__)
