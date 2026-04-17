@@ -31,5 +31,13 @@ if (!result) {
 }
 ```
 
-## 3. Formats
-Logs should ideally support JSON serialization for Splunk / ELK stacks when running in production containers, while falling back to colored console output for local debugging.
+## 4. Error Reporting & Stacktraces
+- **Stacktraces**: For Debug builds, programs SHOULD utilize C++23 `<stacktrace>` or `backward-cpp` to provide meaningful context on crashes.
+- **Sanitizers**: AddressSanitizer (ASan) and UndefinedBehaviorSanitizer (UBSan) MUST be enabled in the CMake `Debug` configuration for "always-on" error detection.
+- **Clang Diagnostics**: For projects using Clang, the following flags SHOULD be enabled in CMake to ensure rich error reporting:
+    - `-fcolor-diagnostics`: Mandatory visual highlighting.
+    - `-fdiagnostics-show-template-tree`: Tree-view comparison for template mismatches.
+    - `-fspell-checking`: AI-like "did you mean...?" suggestions for typos.
+    - `-fdiagnostics-show-option`: Shows the name of the flag controlling the error.
+    - `-fdiagnostics-column-number`: Mandatory for precise location highlighting.
+    - `-fdiagnostics-show-note-include-stack`: Better visibility of error origination.

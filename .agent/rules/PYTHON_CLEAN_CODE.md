@@ -41,3 +41,10 @@ All Python formatting and linting MUST adhere to the defaults provided by `ruff`
 
 ## 9. Pre-commit Hooks
 - Commit formatting is enforced using `.pre-commit-config.yaml`. It's highly recommended to run `uv run --with pre-commit pre-commit install` to enable it.
+
+## 10. Observability & Debugging
+- **Rich Tracebacks**: All entry points (CLI, Main scripts) SHOULD install `rich.traceback` for beautiful, localized error reporting.
+```python
+from rich.traceback import install
+install(show_locals=True)
+```
