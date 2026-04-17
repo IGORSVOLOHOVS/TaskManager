@@ -36,7 +36,7 @@ Agent activated → Check frontmatter "skills:" or context → Read Agent Rules 
 | **SIMPLE CODE**  | "fix", "add", "change" (single file)       | Inline Edit                 |
 | **COMPLEX CODE** | "build", "create", "implement", "refactor" | **{task-slug}.md Required** |
 | **SYSTEM ARCH**  | "design", "architecture", "c4"             | **{task-slug}.md Required** |
-| **SLASH CMD**    | /create, /build, /debug, /lint-python      | Command-specific flow       |
+| **SLASH CMD**    | /build-cpp, /build-python, /debug-cpp, /debug-python | Command-specific flow       |
 
 ---
 
@@ -99,6 +99,16 @@ When auto-applying an agent, inform the user:
 | ----------------------- | ----------------------------------------------------------------- |
 | **New Feature / Build** | ASK minimum 3 strategic architecture questions based on ISO 25010 |
 | **Full Orchestration**  | **STOP** subagents until user confirms plan details               |
+
+### 🧠 Model Decision Protocol (trigger: model_decision)
+
+**When making a significant technical choice (library selection, arch-pattern), follow this:**
+
+1. **Analytical Pause**: Explicitly state that a "Model Decision" is being made.
+2. **Options Analysis**: Compare 2-3 technical options.
+3. **ISO 25010 Matrix**: Evaluate options based on Performance, Maintainability, and Reliability.
+4. **Outcome**: Recommend the best path with technical justification.
+5. **ADR**: If significant, record the result in `docs/adr/` using the MADR format.
 
 ### 🏁 Final Checklist Protocol
 

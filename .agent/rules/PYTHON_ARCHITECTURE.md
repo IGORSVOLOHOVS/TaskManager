@@ -1,3 +1,8 @@
+---
+trigger: model_decision
+description: Architectural standards enforcing ISO/IEC 25010:2023, Quality Attribute Scenarios, C4 Diagramming, and ADRs for Python.
+---
+
 # Python Architecture Standards
 
 Python components must be designed for maintainability and scalability.
