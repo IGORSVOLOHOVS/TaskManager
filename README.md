@@ -107,6 +107,24 @@ Example:
 
 ---
 
+## 💡 Custom Prompts
+
+Custom prompts are automated templates located in `.agent/prompts/`. They help standardize complex operations by providing predefined instructions that you can invoke manually.
+
+**How to use:** Reference the prompt file using `@` (e.g., `@git-deploy.md`) and ask the agent to follow it.
+
+| Prompt | Description |
+| ------ | ----------- |
+| `plan-tools-capabilities.md` | Enhances implementation plans with a detailed checklist of used Agents, Rules, and Skills. |
+| `git-deploy.md` | Standardizes the commit and push process following the development workflow. |
+| `verify.md` | Critically evaluates if the previous step was performed correctly and according to standards. |
+| `extract-window-brain.md` | Summarizes the current session's state, decisions, and progress for context transfer. |
+| `split-by-context.md` | Decomposes a large plan into independent sub-tasks for parallel multi-window execution. |
+| `init-workflow-prompts.md` | Meta-prompt that generates a `workflow_prompts/` directory with 25+ professional lifecycle prompts. |
+| `optimize-prompt.md` | Professional Prompt Engineer tool that transforms simple requests into high-density, expert-level prompts. |
+
+---
+
 ## 🛠️ Internal Scripts (Automation)
 
 The kit includes a suite of Python automation wrappers located in `.agent/scripts/`:
