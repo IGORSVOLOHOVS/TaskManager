@@ -20,16 +20,17 @@ jobs:
         uses: actions/checkout@v4
 
 
-      - name: 🔄 Update 'latest' Tag
+      # Тег двигается, а не пересоздаётся. Раньше здесь стояло
+      # `git push origin :refs/tags/latest` - удаление тега, а GitHub при
+      # потере тега превращает связанный релиз в черновик. Следующий прогон
+      # создавал новый релиз, а прежний оставался висеть черновиком. Так
+      # накопилось 27 штук с одним и тем же именем.
+      - name: 🔄 Move the 'latest' tag
         run: |
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
-
-          # Пересоздаем тег latest
-          git tag -d latest || true
-          git push origin :refs/tags/latest || true
-          git tag latest
-          git push origin latest
+          git tag -f latest
+          git push -f origin latest
 
       - name: 📊 Generate HEARTBEAT.md
         run: python3 .agent/scripts/generate_heartbeat.py --output .agent/HEARTBEAT.md
@@ -38,12 +39,18 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Создаем релиз latest (если нет) и загружаем файл с перезаписью (--clobber)
-          gh release create latest \
-            --title "Latest Agent Rules" \
-            --notes "Автоматическое обновление правил: $(date -u)" \
-            --prerelease=false \
-            --latest=true \
-            || true
+          # Создать релиз, только если его ещё нет; иначе обновить заметки.
+          # `create ... || true` прятало и настоящие ошибки заодно.
+          if gh release view latest >/dev/null 2>&1; then
+            gh release edit latest \
+              --title "Latest Agent Rules" \
+              --notes "Автоматическое обновление правил: $(date -u)"
+          else
+            gh release create latest \
+              --title "Latest Agent Rules" \
+              --notes "Автоматическое обновление правил: $(date -u)" \
+              --prerelease=false \
+              --latest=true
+          fi
 
           gh release upload latest scripts/install_github.py --clobber
